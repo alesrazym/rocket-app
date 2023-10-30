@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketListBinding
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
+import cz.quanti.razym.rocketapp.presentation.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RocketListFragment : Fragment() {
@@ -23,8 +24,22 @@ class RocketListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.rocketLiveData.observe(this) { rockets ->
-            binding.rocketList.adapter = RocketListAdapter(rockets)
+        viewModel.rocketLiveData.observe(this) { rocketsResult ->
+            when (rocketsResult.status) {
+                Status.SUCCESS -> {
+                    binding.rocketListLayout.isRefreshing = false
+                    binding.rocketList.adapter =
+                        RocketListAdapter(rocketsResult.data ?: emptyList())
+                }
+                Status.ERROR -> {
+                    binding.rocketListLayout.isRefreshing = false
+                    // TODO error view
+                }
+                Status.LOADING -> {
+                    binding.rocketListLayout.isRefreshing = true
+                    // do nothing.
+                }
+            }
         }
     }
 
@@ -33,6 +48,9 @@ class RocketListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRocketListBinding.inflate(inflater, container, false)
+
+        binding.rocketListLayout.setOnRefreshListener(viewModel::loadRockets)
+
         return binding.root
     }
 
