@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketListBinding
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RocketListFragment : Fragment() {
 
@@ -15,9 +15,7 @@ class RocketListFragment : Fragment() {
         fun newInstance() = RocketListFragment()
     }
 
-    private val viewModel: RocketListViewModel by activityViewModels {
-        RocketListViewModel.RocketListViewModelFactory(requireContext())
-    }
+    private val viewModel by viewModel<RocketListViewModel>()
 
     private var _binding: FragmentRocketListBinding? = null
     private val binding get() = _binding!!
