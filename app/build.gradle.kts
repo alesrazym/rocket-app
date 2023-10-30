@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "cz.quanti.razym.rocketapp"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "cz.quanti.razym.rocketapp"
