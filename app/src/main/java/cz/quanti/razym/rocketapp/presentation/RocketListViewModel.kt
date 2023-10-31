@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import cz.quanti.razym.rocketapp.data.RocketsRepoImpl
 import cz.quanti.razym.rocketapp.domain.RocketModel
-import cz.quanti.razym.rocketapp.domain.RocketsRepo
+import cz.quanti.razym.rocketapp.domain.RocketsRepository
 
 class RocketListViewModel(
-    repo: RocketsRepo
+    repo: RocketsRepository
 )  : ViewModel() {
     val rocketLiveData: LiveData<List<RocketModel>> = MutableLiveData(repo.getRockets())
 
