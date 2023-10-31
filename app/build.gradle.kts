@@ -51,6 +51,7 @@ android {
 
 dependencies {
     val koinVersion = "3.5.0"
+    val retrofitVersion = "2.9.0"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -68,6 +69,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("com.google.android.material:material:1.4.0")
     implementation("io.insert-koin:koin-android:$koinVersion")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.insert-koin:koin-test-junit4:$koinVersion")
