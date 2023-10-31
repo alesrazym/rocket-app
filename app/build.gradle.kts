@@ -50,6 +50,8 @@ android {
 }
 
 dependencies {
+    val koinVersion = "3.5.0"
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.fragment:fragment-ktx:1.6.1")
@@ -65,9 +67,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("com.google.android.material:material:1.4.0")
-    implementation("io.insert-koin:koin-android:3.5.0")
+    implementation("io.insert-koin:koin-android:$koinVersion")
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("io.insert-koin:koin-test-junit4:$koinVersion")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
