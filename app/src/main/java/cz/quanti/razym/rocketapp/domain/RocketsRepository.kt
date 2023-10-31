@@ -1,5 +1,5 @@
 package cz.quanti.razym.rocketapp.domain
 
-interface RocketsRepo {
+interface RocketsRepository {
     fun getRockets(): List<RocketModel>
 }

@@ -1,8 +1,8 @@
 package cz.quanti.razym.rocketapp
 
 import android.app.Application
-import cz.quanti.razym.rocketapp.data.RocketsRepoImpl
-import cz.quanti.razym.rocketapp.domain.RocketsRepo
+import cz.quanti.razym.rocketapp.data.RocketsRepositoryImpl
+import cz.quanti.razym.rocketapp.domain.RocketsRepository
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -24,7 +24,7 @@ class MainApplication : Application() {
 
             modules(
                 module {
-                    single<RocketsRepo> { RocketsRepoImpl() }
+                    single<RocketsRepository> { RocketsRepositoryImpl() }
                     viewModelOf(::RocketListViewModel)
                 }
             )

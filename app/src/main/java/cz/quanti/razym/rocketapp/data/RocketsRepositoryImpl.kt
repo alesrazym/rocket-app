@@ -1,9 +1,9 @@
 package cz.quanti.razym.rocketapp.data
 
 import cz.quanti.razym.rocketapp.domain.RocketModel
-import cz.quanti.razym.rocketapp.domain.RocketsRepo
+import cz.quanti.razym.rocketapp.domain.RocketsRepository
 
-class RocketsRepoImpl : RocketsRepo {
+class RocketsRepositoryImpl : RocketsRepository {
     override fun getRockets(): List<RocketModel> {
         return listOf(
             RocketModel("Falcon 1", "First flight: 2006-03-24"),
