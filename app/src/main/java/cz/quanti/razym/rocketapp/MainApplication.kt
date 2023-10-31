@@ -1,15 +1,11 @@
 package cz.quanti.razym.rocketapp
 
 import android.app.Application
-import cz.quanti.razym.rocketapp.data.RocketsRepositoryImpl
-import cz.quanti.razym.rocketapp.domain.RocketsRepository
-import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
+import cz.quanti.razym.rocketapp.di.rocketModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.logger.Level
-import org.koin.dsl.module
 
 class MainApplication : Application() {
     override fun onCreate() {
@@ -22,12 +18,7 @@ class MainApplication : Application() {
 
             androidLogger(Level.DEBUG)
 
-            modules(
-                module {
-                    single<RocketsRepository> { RocketsRepositoryImpl() }
-                    viewModelOf(::RocketListViewModel)
-                }
-            )
+            modules(rocketModule)
         }
     }
 }
