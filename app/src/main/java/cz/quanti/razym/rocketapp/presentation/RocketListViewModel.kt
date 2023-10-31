@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import cz.quanti.razym.rocketapp.data.RocketsRepoImpl
+import cz.quanti.razym.rocketapp.data.RocketsRepositoryImpl
 import cz.quanti.razym.rocketapp.domain.RocketModel
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
 
@@ -21,7 +21,7 @@ class RocketListViewModel(
                 return RocketListViewModel(
                     // TODO now dummy new instance, will be replaced by Koin soon.
                     // TODO Check if context is necessary then.
-                    RocketsRepoImpl()
+                    RocketsRepositoryImpl()
                 ) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
