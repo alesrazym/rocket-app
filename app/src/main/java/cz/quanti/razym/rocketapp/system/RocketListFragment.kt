@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.presentation.RocketListAdapter
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
+import cz.quanti.razym.rocketapp.presentation.Status
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class RocketListFragment : Fragment() {
@@ -19,14 +21,27 @@ class RocketListFragment : Fragment() {
     }
 
     private val viewModel by activityViewModel<RocketListViewModel>()
+    private lateinit var recyclerView : RecyclerView
+    private lateinit var swipeRefreshLayout : SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.rocketLiveData.observe(this) { rockets ->
-            val recycler = requireView().findViewById<RecyclerView>(R.id.rocket_list)
-            recycler.layoutManager = LinearLayoutManager(requireContext())
-            recycler.adapter = RocketListAdapter(rockets)
+        viewModel.rocketLiveData.observe(this) { rocketsResult ->
+            when (rocketsResult.status) {
+                Status.SUCCESS -> {
+                    swipeRefreshLayout.isRefreshing = false
+                    recyclerView.adapter = RocketListAdapter(rocketsResult.data ?: emptyList())
+                }
+                Status.ERROR -> {
+                    swipeRefreshLayout.isRefreshing = false
+                    // TODO error view
+                }
+                Status.LOADING -> {
+                    swipeRefreshLayout.isRefreshing = true
+                    // do nothing.
+                }
+            }
         }
     }
 
@@ -34,6 +49,14 @@ class RocketListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_rocket_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_rocket_list, container, false)
+
+        swipeRefreshLayout = view.findViewById(R.id.rocket_list_layout)
+        swipeRefreshLayout.setOnRefreshListener(viewModel::refreshRockets)
+
+        recyclerView = swipeRefreshLayout.findViewById(R.id.rocket_list)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        return view
     }
 }

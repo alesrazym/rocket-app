@@ -72,6 +72,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.insert-koin:koin-test-junit4:$koinVersion")
