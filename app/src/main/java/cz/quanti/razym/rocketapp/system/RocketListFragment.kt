@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.presentation.RocketListAdapter
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class RocketListFragment : Fragment() {
 
@@ -18,9 +18,7 @@ class RocketListFragment : Fragment() {
         fun newInstance() = RocketListFragment()
     }
 
-    private val viewModel: RocketListViewModel by activityViewModels {
-        RocketListViewModel.RocketListViewModelFactory(requireContext())
-    }
+    private val viewModel by activityViewModel<RocketListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
