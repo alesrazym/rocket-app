@@ -23,22 +23,22 @@ val rocketModule = module {
     viewModelOf(::RocketListViewModel)
 }
 
-fun provideMoshi(): Moshi {
+private fun provideMoshi(): Moshi {
     return Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
         .build()
 }
 
-fun provideConverterFactory(moshi: Moshi): Converter.Factory {
+private fun provideConverterFactory(moshi: Moshi): Converter.Factory {
     return MoshiConverterFactory.create(moshi)
 }
 
-fun provideRetrofit(converter: Converter.Factory): Retrofit {
+private fun provideRetrofit(converter: Converter.Factory): Retrofit {
     return Retrofit.Builder()
         .baseUrl("https://api.spacexdata.com/")
         .addConverterFactory(converter)
         .build()
 }
 
-fun provideSpaceXApi(retrofit: Retrofit): SpaceXApi = retrofit.create(SpaceXApi::class.java)
+private fun provideSpaceXApi(retrofit: Retrofit): SpaceXApi = retrofit.create(SpaceXApi::class.java)
 

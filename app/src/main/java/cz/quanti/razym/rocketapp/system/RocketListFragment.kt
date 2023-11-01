@@ -49,7 +49,7 @@ class RocketListFragment : Fragment() {
     ): View {
         _binding = FragmentRocketListBinding.inflate(inflater, container, false)
         
-        binding.rocketListLayout.setOnRefreshListener(viewModel::refreshRockets)
+        binding.rocketListLayout.setOnRefreshListener(viewModel::loadRockets)
 
         return binding.root
     }

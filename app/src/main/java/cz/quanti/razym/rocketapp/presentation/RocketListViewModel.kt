@@ -15,10 +15,10 @@ class RocketListViewModel(
     val rocketLiveData: LiveData<Resource<List<Rocket>>> = _rocketLiveData
 
     init {
-        refreshRockets()
+        loadRockets()
     }
 
-    fun refreshRockets() {
+    fun loadRockets() {
         viewModelScope.launch {
             _rocketLiveData.postValue(Resource.loading(null))
             _rocketLiveData.postValue(repo.getRockets())
