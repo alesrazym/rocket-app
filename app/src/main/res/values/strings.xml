@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">rocket-app</string>
+    <string name="rockets_title">Rockets</string>
 </resources>
