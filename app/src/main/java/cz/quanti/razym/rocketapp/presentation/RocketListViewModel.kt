@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import cz.quanti.razym.rocketapp.data.RocketsRepositoryImpl
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
-import cz.quanti.razym.rocketapp.model.RocketModel
+import cz.quanti.razym.rocketapp.model.Rocket
 
 class RocketListViewModel(
     repo: RocketsRepository
 )  : ViewModel() {
-    val rocketLiveData: LiveData<List<RocketModel>> = MutableLiveData(repo.getRockets())
+    val rocketLiveData: LiveData<List<Rocket>> = MutableLiveData(repo.getRockets())
 
     class RocketListViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
