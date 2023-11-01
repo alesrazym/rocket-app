@@ -1,7 +1,7 @@
 package cz.quanti.razym.rocketapp.data
 
-import cz.quanti.razym.rocketapp.domain.RocketModel
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
+import cz.quanti.razym.rocketapp.model.RocketModel
 
 class RocketsRepositoryImpl : RocketsRepository {
     override fun getRockets(): List<RocketModel> {

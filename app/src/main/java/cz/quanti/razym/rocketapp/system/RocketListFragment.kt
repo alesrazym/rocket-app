@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import cz.quanti.razym.rocketapp.R
-import cz.quanti.razym.rocketapp.presentation.RocketListAdapter
+import cz.quanti.razym.rocketapp.databinding.FragmentRocketListBinding
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
@@ -20,13 +17,14 @@ class RocketListFragment : Fragment() {
 
     private val viewModel by activityViewModel<RocketListViewModel>()
 
+    private var _binding: FragmentRocketListBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel.rocketLiveData.observe(this) { rockets ->
-            val recycler = requireView().findViewById<RecyclerView>(R.id.rocket_list)
-            recycler.layoutManager = LinearLayoutManager(requireContext())
-            recycler.adapter = RocketListAdapter(rockets)
+            binding.rocketList.adapter = RocketListAdapter(rockets)
         }
     }
 
@@ -34,6 +32,12 @@ class RocketListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_rocket_list, container, false)
+        _binding = FragmentRocketListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

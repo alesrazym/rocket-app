@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -67,6 +68,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.fragment:fragment:1.6.1")
     implementation("io.insert-koin:koin-android:$koinVersion")
 
     testImplementation("junit:junit:4.13.2")
