@@ -1,10 +1,10 @@
-package cz.quanti.razym.rocketapp.presentation
+package cz.quanti.razym.rocketapp.system
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import cz.quanti.razym.rocketapp.databinding.RocketListItemBinding
-import cz.quanti.razym.rocketapp.domain.RocketModel
+import cz.quanti.razym.rocketapp.model.RocketModel
 
 class RocketListAdapter(
     private val rockets: List<RocketModel>

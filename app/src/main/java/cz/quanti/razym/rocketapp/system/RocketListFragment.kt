@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketListBinding
-import cz.quanti.razym.rocketapp.presentation.RocketListAdapter
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 
 class RocketListFragment : Fragment() {
@@ -28,7 +26,6 @@ class RocketListFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         viewModel.rocketLiveData.observe(this) { rockets ->
-            binding.rocketList.layoutManager = LinearLayoutManager(requireContext())
             binding.rocketList.adapter = RocketListAdapter(rockets)
         }
     }
