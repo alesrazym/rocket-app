@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cz.quanti.razym.rocketapp.domain.RocketModel
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
+import cz.quanti.razym.rocketapp.model.Rocket
 import kotlinx.coroutines.launch
 
 class RocketListViewModel(
     private val repo: RocketsRepository
 )  : ViewModel() {
-    private val _rocketLiveData: MutableLiveData<Resource<List<RocketModel>>> = MutableLiveData()
-    val rocketLiveData: LiveData<Resource<List<RocketModel>>> = _rocketLiveData
+    private val _rocketLiveData: MutableLiveData<Resource<List<Rocket>>> = MutableLiveData()
+    val rocketLiveData: LiveData<Resource<List<Rocket>>> = _rocketLiveData
 
     init {
         refreshRockets()
