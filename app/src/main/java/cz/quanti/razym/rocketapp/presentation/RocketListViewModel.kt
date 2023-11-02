@@ -37,8 +37,6 @@ class RocketListViewModel(
 
     fun fetchRockets() {
         viewModelScope.launch {
-            // TODO add unit tests for view model
-
             repo.getRockets()
                 .asResult()
                 .collect { result ->
