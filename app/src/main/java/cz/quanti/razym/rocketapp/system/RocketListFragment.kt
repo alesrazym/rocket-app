@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketListBinding
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import cz.quanti.razym.rocketapp.presentation.UiState
@@ -30,26 +31,24 @@ class RocketListFragment : Fragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-/*
-                viewModel.rockets.collect {
-                    binding.rocketList.adapter = RocketListAdapter(it)
-                }
-*/
                 viewModel.uiState.collect {
                     when (it.state) {
                         is UiState.Success -> {
                             binding.rocketListLayout.isRefreshing = false
+                            binding.rocketListLoading.visibility = View.GONE
+                            binding.rocketList.visibility = View.VISIBLE
                             binding.rocketList.adapter = RocketListAdapter(it.state.rockets)
                         }
 
                         is UiState.Error -> {
                             binding.rocketListLayout.isRefreshing = false
-                            // TODO error view
+                            binding.rocketListLoading.visibility = View.VISIBLE
+                            binding.rocketListLoading.text = getString(R.string.rockets_loading_error)
+                            binding.rocketList.visibility = View.GONE
                         }
 
                         is UiState.Loading -> {
                             binding.rocketListLayout.isRefreshing = true
-                            // do nothing.
                         }
                     }
                 }
