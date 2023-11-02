@@ -79,6 +79,8 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.fragment:fragment-ktx:1.6.1")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("io.kotest:kotest-assertions-core:5.7.2")
     testImplementation("io.insert-koin:koin-test-junit4:$koinVersion")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
