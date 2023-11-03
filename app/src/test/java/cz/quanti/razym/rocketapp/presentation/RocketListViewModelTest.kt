@@ -1,7 +1,9 @@
 package cz.quanti.razym.rocketapp.presentation
 
+import com.squareup.moshi.Types
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
+import cz.quanti.razym.rocketapp.utils.TestUtils
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.mockk.coEvery
@@ -22,6 +24,9 @@ import org.junit.Test
 class RocketListViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
+    private val rocketsData =
+        TestUtils.loadJsonResource<List<RocketData>>("rockets.json",
+            Types.newParameterizedType(List::class.java, RocketData::class.java))
 
     @Before
     fun setup() {
@@ -35,7 +40,7 @@ class RocketListViewModelTest {
 
     @Test
     fun `should convert data to model`() {
-        val data = RocketData(name = "Test", first_flight = "1.1.1999")
+        val data = RocketData(name = "Test", firstFlight = "1.1.1999")
 
         val model = data.model()
 
@@ -43,16 +48,10 @@ class RocketListViewModelTest {
         model.description shouldBe "First flight: 1.1.1999"
     }
 
-    // TODO rfc to separate tests
     @Test
-    fun `should handle repository results`() = runTest(testDispatcher) {
+    fun `uiState should be loading first`() = runTest(testDispatcher) {
         val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returnsMany listOf(
-                flow { emit(emptyList()) },
-                // TODO list of rockets from resources, see other test
-                flow { emit(listOf(RocketData(name = "Test", first_flight = "1.1.1999"))) },
-                flow { throw Exception() }
-            )
+            coEvery { getRockets() } returns flow { emit(emptyList()) }
         }
 
         val viewModel = RocketListViewModel(repository)
@@ -62,21 +61,53 @@ class RocketListViewModelTest {
 
         advanceUntilIdle()
         viewModel.uiState.value.state shouldBe UiState.Success(emptyList())
+    }
 
-        viewModel.fetchRockets()
+    @Test
+    fun `uiState should be success`() = runTest(testDispatcher) {
+        val repository = mockk<RocketsRepository> {
+            coEvery { getRockets() } returns flow { emit(rocketsData) }
+        }
+
+        val viewModel = RocketListViewModel(repository)
+
         advanceUntilIdle()
-        val state = viewModel.uiState.value.state as UiState.Success
-        state shouldNotBe null
-        state.rockets.size shouldBe 1
+        val success = viewModel.uiState.value.state as UiState.Success
+        success shouldNotBe null
+        success.rockets.size shouldBe 4
+    }
 
-        viewModel.fetchRockets()
+    @Test
+    fun `uiState should be error`() = runTest(testDispatcher) {
+        val repository = mockk<RocketsRepository> {
+            coEvery { getRockets() } returns flow { throw Exception() }
+        }
+
+        val viewModel = RocketListViewModel(repository)
+
         advanceUntilIdle()
         val error = viewModel.uiState.value.state as UiState.Error
         error shouldNotBe null
     }
 
-    // TODO test separated from ui state??
     @Test
-    fun loadRockets() {
+    fun `uiState should be updated after fetch`() = runTest(testDispatcher) {
+        val repository = mockk<RocketsRepository> {
+            coEvery { getRockets() } returnsMany listOf(
+                flow { emit(emptyList()) },
+                flow { emit(rocketsData) }
+            )
+        }
+
+        val viewModel = RocketListViewModel(repository)
+
+        advanceUntilIdle()
+        viewModel.uiState.value.state shouldBe UiState.Success(emptyList())
+
+        viewModel.fetchRockets()
+        advanceUntilIdle()
+        val state = viewModel.uiState.value.state as UiState.Success
+        state shouldNotBe null
+        state.rockets.size shouldNotBe 0
     }
 }

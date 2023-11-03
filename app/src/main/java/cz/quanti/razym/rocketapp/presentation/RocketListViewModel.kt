@@ -55,5 +55,5 @@ class RocketListViewModel(
 }
 
 fun RocketData.model(): Rocket {
-    return Rocket(this.name,"First flight: ${this.first_flight}")
+    return Rocket(this.name,"First flight: ${this.firstFlight}")
 }
