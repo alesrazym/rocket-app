@@ -7,7 +7,8 @@ import cz.quanti.razym.rocketapp.databinding.RocketListItemBinding
 import cz.quanti.razym.rocketapp.model.Rocket
 
 class RocketListAdapter(
-    private val rockets: List<Rocket>
+    private val rockets: List<Rocket>,
+    private val onItemClick: (Rocket) -> Unit
 ) : RecyclerView.Adapter<RocketListAdapter.ViewHolder>() {
 
     class ViewHolder(
@@ -31,5 +32,8 @@ class RocketListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(rockets[position])
+        holder.itemView.setOnClickListener {
+            onItemClick(rockets[position])
+        }
     }
 }

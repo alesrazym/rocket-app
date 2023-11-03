@@ -40,12 +40,13 @@ class RocketListViewModelTest {
 
     @Test
     fun `should convert data to model`() {
-        val data = RocketData(name = "Test", firstFlight = "1.1.1999")
+        val data = RocketData(name = "Test", firstFlight = "1.1.1999", id = "1")
 
         val model = data.model()
 
         model.name shouldBe "Test"
         model.description shouldBe "First flight: 1.1.1999"
+        model.id shouldBe "1"
     }
 
     @Test

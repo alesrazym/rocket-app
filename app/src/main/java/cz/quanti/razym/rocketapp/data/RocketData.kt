@@ -24,5 +24,6 @@ data class RocketData(
 //    val stages: Int,
 //    val success_rate_pct: Int,
 //    val type: String,
-//    val wikipedia: String
+//    val wikipedia: String,
+    @Json(name = "id") val id: String
 )

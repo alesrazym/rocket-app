@@ -1,7 +1,9 @@
 package cz.quanti.razym.rocketapp.di
 
+import androidx.navigation.navOptions
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.data.RocketsRepositoryImpl
 import cz.quanti.razym.rocketapp.data.SpaceXApi
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
@@ -22,6 +24,7 @@ val rocketModule = module {
     single { provideConverterFactory(get()) }
     single { provideRetrofit(get(), get()) }
     single { provideSpaceXApi(get()) }
+    single { provideNavOptions() }
     singleOf(::RocketsRepositoryImpl) { bind<RocketsRepository>() }
     viewModelOf(::RocketListViewModel)
 }
@@ -52,3 +55,11 @@ private fun provideRetrofit(client: OkHttpClient, converter: Converter.Factory):
 
 private fun provideSpaceXApi(retrofit: Retrofit): SpaceXApi = retrofit.create(SpaceXApi::class.java)
 
+private fun provideNavOptions() = navOptions {
+    anim {
+        enter = R.anim.slide_in
+        exit = R.anim.fade_out
+        popEnter = R.anim.fade_in
+        popExit = R.anim.slide_out
+    }
+}

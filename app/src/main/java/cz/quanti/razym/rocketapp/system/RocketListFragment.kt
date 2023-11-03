@@ -8,18 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketListBinding
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import cz.quanti.razym.rocketapp.presentation.UiState
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RocketListFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = RocketListFragment()
-    }
 
     private val viewModel by viewModel<RocketListViewModel>()
 
@@ -42,7 +41,14 @@ class RocketListFragment : Fragment() {
                 binding.rocketListLayout.isRefreshing = false
                 binding.rocketListLoading.visibility = View.GONE
                 binding.rocketList.visibility = View.VISIBLE
-                binding.rocketList.adapter = RocketListAdapter(state.rockets)
+                binding.rocketList.adapter = RocketListAdapter(state.rockets) { rocket ->
+                    findNavController().navigate(
+                        RocketListFragmentDirections.actionRocketListFragmentToRocketDetailFragment(
+                            rocket.id
+                        ),
+                        getKoin().get<NavOptions>()
+                    )
+                }
             }
 
             is UiState.Error -> {

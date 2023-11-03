@@ -17,8 +17,8 @@ import kotlinx.coroutines.launch
 // TODO interface needed?
 sealed interface UiState {
     data class Success(val rockets: List<Rocket>) : UiState
-    object Error : UiState
-    object Loading : UiState
+    data object Error : UiState
+    data object Loading : UiState
 }
 
 data class ScreenUiState(
@@ -55,5 +55,5 @@ class RocketListViewModel(
 }
 
 fun RocketData.model(): Rocket {
-    return Rocket(this.name,"First flight: ${this.firstFlight}")
+    return Rocket(this.name,"First flight: ${this.firstFlight}", this.id)
 }
