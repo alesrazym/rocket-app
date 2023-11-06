@@ -40,7 +40,7 @@ class RocketListViewModel(
             repo.getRockets()
                 .asResult()
                 .collect { result ->
-                    val genreUiState = when (result) {
+                    val state = when (result) {
                         is Success -> UiState.Success(result.data.map {
                             it.model()
                         })
@@ -48,7 +48,7 @@ class RocketListViewModel(
                         is Error -> UiState.Error
                     }
 
-                    _uiState.value = ScreenUiState(genreUiState)
+                    _uiState.value = ScreenUiState(state)
                 }
         }
     }
