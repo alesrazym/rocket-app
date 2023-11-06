@@ -10,4 +10,8 @@ class RocketsRepositoryImpl(
     override fun getRockets(): Flow<List<RocketData>> = flow {
         emit(api.listRockets())
     }
+
+    override fun getRocket(id: String): Flow<RocketData> = flow {
+        emit(api.getRocket(id))
+    }
 }

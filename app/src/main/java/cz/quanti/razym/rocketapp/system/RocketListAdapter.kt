@@ -3,6 +3,7 @@ package cz.quanti.razym.rocketapp.system
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.databinding.RocketListItemBinding
 import cz.quanti.razym.rocketapp.model.Rocket
 
@@ -16,7 +17,9 @@ class RocketListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(rocket: Rocket) {
             binding.rocketItemTitle.text = rocket.name
-            binding.rocketItemSubtitle.text = rocket.description
+            binding.rocketItemSubtitle.text =
+                binding.rocketItemSubtitle.context
+                    .getString(R.string.first_flight, rocket.firstFlight)
         }
     }
 

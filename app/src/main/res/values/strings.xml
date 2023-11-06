@@ -4,4 +4,20 @@
     <string name="rockets_loading">Loading rockets…</string>
     <string name="rockets_loading_error">Loading rockets failed</string>
     <string name="launch">Launch</string>
+    <string name="first_flight">First flight: %1$s</string>
+    <string name="rocket_detail_overview">Overview</string>
+    <string name="rocket_detail_parameters">Parameters</string>
+    <string name="getting_rocket_detail_failed">Getting rocket detail failed</string>
+    <string name="getting_rocket_detail_in_progress">Getting rocket detail…</string>
+    <string name="rocket_detail_card_height">height</string>
+    <string name="rocket_detail_card_diameter">diameter</string>
+    <string name="rocket_detail_card_mass">mass</string>
+    <string name="rocket_detail_first_stage">First Stage</string>
+    <string name="rocket_detail_second_stage">Second Stage</string>
+    <string name="rocket_detail_photos">Photos</string>
+    <string name="seconds_burn_time">%d seconds burn time</string>
+    <string name="reusable">reusable</string>
+    <string name="not_reusable">not reusable</string>
+    <string name="tons_of_fuel">%.0f tons of fuel</string>
+    <string name="unknown">unknown</string>
 </resources>

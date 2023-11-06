@@ -13,21 +13,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-// TODO improve error state handling
-// TODO interface needed?
-sealed interface UiState {
-    data class Success(val rockets: List<Rocket>) : UiState
-    data object Error : UiState
-    data object Loading : UiState
-}
-
-data class ScreenUiState(
-    val state: UiState
-)
-
 class RocketListViewModel(
     private val repo: RocketsRepository
 )  : ViewModel() {
+
+    // TODO improve error state handling
+    // TODO interface needed?
+    sealed interface UiState {
+        data class Success(val rockets: List<Rocket>) : UiState
+        data object Error : UiState
+        data object Loading : UiState
+    }
+
+    data class ScreenUiState(
+        val state: UiState
+    )
+
     private val _uiState = MutableStateFlow(ScreenUiState(UiState.Loading))
     val uiState = _uiState.asStateFlow()
 
@@ -42,7 +43,7 @@ class RocketListViewModel(
                 .collect { result ->
                     val state = when (result) {
                         is Success -> UiState.Success(result.data.map {
-                            it.model()
+                            it.asRocket()
                         })
                         is Loading -> UiState.Loading
                         is Error -> UiState.Error
@@ -54,6 +55,6 @@ class RocketListViewModel(
     }
 }
 
-fun RocketData.model(): Rocket {
-    return Rocket(this.name,"First flight: ${this.firstFlight}", this.id)
+fun RocketData.asRocket(): Rocket {
+    return Rocket(this.name, this.firstFlight, this.id)
 }

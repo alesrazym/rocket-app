@@ -3,6 +3,7 @@ package cz.quanti.razym.rocketapp.presentation
 import com.squareup.moshi.Types
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
+import cz.quanti.razym.rocketapp.presentation.RocketListViewModel.UiState
 import cz.quanti.razym.rocketapp.utils.TestUtils
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -40,13 +41,13 @@ class RocketListViewModelTest {
 
     @Test
     fun `should convert data to model`() {
-        val data = RocketData(name = "Test", firstFlight = "1.1.1999", id = "1")
+        val data = rocketsData.first { it.id == "5e9d0d95eda69955f709d1eb" }
 
-        val model = data.model()
+        val model = data.asRocket()
 
-        model.name shouldBe "Test"
-        model.description shouldBe "First flight: 1.1.1999"
-        model.id shouldBe "1"
+        model.id shouldBe "5e9d0d95eda69955f709d1eb"
+        model.name shouldBe "Falcon 1"
+        model.firstFlight shouldBe "2006-03-24"
     }
 
     @Test
