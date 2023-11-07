@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketListBinding
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
@@ -30,28 +30,30 @@ class RocketListFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    when (it.state) {
-                        is UiState.Success -> {
-                            binding.rocketListLayout.isRefreshing = false
-                            binding.rocketListLoading.visibility = View.GONE
-                            binding.rocketList.visibility = View.VISIBLE
-                            binding.rocketList.adapter = RocketListAdapter(it.state.rockets)
-                        }
+            viewModel.uiState
+                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                .collect { processState(it.state) }
+        }
+    }
 
-                        is UiState.Error -> {
-                            binding.rocketListLayout.isRefreshing = false
-                            binding.rocketListLoading.visibility = View.VISIBLE
-                            binding.rocketListLoading.text = getString(R.string.rockets_loading_error)
-                            binding.rocketList.visibility = View.GONE
-                        }
+    private fun processState(state: UiState) {
+        when (state) {
+            is UiState.Success -> {
+                binding.rocketListLayout.isRefreshing = false
+                binding.rocketListLoading.visibility = View.GONE
+                binding.rocketList.visibility = View.VISIBLE
+                binding.rocketList.adapter = RocketListAdapter(state.rockets)
+            }
 
-                        is UiState.Loading -> {
-                            binding.rocketListLayout.isRefreshing = true
-                        }
-                    }
-                }
+            is UiState.Error -> {
+                binding.rocketListLayout.isRefreshing = false
+                binding.rocketListLoading.visibility = View.VISIBLE
+                binding.rocketListLoading.text = getString(R.string.rockets_loading_error)
+                binding.rocketList.visibility = View.GONE
+            }
+
+            is UiState.Loading -> {
+                binding.rocketListLayout.isRefreshing = true
             }
         }
     }
