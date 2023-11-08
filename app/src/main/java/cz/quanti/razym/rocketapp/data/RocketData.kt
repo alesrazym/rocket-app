@@ -1,6 +1,8 @@
 package cz.quanti.razym.rocketapp.data
 
 import com.squareup.moshi.Json
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 data class RocketData(
     @Json(name = "id") val id: String,
@@ -15,6 +17,7 @@ data class RocketData(
     @Json(name = "second_stage") val secondStage: StageData,
 ) {
     companion object {
+        val firstFlightParser = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         const val METERS = "meters"
         const val KG = "kg"
     }
@@ -26,3 +29,7 @@ data class StageData(
     @Json(name = "fuel_amount_tons") val fuelAmountTons: Double,
     @Json(name = "reusable") val reusable: Boolean
 )
+
+fun RocketData.parseFirstFlight() = runCatching {
+        RocketData.firstFlightParser.parse(this.firstFlight)
+    }.getOrNull()

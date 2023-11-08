@@ -7,6 +7,7 @@ import cz.quanti.razym.rocketapp.Result.Loading
 import cz.quanti.razym.rocketapp.Result.Success
 import cz.quanti.razym.rocketapp.asResult
 import cz.quanti.razym.rocketapp.data.RocketData
+import cz.quanti.razym.rocketapp.data.parseFirstFlight
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
 import cz.quanti.razym.rocketapp.model.Rocket
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,5 +57,8 @@ class RocketListViewModel(
 }
 
 fun RocketData.asRocket(): Rocket {
-    return Rocket(this.name, this.firstFlight, this.id)
+    return Rocket(
+        this.name,
+        this.parseFirstFlight(),
+        this.id)
 }

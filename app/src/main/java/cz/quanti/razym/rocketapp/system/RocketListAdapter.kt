@@ -1,11 +1,13 @@
 package cz.quanti.razym.rocketapp.system
 
+import android.icu.text.DateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.databinding.RocketListItemBinding
 import cz.quanti.razym.rocketapp.model.Rocket
+import java.util.Locale
 
 class RocketListAdapter(
     private val rockets: List<Rocket>,
@@ -15,11 +17,26 @@ class RocketListAdapter(
     class ViewHolder(
         private val binding: RocketListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        private val firstFlightFormat = DateFormat.getDateInstance(
+            DateFormat.MEDIUM,
+            Locale.getDefault()
+        )
+
         fun bind(rocket: Rocket) {
+            val ctx = binding.root.context
             binding.rocketItemTitle.text = rocket.name
             binding.rocketItemSubtitle.text =
-                binding.rocketItemSubtitle.context
-                    .getString(R.string.first_flight, rocket.firstFlight)
+                if (rocket.firstFlight == null) {
+                    ctx.getString(
+                        R.string.first_flight,
+                        ctx.getString(R.string.first_flight_unknown)
+                    )
+                } else {
+                    ctx.getString(
+                        R.string.first_flight,
+                        firstFlightFormat.format(rocket.firstFlight))
+                }
         }
     }
 

@@ -20,6 +20,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import java.util.Date
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RocketListViewModelTest {
@@ -47,7 +48,7 @@ class RocketListViewModelTest {
 
         model.id shouldBe "5e9d0d95eda69955f709d1eb"
         model.name shouldBe "Falcon 1"
-        model.firstFlight shouldBe "2006-03-24"
+        model.firstFlight shouldBe Date(1143154800L * 1000)
     }
 
     @Test

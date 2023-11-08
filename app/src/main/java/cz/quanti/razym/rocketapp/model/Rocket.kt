@@ -1,7 +1,9 @@
 package cz.quanti.razym.rocketapp.model
 
+import java.util.Date
+
 class Rocket(
     val name: String,
-    val firstFlight: String,
+    val firstFlight: Date?,
     val id: String
 )

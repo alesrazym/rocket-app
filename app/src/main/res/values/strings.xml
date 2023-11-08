@@ -5,6 +5,7 @@
     <string name="rockets_loading_error">Loading rockets failed</string>
     <string name="launch">Launch</string>
     <string name="first_flight">First flight: %1$s</string>
+    <string name="first_flight_unknown">unknown</string>
     <string name="rocket_detail_overview">Overview</string>
     <string name="rocket_detail_parameters">Parameters</string>
     <string name="getting_rocket_detail_failed">Getting rocket detail failed</string>

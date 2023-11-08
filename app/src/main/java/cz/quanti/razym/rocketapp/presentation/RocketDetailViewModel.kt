@@ -51,10 +51,15 @@ class RocketDetailViewModel(
 }
 
 fun RocketData.asRocketDetail(): RocketDetail {
-    return RocketDetail(this.name, this.firstFlight, this.id, this.overview,
-        this.height[RocketData.METERS] ?: 0.0, this.diameter[RocketData.METERS] ?: 0.0,
+    return RocketDetail(
+        this.name,
+        this.id,
+        this.overview,
+        this.height[RocketData.METERS] ?: 0.0,
+        this.diameter[RocketData.METERS] ?: 0.0,
         (this.mass[RocketData.KG] ?: 0.0) / 1000.0,
-        this.firstStage.asStage(), this.secondStage.asStage(),
+        this.firstStage.asStage(),
+        this.secondStage.asStage(),
         this.flickrImages)
 }
 
