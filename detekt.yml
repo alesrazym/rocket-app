@@ -333,6 +333,7 @@ naming:
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
     functionPattern: '[a-z][a-zA-Z0-9]*'
     excludeClassPattern: '$^'
+    ignoreAnnotated: [ "Composable" ]
   FunctionParameterNaming:
     active: true
     parameterPattern: '[a-z][A-Za-z0-9]*'
@@ -627,8 +628,8 @@ style:
   MandatoryBracesLoops:
     active: false
   MaxChainedCallsOnSameLine:
-    active: false
-    maxChainedCalls: 5
+    active: true
+    maxChainedCalls: 1
   MaxLineLength:
     active: true
     maxLineLength: 120
@@ -651,7 +652,8 @@ style:
   NestedClassesVisibility:
     active: true
   NewLineAtEndOfFile:
-    active: true
+    # disabled, duplicate by formatting.FinalNewline
+    active: false
   NoTabs:
     active: false
   NullableBooleanCheck:
@@ -783,22 +785,23 @@ style:
     excludeImports:
       - 'java.util.*'
 
+  # Do not use libraries rules now, we are not writing library.
 libraries:
   active: true
   ForbiddenPublicDataClass:
-    active: true
+    active: false
     ignorePackages:
       - '*.internal'
       - '*.internal.*'
   LibraryCodeMustSpecifyReturnType:
-    active: true
+    active: false
     allowOmitUnit: false
   LibraryEntitiesShouldNotBePublic:
-    active: true
+    active: false
 
 formatting:
   active: true
-  android: false
+  android: true
   autoCorrect: true
   AnnotationOnSeparateLine:
     active: true
@@ -894,7 +897,7 @@ formatting:
   MaximumLineLength:
     active: true
     maxLineLength: 120
-    ignoreBackTickedIdentifier: false
+    ignoreBackTickedIdentifier: true
   ModifierListSpacing:
     active: true
     autoCorrect: true
@@ -1037,11 +1040,11 @@ formatting:
     autoCorrect: true
     indentSize: 4
   TrailingCommaOnCallSite:
-    active: false
+    active: true
     autoCorrect: true
     useTrailingCommaOnCallSite: true
   TrailingCommaOnDeclarationSite:
-    active: false
+    active: true
     autoCorrect: true
     useTrailingCommaOnDeclarationSite: true
   TryCatchFinallySpacing:
