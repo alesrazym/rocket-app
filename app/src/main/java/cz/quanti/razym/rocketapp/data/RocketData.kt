@@ -27,9 +27,9 @@ data class StageData(
     @Json(name = "burn_time_sec") val burnTimeSec: Int?,
     @Json(name = "engines") val engines: Int,
     @Json(name = "fuel_amount_tons") val fuelAmountTons: Double,
-    @Json(name = "reusable") val reusable: Boolean
+    @Json(name = "reusable") val reusable: Boolean,
 )
 
 fun RocketData.parseFirstFlight() = runCatching {
-        RocketData.firstFlightParser.parse(this.firstFlight)
-    }.getOrNull()
+    RocketData.firstFlightParser.parse(this.firstFlight)
+}.getOrNull()

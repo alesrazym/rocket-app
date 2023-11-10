@@ -44,9 +44,9 @@ class RocketListFragment : Fragment() {
                 binding.rocketList.adapter = RocketListAdapter(state.rockets) { rocket ->
                     findNavController().navigate(
                         RocketListFragmentDirections.actionRocketListFragmentToRocketDetailFragment(
-                            rocket.id
+                            rocket.id,
                         ),
-                        getKoin().get<NavOptions>()
+                        getKoin().get<NavOptions>(),
                     )
                 }
             }
@@ -65,8 +65,9 @@ class RocketListFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentRocketListBinding.inflate(inflater, container, false)
 

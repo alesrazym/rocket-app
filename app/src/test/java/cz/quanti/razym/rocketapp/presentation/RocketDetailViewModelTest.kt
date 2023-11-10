@@ -30,9 +30,10 @@ class RocketDetailViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
     private val validIds = listOf("5e9d0d95eda69955f709d1eb", "5e9d0d95eda69973a809d1ec")
     private val errorId = "non-existing-id"
-    private val rocketsData =
-        TestUtils.loadJsonResource<List<RocketData>>("rockets.json",
-            Types.newParameterizedType(List::class.java, RocketData::class.java))
+    private val rocketsData = TestUtils.loadJsonResource<List<RocketData>>(
+        "rockets.json",
+        Types.newParameterizedType(List::class.java, RocketData::class.java),
+    )
     private val repository = createRepository()
 
     @Before
@@ -123,7 +124,7 @@ class RocketDetailViewModelTest {
         assertSuccess(viewModel, rocketsData[1].id)
     }
 
-    private fun createRepository() : RocketsRepository = mockk {
+    private fun createRepository(): RocketsRepository = mockk {
         coEvery { getRocket(validIds[0]) } returns flowOf(rocketsData[0])
         coEvery { getRocket(validIds[1]) } returns flowOf(rocketsData[1])
         coEvery { getRocket(errorId) } returns flow { throw Exception() }
@@ -131,7 +132,7 @@ class RocketDetailViewModelTest {
 
     private fun assertSuccess(
         viewModel: RocketDetailViewModel,
-        id: String
+        id: String,
     ) {
         val success = shouldNotThrowAny {
             viewModel.uiState.value.state as UiState.Success

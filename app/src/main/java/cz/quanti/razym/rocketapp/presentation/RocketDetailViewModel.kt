@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class RocketDetailViewModel(
-    private val repo: RocketsRepository
-)  : ViewModel() {
+    private val repo: RocketsRepository,
+) : ViewModel() {
 
     // TODO improve error state handling
     // TODO interface needed?
@@ -26,7 +26,7 @@ class RocketDetailViewModel(
     }
 
     data class ScreenUiState(
-        val state: UiState
+        val state: UiState,
     )
 
     private val _uiState = MutableStateFlow(ScreenUiState(UiState.Loading))
@@ -60,7 +60,8 @@ fun RocketData.asRocketDetail(): RocketDetail {
         (this.mass[RocketData.KG] ?: 0.0) / 1000.0,
         this.firstStage.asStage(),
         this.secondStage.asStage(),
-        this.flickrImages)
+        this.flickrImages,
+    )
 }
 
 fun StageData.asStage(): Stage {

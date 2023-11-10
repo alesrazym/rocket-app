@@ -11,8 +11,10 @@ import org.junit.Test
 
 class RocketsRepositoryImplTest {
     private val rocketsData =
-        TestUtils.loadJsonResource<List<RocketData>>("rockets.json",
-            Types.newParameterizedType(List::class.java, RocketData::class.java))
+        TestUtils.loadJsonResource<List<RocketData>>(
+            "rockets.json",
+            Types.newParameterizedType(List::class.java, RocketData::class.java),
+        )
 
     @Test
     fun `should convert api result to flow`() = runTest {

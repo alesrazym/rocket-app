@@ -47,8 +47,9 @@ class RocketDetailFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentRocketDetailBinding.inflate(inflater, container, false)
 
@@ -59,7 +60,7 @@ class RocketDetailFragment : Fragment() {
             .setOnMenuItemClickListener {
                 findNavController().navigate(
                     RocketDetailFragmentDirections.actionRocketDetailFragmentToRocketLaunchFragment(),
-                    getKoin().get<NavOptions>()
+                    getKoin().get<NavOptions>(),
                 )
                 true
             }
@@ -99,14 +100,15 @@ class RocketDetailFragment : Fragment() {
     // TODO util class for formatting, rounding and unit handling.
     // TODO is there any library for this? Or build in kotlin?
     private fun populateRocketDetail(rocket: RocketDetail) {
-        fun formatBurn(burnSec: Int?) : String {
+        fun formatBurn(burnSec: Int?): String {
             return if (burnSec == null) {
                 getString(R.string.unknown)
             } else {
                 getString(R.string.seconds_burn_time, rocket.firstStage.burnTimeSec)
             }
         }
-        fun formatReusable(reusable: Boolean) : String {
+
+        fun formatReusable(reusable: Boolean): String {
             return if (reusable) {
                 getString(R.string.reusable)
             } else {
@@ -121,13 +123,15 @@ class RocketDetailFragment : Fragment() {
         binding.rocketDetailFirstReusable.text = formatReusable(rocket.firstStage.reusable)
         val firstStageEngines = rocket.firstStage.engines
         binding.rocketDetailFirstEngines.text = resources.getQuantityString(
-            R.plurals.engines, firstStageEngines, firstStageEngines)
+            R.plurals.engines, firstStageEngines, firstStageEngines,
+        )
         binding.rocketDetailFirstFuel.text = getString(R.string.tons_of_fuel, rocket.firstStage.fuelAmountTons)
         binding.rocketDetailFirstBurn.text = formatBurn(rocket.firstStage.burnTimeSec)
         binding.rocketDetailSecondReusable.text = formatReusable(rocket.secondStage.reusable)
         val secondStageEngines = rocket.secondStage.engines
         binding.rocketDetailSecondEngines.text = resources.getQuantityString(
-            R.plurals.engines, secondStageEngines, secondStageEngines)
+            R.plurals.engines, secondStageEngines, secondStageEngines,
+        )
         binding.rocketDetailSecondFuel.text = getString(R.string.tons_of_fuel, rocket.secondStage.fuelAmountTons)
         binding.rocketDetailSecondBurn.text = formatBurn(rocket.secondStage.burnTimeSec)
         binding.rocketDetailPhotos.removeAllViews()
@@ -140,7 +144,9 @@ class RocketDetailFragment : Fragment() {
 
     private fun createImageViewAndLoad(it: String) {
         val view = RocketDetailPhotoItemBinding.inflate(
-            LayoutInflater.from(requireContext()), binding.rocketDetailPhotos, true
+            LayoutInflater.from(requireContext()),
+            binding.rocketDetailPhotos,
+            true,
         )
 
         view.rocketPhoto.load(it) {

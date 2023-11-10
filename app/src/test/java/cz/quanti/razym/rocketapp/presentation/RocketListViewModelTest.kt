@@ -27,8 +27,10 @@ class RocketListViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private val rocketsData =
-        TestUtils.loadJsonResource<List<RocketData>>("rockets.json",
-            Types.newParameterizedType(List::class.java, RocketData::class.java))
+        TestUtils.loadJsonResource<List<RocketData>>(
+            "rockets.json",
+            Types.newParameterizedType(List::class.java, RocketData::class.java),
+        )
 
     @Before
     fun setup() {
@@ -98,7 +100,7 @@ class RocketListViewModelTest {
         val repository = mockk<RocketsRepository> {
             coEvery { getRockets() } returnsMany listOf(
                 flow { emit(emptyList()) },
-                flow { emit(rocketsData) }
+                flow { emit(rocketsData) },
             )
         }
 

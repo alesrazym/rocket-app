@@ -7,8 +7,8 @@ import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.data.RocketsRepositoryImpl
 import cz.quanti.razym.rocketapp.data.SpaceXApi
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
-import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
+import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.bind

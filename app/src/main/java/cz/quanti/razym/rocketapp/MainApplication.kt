@@ -16,7 +16,6 @@ class MainApplication : Application(), ImageLoaderFactory {
         super.onCreate()
 
         startKoin {
-
             // Reference Android context
             androidContext(this@MainApplication)
 

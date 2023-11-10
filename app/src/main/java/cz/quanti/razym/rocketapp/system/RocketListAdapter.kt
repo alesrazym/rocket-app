@@ -11,16 +11,16 @@ import java.util.Locale
 
 class RocketListAdapter(
     private val rockets: List<Rocket>,
-    private val onItemClick: (Rocket) -> Unit
+    private val onItemClick: (Rocket) -> Unit,
 ) : RecyclerView.Adapter<RocketListAdapter.ViewHolder>() {
 
     class ViewHolder(
-        private val binding: RocketListItemBinding
+        private val binding: RocketListItemBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val firstFlightFormat = DateFormat.getDateInstance(
             DateFormat.MEDIUM,
-            Locale.getDefault()
+            Locale.getDefault(),
         )
 
         fun bind(rocket: Rocket) {
@@ -30,12 +30,13 @@ class RocketListAdapter(
                 if (rocket.firstFlight == null) {
                     ctx.getString(
                         R.string.first_flight,
-                        ctx.getString(R.string.first_flight_unknown)
+                        ctx.getString(R.string.first_flight_unknown),
                     )
                 } else {
                     ctx.getString(
                         R.string.first_flight,
-                        firstFlightFormat.format(rocket.firstFlight))
+                        firstFlightFormat.format(rocket.firstFlight),
+                    )
                 }
         }
     }
