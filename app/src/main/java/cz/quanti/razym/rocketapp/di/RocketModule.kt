@@ -4,11 +4,14 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import cz.quanti.razym.rocketapp.data.RocketsRepositoryImpl
 import cz.quanti.razym.rocketapp.data.SpaceXApi
+import cz.quanti.razym.rocketapp.domain.GetRocketsUseCase
+import cz.quanti.razym.rocketapp.domain.GetRocketsUseCaseImpl
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Converter
@@ -23,6 +26,7 @@ val rocketModule = module {
     single { provideRetrofit(get(), get()) }
     single { provideSpaceXApi(get()) }
     singleOf(::RocketsRepositoryImpl) { bind<RocketsRepository>() }
+    factoryOf(::GetRocketsUseCaseImpl) { bind<GetRocketsUseCase>() }
     viewModelOf(::RocketListViewModel)
 }
 

@@ -7,7 +7,7 @@ import cz.quanti.razym.rocketapp.Result.Loading
 import cz.quanti.razym.rocketapp.Result.Success
 import cz.quanti.razym.rocketapp.asResult
 import cz.quanti.razym.rocketapp.data.RocketData
-import cz.quanti.razym.rocketapp.domain.RocketsRepository
+import cz.quanti.razym.rocketapp.domain.GetRocketsUseCase
 import cz.quanti.razym.rocketapp.model.Rocket
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +26,7 @@ data class ScreenUiState(
 )
 
 class RocketListViewModel(
-    private val repo: RocketsRepository
+    private val getRocketsUseCase: GetRocketsUseCase
 )  : ViewModel() {
     private val _uiState = MutableStateFlow(ScreenUiState(UiState.Loading))
     val uiState = _uiState.asStateFlow()
@@ -37,7 +37,8 @@ class RocketListViewModel(
 
     fun fetchRockets() {
         viewModelScope.launch {
-            repo.getRockets()
+
+            getRocketsUseCase()
                 .asResult()
                 .collect { result ->
                     val state = when (result) {
