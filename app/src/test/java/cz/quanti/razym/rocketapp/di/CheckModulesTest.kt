@@ -1,6 +1,5 @@
-package cz.quanti.razym.rocketapp
+package cz.quanti.razym.rocketapp.di
 
-import cz.quanti.razym.rocketapp.di.rocketModule
 import org.junit.Test
 import org.koin.test.verify.verify
 
