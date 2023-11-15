@@ -1,8 +1,6 @@
-// See top level gradle for info on suppression.
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.androidx.navigationSafeArgsKotlin)
 }
 
 android {
@@ -40,7 +38,6 @@ android {
     }
     buildFeatures {
         compose = true
-        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
@@ -53,18 +50,18 @@ android {
 }
 
 dependencies {
+    // With TYPESAFE_PROJECT_ACCESSORS, we can access projects in dependencies using e.g.
+    implementation(projects.ui)
+    // instead of
+    // implementation(project(":ui"))
+
     implementation(libs.androidx.coreKtx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.fragmentKtx)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.swipeRefreshLayout)
     implementation(libs.android.material)
-    implementation(libs.bundles.lifecycle)
     implementation(platform(libs.androidx.composeBom))
     implementation(libs.bundles.compose)
-    implementation(libs.bundles.navigation)
 
-    implementation(libs.koinAndroid)
+    implementation(libs.bundles.koin)
     implementation(libs.moshiKotlin)
     implementation(libs.bundles.retrofit)
     implementation(libs.coil)

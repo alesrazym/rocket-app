@@ -1,28 +1,29 @@
 package cz.quanti.razym.rocketapp.presentation
 
 import com.squareup.moshi.Types
+import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
-import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel.UiState
+import cz.quanti.razym.rocketapp.model.asRocketDetail
 import cz.quanti.razym.rocketapp.utils.TestUtils
-import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldStartWith
 import io.mockk.coEvery
 import io.mockk.mockk
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RocketDetailViewModelTest {
@@ -77,10 +78,13 @@ class RocketDetailViewModelTest {
         viewModel.fetchRocket(id)
 
         // Loading state until we let the coroutine in model work with advanceUntilIdle()
-        viewModel.uiState.value.state shouldBe UiState.Loading
+        advanceTimeBy(1)
+        viewModel.uiState.value is UiScreenState.Loading
 
         advanceUntilIdle()
-        viewModel.uiState.value.state shouldNotBe UiState.Loading
+        viewModel.uiState.value shouldBe UiScreenState.Data(
+            rocketsData[0].asRocketDetail().asRocketDetailUiState()
+        )
     }
 
     @Test
@@ -103,9 +107,7 @@ class RocketDetailViewModelTest {
         viewModel.fetchRocket(errorId)
 
         advanceUntilIdle()
-        shouldNotThrowAny {
-            viewModel.uiState.value.state as UiState.Error
-        }
+        viewModel.uiState.value shouldBe UiScreenState.Error(UiText.StringResource(R.string.unknown_error))
     }
 
     @Test
@@ -124,7 +126,10 @@ class RocketDetailViewModelTest {
     }
 
     private fun createRepository() : RocketsRepository = mockk {
-        coEvery { getRocket(validIds[0]) } returns flowOf(rocketsData[0])
+        coEvery { getRocket(validIds[0]) } returns flow {
+            delay(1000)
+            emit(rocketsData[0])
+        }
         coEvery { getRocket(validIds[1]) } returns flowOf(rocketsData[1])
         coEvery { getRocket(errorId) } returns flow { throw Exception() }
     }
@@ -133,9 +138,8 @@ class RocketDetailViewModelTest {
         viewModel: RocketDetailViewModel,
         id: String
     ) {
-        val success = shouldNotThrowAny {
-            viewModel.uiState.value.state as UiState.Success
-        }
-        success.rocket.id shouldBe id
+        val value = viewModel.uiState.value as UiScreenState.Data<RocketDetailUiState>
+        value.refreshing shouldBe false
+        value.data.id shouldBe id
     }
 }
