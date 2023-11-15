@@ -23,6 +23,7 @@
         <action
             android:id="@+id/action_rocketDetailFragment_to_rocketLaunchFragment"
             app:destination="@id/rocket_launch_dest" />
+        <!--suppress NavigationFile (rocketId not a valid destination) -->
         <argument
             android:name="rocketId"
             app:argType="string" />
