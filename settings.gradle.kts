@@ -16,7 +16,13 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "rocket-app"
+
+// With TYPESAFE_PROJECT_ACCESSORS, we can access projects in dependencies using e.g.
+//  `implementation(projects.ui)`
+// See https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:type-safe-project-accessors.
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
+include(":ui")
 
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
     "Incompatible Java, need to run with Java 17, but found ${JavaVersion.current()}\n\n" +
