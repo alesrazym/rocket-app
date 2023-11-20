@@ -3,7 +3,6 @@ package cz.quanti.razym.rocketapp.presentation
 import com.squareup.moshi.Types
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
-import cz.quanti.razym.rocketapp.presentation.RocketListViewModel.UiState
 import cz.quanti.razym.rocketapp.utils.TestUtils
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -57,13 +56,19 @@ class RocketListViewModelTest {
             coEvery { getRockets() } returns flow { emit(emptyList()) }
         }
 
-        val viewModel = RocketListViewModel(repository)
+        val viewModel = rocketListViewModel(repository)
 
         // Loading state until we let the coroutine in model work with advanceUntilIdle()
-        viewModel.uiState.value.state shouldBe UiState.Loading
+        viewModel.uiState.value.let {
+            it.loading shouldBe true
+            it.rockets shouldBe null
+        }
 
         advanceUntilIdle()
-        viewModel.uiState.value.state shouldBe UiState.Success(emptyList())
+        viewModel.uiState.value.let {
+            it.loading shouldBe false
+            it.rockets shouldBe emptyList()
+        }
     }
 
     @Test
@@ -72,12 +77,14 @@ class RocketListViewModelTest {
             coEvery { getRockets() } returns flow { emit(rocketsData) }
         }
 
-        val viewModel = RocketListViewModel(repository)
+        val viewModel = rocketListViewModel(repository)
 
         advanceUntilIdle()
-        val success = viewModel.uiState.value.state as UiState.Success
-        success shouldNotBe null
-        success.rockets.size shouldBe 4
+        viewModel.uiState.value.let {
+            it.loading shouldBe false
+            it.rockets shouldNotBe null
+            it.rockets?.size shouldBe 4
+        }
     }
 
     @Test
@@ -86,11 +93,14 @@ class RocketListViewModelTest {
             coEvery { getRockets() } returns flow { throw Exception() }
         }
 
-        val viewModel = RocketListViewModel(repository)
+        val viewModel = rocketListViewModel(repository)
 
         advanceUntilIdle()
-        val error = viewModel.uiState.value.state as UiState.Error
-        error shouldNotBe null
+        viewModel.uiState.value.let {
+            it.loading shouldBe false
+            it.rockets shouldBe null
+            it.messages.size shouldBe 1
+        }
     }
 
     @Test
@@ -102,15 +112,26 @@ class RocketListViewModelTest {
             )
         }
 
-        val viewModel = RocketListViewModel(repository)
+        val viewModel = rocketListViewModel(repository)
 
         advanceUntilIdle()
-        viewModel.uiState.value.state shouldBe UiState.Success(emptyList())
+        viewModel.uiState.value.let {
+            it.loading shouldBe false
+            it.rockets shouldBe emptyList()
+        }
 
         viewModel.fetchRockets()
         advanceUntilIdle()
-        val state = viewModel.uiState.value.state as UiState.Success
-        state shouldNotBe null
-        state.rockets.size shouldNotBe 0
+        viewModel.uiState.value.let {
+            it.loading shouldBe false
+            it.rockets shouldNotBe null
+            it.rockets?.size shouldBe 4
+        }
+    }
+
+    private fun rocketListViewModel(repository: RocketsRepository): RocketListViewModel {
+        val viewModel = RocketListViewModel(repository)
+        viewModel.initialize()
+        return viewModel
     }
 }

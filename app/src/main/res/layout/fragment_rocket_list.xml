@@ -16,45 +16,19 @@
         android:padding="16dp"
         android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/rocket_list_layout"
+        app:layout_constraintBottom_toTopOf="@+id/rocket_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/rocket_list_layout"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/rocket_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_title"
-        >
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
-            <androidx.compose.ui.platform.ComposeView
-                android:id="@+id/rocket_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:visibility="gone"
-                />
-
-            <TextView
-                android:id="@+id/rocket_list_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/rockets_loading"
-                android:textSize="24sp"
-                android:layout_gravity="center"
-                />
-
-        </FrameLayout>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

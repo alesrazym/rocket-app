@@ -5,31 +5,40 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign.Companion.Center
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import cz.quanti.razym.rocketapp.R
@@ -37,13 +46,13 @@ import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketListBinding
 import cz.quanti.razym.rocketapp.model.Rocket
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
-import cz.quanti.razym.rocketapp.presentation.RocketListViewModel.UiState
-import kotlinx.coroutines.launch
+import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.mp.KoinPlatform.getKoin
 import java.util.Date
 import java.util.Locale
 
+@OptIn(ExperimentalMaterialApi::class)
 class RocketListFragment : Fragment() {
 
     private val viewModel by viewModel<RocketListViewModel>()
@@ -59,35 +68,7 @@ class RocketListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            viewModel.uiState
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collect { processState(it.state) }
-        }
-    }
-
-    private fun processState(state: UiState) {
-        when (state) {
-            is UiState.Success -> {
-                binding.rocketListLayout.isRefreshing = false
-                binding.rocketListLoading.visibility = View.GONE
-                binding.rocketList.visibility = View.VISIBLE
-                binding.rocketList.setContent {
-                    RocketList(rockets = state.rockets)
-                }
-            }
-
-            is UiState.Error -> {
-                binding.rocketListLayout.isRefreshing = false
-                binding.rocketListLoading.visibility = View.VISIBLE
-                binding.rocketListLoading.text = getString(R.string.rockets_loading_error)
-                binding.rocketList.visibility = View.GONE
-            }
-
-            is UiState.Loading -> {
-                binding.rocketListLayout.isRefreshing = true
-            }
-        }
+        viewModel.initialize()
     }
 
     override fun onCreateView(
@@ -96,14 +77,55 @@ class RocketListFragment : Fragment() {
     ): View {
         _binding = FragmentRocketListBinding.inflate(inflater, container, false)
 
-        binding.rocketListLayout.setOnRefreshListener(viewModel::fetchRockets)
+        binding.rocketList.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        binding.rocketList.setContent {
+            Refreshing(viewModel)
+        }
 
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
+    }
+
+    @Composable
+    private fun Refreshing(viewModel: RocketListViewModel) {
+        val uiState by viewModel.uiState.collectAsState()
+
+        Refreshing(uiState.loading, uiState.rockets, viewModel::fetchRockets)
+    }
+
+    @Composable
+    private fun Refreshing(refreshing: Boolean = false, rockets: List<Rocket>?, onRefresh: () -> Unit) {
+        val state = rememberPullRefreshState(refreshing, onRefresh)
+
+        RocketappTheme {
+            Box(Modifier
+                .pullRefresh(state)
+                .fillMaxSize()
+            ) {
+                if (rockets == null && refreshing) {
+                    RocketListText(R.string.rockets_loading)
+                } else {
+                    if (rockets == null)
+                        // TODO pull to refresh does not work on text field only.
+                        RocketListText(R.string.rockets_loading_error)
+                    else
+                        RocketList(rockets)
+                }
+
+                // TODO handle error messages
+
+                PullRefreshIndicator(
+                    refreshing = refreshing,
+                    state = state,
+                    modifier = Modifier.align(Alignment.TopCenter),
+                )
+            }
+        }
     }
 
     @Composable
@@ -121,6 +143,19 @@ class RocketListFragment : Fragment() {
                 })
             }
         }
+    }
+
+    @Composable
+    private fun RocketListText(@StringRes text: Int) {
+        Text(
+            text = stringResource(text),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .fillMaxSize()
+                .wrapContentSize(Alignment.Center)
+                .padding(16.dp),
+            textAlign = Center,
+        )
     }
 
     @Composable
@@ -199,6 +234,12 @@ class RocketListFragment : Fragment() {
             rocket = previewRocket(),
             onClick = {},
         )
+    }
+
+    @Preview
+    @Composable
+    private fun RocketListTextPreview() {
+        RocketListText(R.string.rockets_loading)
     }
 
     private fun previewRocket() = Rocket(

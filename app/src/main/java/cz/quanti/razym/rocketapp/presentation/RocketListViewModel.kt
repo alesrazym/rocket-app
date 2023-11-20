@@ -1,5 +1,6 @@
 package cz.quanti.razym.rocketapp.presentation
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.quanti.razym.rocketapp.Result.Error
@@ -12,28 +13,31 @@ import cz.quanti.razym.rocketapp.domain.RocketsRepository
 import cz.quanti.razym.rocketapp.model.Rocket
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RocketListViewModel(
     private val repo: RocketsRepository
 )  : ViewModel() {
 
-    // TODO improve error state handling
-    // TODO interface needed?
-    sealed interface UiState {
-        data class Success(val rockets: List<Rocket>) : UiState
-        data object Error : UiState
-        data object Loading : UiState
-    }
-
     data class ScreenUiState(
-        val state: UiState
+        var loading: Boolean = true,
+        // Null for not loaded yet, empty list for no rockets.
+        var rockets: List<Rocket>? = null,
+        val messages: MutableList<String> = mutableListOf(),
     )
 
-    private val _uiState = MutableStateFlow(ScreenUiState(UiState.Loading))
+    private var initializeCalled = false
+    private val _uiState = MutableStateFlow(ScreenUiState(loading = true))
     val uiState = _uiState.asStateFlow()
 
-    init {
+    @MainThread
+    fun initialize() {
+        if(initializeCalled)
+            return
+
+        initializeCalled = true
+
         fetchRockets()
     }
 
@@ -42,15 +46,31 @@ class RocketListViewModel(
             repo.getRockets()
                 .asResult()
                 .collect { result ->
-                    val state = when (result) {
-                        is Success -> UiState.Success(result.data.map {
-                            it.asRocket()
-                        })
-                        is Loading -> UiState.Loading
-                        is Error -> UiState.Error
-                    }
+                    when (result) {
+                        is Loading -> _uiState.update {
+                            it.copy(
+                                loading = true,
+                            )
+                        }
 
-                    _uiState.value = ScreenUiState(state)
+                        is Success -> _uiState.update {
+                            it.copy(
+                                loading = false,
+                                rockets = result.data.map { data ->
+                                    data.asRocket()
+                                },
+                            )
+                        }
+
+                        is Error -> _uiState.update {
+                            it.copy(
+                                loading = false,
+                                messages = it.messages.apply {
+                                    add(result.exception?.message ?: "Unknown error")
+                                },
+                            )
+                        }
+                    }
                 }
         }
     }
