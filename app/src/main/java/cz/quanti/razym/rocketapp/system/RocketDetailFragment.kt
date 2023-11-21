@@ -4,15 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -108,15 +118,73 @@ class RocketDetailFragment : Fragment() {
                 .fillMaxWidth()
 //                .padding(12.dp)
         ) {
-            Text(
-                modifier = Modifier.padding(vertical = 8.dp),
-                text = stringResource(id = R.string.rocket_detail_overview),
-                style = MaterialTheme.typography.titleMedium
-                )
+            Title(stringResource(id = R.string.rocket_detail_overview))
             Text(
                 text = rocket.overview,
                 style = MaterialTheme.typography.bodyMedium
                 )
+
+            Title(stringResource(id = R.string.rocket_detail_parameters))
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ){
+                ParameterCard(
+                    String.format("%.0fm", rocket.heightMeters),
+                    stringResource(R.string.rocket_detail_card_height),
+                )
+                ParameterCard(
+                    String.format("%.0fm", rocket.diameterMeters),
+                    stringResource(R.string.rocket_detail_card_diameter)
+                )
+                ParameterCard(
+                    String.format("%.0ft", rocket.massTons),
+                    stringResource(R.string.rocket_detail_card_mass)
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun Title(text: String) {
+        Text(
+            modifier = Modifier.padding(vertical = 8.dp),
+            text = text,
+            style = MaterialTheme.typography.titleMedium
+        )
+    }
+
+    @Composable
+    private fun ParameterCard(valueUnit: String, quantity: String) {
+        Card (
+            modifier = Modifier
+                .size(120.dp)
+                .padding(16.dp),
+            shape = RoundedCornerShape(24.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color(0xFFF25187)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    modifier = Modifier
+                        .weight(1f)
+                        .wrapContentSize(Alignment.BottomCenter),
+                    text = valueUnit,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.White,
+                )
+                Text(
+                    modifier = Modifier
+                        .weight(1f),
+                    text = quantity,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.White,
+                )
+            }
         }
     }
 
@@ -170,9 +238,6 @@ class RocketDetailFragment : Fragment() {
             }
         }
         binding.toolbar.title = rocket.name
-        binding.rocketDetailHeight.text = String.format("%.0fm", rocket.heightMeters)
-        binding.rocketDetailDiameter.text = String.format("%.0fm", rocket.diameterMeters)
-        binding.rocketDetailMass.text = String.format("%.0ft", rocket.massTons)
         binding.rocketDetailFirstReusable.text = formatReusable(rocket.firstStage.reusable)
         val firstStageEngines = rocket.firstStage.engines
         binding.rocketDetailFirstEngines.text = resources.getQuantityString(
