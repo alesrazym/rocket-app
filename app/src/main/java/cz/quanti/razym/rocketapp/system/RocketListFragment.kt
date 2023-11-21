@@ -32,10 +32,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign.Companion.Center
+import androidx.compose.ui.text.style.TextAlign.Companion.Start
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -43,22 +45,18 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.data.RocketData
-import cz.quanti.razym.rocketapp.databinding.FragmentRocketListBinding
 import cz.quanti.razym.rocketapp.model.Rocket
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.mp.KoinPlatform.getKoin
-import java.util.Date
 import java.util.Locale
+import java.util.Date
 
 @OptIn(ExperimentalMaterialApi::class)
 class RocketListFragment : Fragment() {
 
     private val viewModel by viewModel<RocketListViewModel>()
-
-    private var _binding: FragmentRocketListBinding? = null
-    private val binding get() = _binding!!
 
     private val firstFlightFormat = DateFormat.getDateInstance(
         DateFormat.MEDIUM,
@@ -75,73 +73,101 @@ class RocketListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRocketListBinding.inflate(inflater, container, false)
-
-        binding.rocketList.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-        binding.rocketList.setContent {
-            Refreshing(viewModel)
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
+            setContent {
+                Refreshing(viewModel)
+            }
         }
-
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        _binding = null
     }
 
     @Composable
     private fun Refreshing(viewModel: RocketListViewModel) {
         val uiState by viewModel.uiState.collectAsState()
 
-        Refreshing(uiState.loading, uiState.rockets, viewModel::fetchRockets)
+        Refreshing(uiState.loading, uiState.rockets, viewModel::fetchRockets) { rocket ->
+            findNavController().navigate(
+                RocketListFragmentDirections
+                    .actionRocketListFragmentToRocketDetailFragment(rocket.id),
+                getKoin().get<NavOptions>()
+            )
+        }
     }
 
     @Composable
-    private fun Refreshing(refreshing: Boolean = false, rockets: List<Rocket>?, onRefresh: () -> Unit) {
-        val state = rememberPullRefreshState(refreshing, onRefresh)
-
+    private fun Refreshing(
+        refreshing: Boolean = false,
+        rockets: List<Rocket>?,
+        onRefresh: () -> Unit,
+        onItemClick: (Rocket) -> Unit = {},
+    ) {
         RocketappTheme {
-            Box(Modifier
-                .pullRefresh(state)
-                .fillMaxSize()
-            ) {
-                if (rockets == null && refreshing) {
-                    RocketListText(R.string.rockets_loading)
-                } else {
-                    if (rockets == null)
-                        // TODO pull to refresh does not work on text field only.
-                        RocketListText(R.string.rockets_loading_error)
-                    else
-                        RocketList(rockets)
-                }
-
-                // TODO handle error messages
-
-                PullRefreshIndicator(
+            Column (Modifier.fillMaxSize()) {
+                RocketListTitle(
+                    text = R.string.rockets_title,
+                )
+                RocketListBox(
+                    rockets = rockets,
                     refreshing = refreshing,
-                    state = state,
-                    modifier = Modifier.align(Alignment.TopCenter),
+                    onRefresh = onRefresh,
+                    onItemClick = onItemClick,
                 )
             }
         }
     }
 
     @Composable
-    private fun RocketList(rockets: List<Rocket>) {
-        LazyColumn (
-            modifier = Modifier.fillMaxWidth(),
+    private fun RocketListTitle(@StringRes text: Int) {
+        Text(
+            text = stringResource(text),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            textAlign = Start,
+        )
+    }
+
+    @Composable
+    private fun RocketListBox(
+        rockets: List<Rocket>?,
+        refreshing: Boolean,
+        onRefresh: () -> Unit,
+        onItemClick: (Rocket) -> Unit = {},
+    ) {
+        val state = rememberPullRefreshState(refreshing, onRefresh)
+
+        Box(
+            Modifier
+                .pullRefresh(state)
+                .fillMaxSize()
         ) {
-            items(rockets) { rocket ->
-                RocketListItem(rocket, onClick = {
-                    findNavController().navigate(
-                        RocketListFragmentDirections
-                            .actionRocketListFragmentToRocketDetailFragment(rocket.id),
-                        getKoin().get<NavOptions>()
+            if (rockets == null && refreshing) {
+                RocketListText(
+                    text = R.string.rockets_loading,
+                )
+            } else {
+                if (rockets == null)
+                    // TODO pull to refresh does not work on text field only.
+                    RocketListText(
+                        text = R.string.rockets_loading_error,
                     )
-                })
+                else
+                    RocketList(
+                        rockets = rockets,
+                        onItemClick = onItemClick,
+                    )
             }
+
+            // TODO handle error messages
+
+            PullRefreshIndicator(
+                refreshing = refreshing,
+                state = state,
+                modifier = Modifier.align(Alignment.TopCenter),
+            )
         }
     }
 
@@ -159,13 +185,27 @@ class RocketListFragment : Fragment() {
     }
 
     @Composable
-    private fun RocketListItem(rocket: Rocket, onClick: () -> Unit) {
+    private fun RocketList(rockets: List<Rocket>, onItemClick: (Rocket) -> Unit = {}) {
+        LazyColumn (
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            items(rockets) { rocket ->
+                RocketListItem(
+                    rocket = rocket,
+                    onClick = onItemClick,
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
         Row (
             modifier = Modifier
                 .height(100.dp)
                 .fillMaxWidth()
                 .padding(16.dp)
-                .clickable { onClick() },
+                .clickable { onClick(rocket) },
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
@@ -240,6 +280,12 @@ class RocketListFragment : Fragment() {
     @Composable
     private fun RocketListTextPreview() {
         RocketListText(R.string.rockets_loading)
+    }
+
+    @Preview
+    @Composable
+    private fun RocketListTitlePreview() {
+        RocketListTitle(R.string.rockets_title)
     }
 
     private fun previewRocket() = Rocket(
