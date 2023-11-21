@@ -50,8 +50,8 @@ import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.mp.KoinPlatform.getKoin
-import java.util.Locale
 import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterialApi::class)
 class RocketListFragment : Fragment() {
@@ -78,16 +78,16 @@ class RocketListFragment : Fragment() {
                 ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
             )
             setContent {
-                Refreshing(viewModel)
+                RocketListFragmentContent(viewModel)
             }
         }
     }
 
     @Composable
-    private fun Refreshing(viewModel: RocketListViewModel) {
+    private fun RocketListFragmentContent(viewModel: RocketListViewModel) {
         val uiState by viewModel.uiState.collectAsState()
 
-        Refreshing(uiState.loading, uiState.rockets, viewModel::fetchRockets) { rocket ->
+        RocketListFragmentContent(uiState.loading, uiState.rockets, viewModel::fetchRockets) { rocket ->
             findNavController().navigate(
                 RocketListFragmentDirections
                     .actionRocketListFragmentToRocketDetailFragment(rocket.id),
@@ -97,7 +97,7 @@ class RocketListFragment : Fragment() {
     }
 
     @Composable
-    private fun Refreshing(
+    private fun RocketListFragmentContent(
         refreshing: Boolean = false,
         rockets: List<Rocket>?,
         onRefresh: () -> Unit,
