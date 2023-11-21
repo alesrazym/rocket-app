@@ -4,6 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -16,7 +28,9 @@ import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketDetailBinding
 import cz.quanti.razym.rocketapp.databinding.RocketDetailPhotoItemBinding
 import cz.quanti.razym.rocketapp.model.RocketDetail
+import cz.quanti.razym.rocketapp.model.Stage
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
+import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
@@ -64,12 +78,54 @@ class RocketDetailFragment : Fragment() {
                 true
             }
 
+        binding.rocketDetailCompose.setContent {
+            RocketappTheme {
+                RocketDetailFragmentContent(viewModel)
+            }
+        }
+
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    @Composable
+    private fun RocketDetailFragmentContent(viewModel: RocketDetailViewModel) {
+        val uiState by viewModel.uiState.collectAsState()
+
+        if (uiState.state is RocketDetailViewModel.UiState.Success) {
+            RocketDetailFragmentContent((uiState.state as RocketDetailViewModel.UiState.Success).rocket)
+        }
+    }
+
+    @Composable
+    private fun RocketDetailFragmentContent(rocket: RocketDetail) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+//                .padding(12.dp)
+        ) {
+            Text(
+                modifier = Modifier.padding(vertical = 8.dp),
+                text = stringResource(id = R.string.rocket_detail_overview),
+                style = MaterialTheme.typography.titleMedium
+                )
+            Text(
+                text = rocket.overview,
+                style = MaterialTheme.typography.bodyMedium
+                )
+        }
+    }
+
+    @Preview
+    @Composable
+    fun RocketDetailFragmentContentPreview() {
+        RocketappTheme {
+            RocketDetailFragmentContent(previewRocketDetail())
+        }
     }
 
     private fun processState(state: RocketDetailViewModel.UiState) {
@@ -114,7 +170,6 @@ class RocketDetailFragment : Fragment() {
             }
         }
         binding.toolbar.title = rocket.name
-        binding.rocketDetailOverview.text = rocket.overview
         binding.rocketDetailHeight.text = String.format("%.0fm", rocket.heightMeters)
         binding.rocketDetailDiameter.text = String.format("%.0fm", rocket.diameterMeters)
         binding.rocketDetailMass.text = String.format("%.0ft", rocket.massTons)
@@ -149,5 +204,35 @@ class RocketDetailFragment : Fragment() {
             placeholder(R.drawable.rocket_idle)
             error(R.drawable.rocket_error)
         }
+    }
+
+    private fun previewRocketDetail(): RocketDetail {
+        return RocketDetail(
+            id = "1",
+            name = "Falcon 1",
+            overview = "Falcon 1 was an expendable launch system privately developed and manufactured by SpaceX during 2006-2009. On 28 September 2008, Falcon 1 became the first privately-developed liquid-fuel launch vehicle to go into orbit around the Earth.",
+            heightMeters = 22.25,
+            diameterMeters = 1.68,
+            massTons = 30.0,
+            firstStage = Stage(
+                reusable = false,
+                engines = 1,
+                fuelAmountTons = 44.3,
+                burnTimeSec = 169
+            ),
+            secondStage = Stage(
+                reusable = false,
+                engines = 1,
+                fuelAmountTons = 3.38,
+                burnTimeSec = 378
+            ),
+            flickrImages = listOf(
+                "https://farm1.staticflickr.com/929/28787338307_3453a11a77_b.jpg",
+                "https://farm4.staticflickr.com/3955/32915197674_eee74d81bb_b.jpg",
+                "https://farm1.staticflickr.com/293/32312415025_6841e30bf1_b.jpg",
+                "https://farm1.staticflickr.com/623/23660653516_5b6cb301d1_b.jpg",
+                "https://farm6.staticflickr.com/5518/31579784413_d853331601_b.jpg"
+            )
+        )
     }
 }
