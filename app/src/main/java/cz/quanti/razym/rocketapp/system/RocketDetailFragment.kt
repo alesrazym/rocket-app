@@ -180,7 +180,7 @@ class RocketDetailFragment : Fragment() {
                         )
                     }
                 )
-            }
+            },
         )
     }
 
