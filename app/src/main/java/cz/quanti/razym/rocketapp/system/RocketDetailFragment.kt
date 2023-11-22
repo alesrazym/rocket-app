@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +24,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,7 +36,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -49,7 +55,6 @@ import androidx.navigation.fragment.navArgs
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.quanti.razym.rocketapp.R
-import cz.quanti.razym.rocketapp.databinding.FragmentRocketDetailBinding
 import cz.quanti.razym.rocketapp.model.RocketDetail
 import cz.quanti.razym.rocketapp.model.Stage
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
@@ -59,12 +64,9 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 class RocketDetailFragment : Fragment() {
-
     private val viewModel by viewModel<RocketDetailViewModel>()
-
-    private var _binding: FragmentRocketDetailBinding? = null
-    private val binding get() = _binding!!
 
     private val args: RocketDetailFragmentArgs by navArgs()
 
@@ -78,7 +80,6 @@ class RocketDetailFragment : Fragment() {
                 }
                 .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
                 .collect {
-                    processState(it.state)
                 }
         }
     }
@@ -87,64 +88,102 @@ class RocketDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRocketDetailBinding.inflate(inflater, container, false)
-
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
-        binding.toolbar.menu.findItem(R.id.action_launch)
-            .setOnMenuItemClickListener {
-                findNavController().navigate(
-                    RocketDetailFragmentDirections.actionRocketDetailFragmentToRocketLaunchFragment(),
-                    getKoin().get<NavOptions>()
-                )
-                true
-            }
-
-        binding.rocketDetailCompose.setContent {
-            RocketappTheme {
-                RocketDetailFragmentContent(viewModel)
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
+            setContent {
+                RocketappTheme {
+                    RocketDetailFragmentContent(viewModel, args)
+                }
             }
         }
-
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     @Composable
-    private fun RocketDetailFragmentContent(viewModel: RocketDetailViewModel) {
+    private fun RocketDetailFragmentContent(
+        viewModel: RocketDetailViewModel,
+        args: RocketDetailFragmentArgs,
+    ) {
         val uiState by viewModel.uiState.collectAsState()
 
-        when (uiState.state) {
-            is RocketDetailViewModel.UiState.Success -> {
-                RocketDetailFragmentContent((uiState.state as RocketDetailViewModel.UiState.Success).rocket)
+        Scaffold(
+            topBar = {
+                // Temp solution to provide rocket name in args, because we does not persist data.
+                RocketDetailFragmentTopBar(args.rocketName)
             }
+        ) { innerPadding ->
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+            ) {
+                when (uiState.state) {
+                    is RocketDetailViewModel.UiState.Success -> {
+                        RocketDetailFragmentContent(
+                            (uiState.state as RocketDetailViewModel.UiState.Success).rocket
+                        )
+                    }
 
-            is RocketDetailViewModel.UiState.Error -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        modifier = Modifier.align(Alignment.Center),
-                        text = stringResource(R.string.getting_rocket_detail_failed),
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                }
-            }
+                    is RocketDetailViewModel.UiState.Error -> {
+                        Text(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .clickable { viewModel.fetchRocket(args.rocketId) },
+                            text = stringResource(R.string.getting_rocket_detail_failed),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
 
-            else -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        modifier = Modifier.align(Alignment.Center),
-                        text = stringResource(R.string.getting_rocket_detail_in_progress),
-                        style = MaterialTheme.typography.titleMedium,
-                    )
+                    else -> {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            text = stringResource(R.string.getting_rocket_detail_in_progress),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
                 }
             }
         }
     }
+
+    @Composable
+    private fun RocketDetailFragmentTopBar(
+        title: String,
+    ) {
+        CenterAlignedTopAppBar(
+            title = {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                )
+            },
+            navigationIcon = {
+                Icon(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(8.dp)
+                        .clickable {
+                            findNavController().navigateUp()
+                        },
+                    painter = painterResource(id = R.drawable.ic_arrow_back),
+                    // TODO
+                    contentDescription = "",
+                )
+            },
+            actions = {
+                Text(
+                    text = "Launch",
+                    Modifier.clickable {
+                        findNavController().navigate(
+                            RocketDetailFragmentDirections.actionRocketDetailFragmentToRocketLaunchFragment(),
+                            getKoin().get<NavOptions>()
+                        )
+                    }
+                )
+            }
+        )
+    }
+
 
     @Composable
     private fun RocketDetailFragmentContent(rocket: RocketDetail) {
@@ -396,23 +435,6 @@ class RocketDetailFragment : Fragment() {
     fun RocketDetailFragmentContentPreview() {
         RocketappTheme {
             RocketDetailFragmentContent(previewRocketDetail())
-        }
-    }
-
-    private fun processState(state: RocketDetailViewModel.UiState) {
-        when (state) {
-            is RocketDetailViewModel.UiState.Success -> {
-                binding.toolbar.menu.findItem(R.id.action_launch).isVisible = true
-                binding.toolbar.title = state.rocket.name
-            }
-
-            is RocketDetailViewModel.UiState.Error -> {
-                binding.toolbar.menu.findItem(R.id.action_launch).isVisible = false
-            }
-
-            is RocketDetailViewModel.UiState.Loading -> {
-                binding.toolbar.menu.findItem(R.id.action_launch).isVisible = false
-            }
         }
     }
 

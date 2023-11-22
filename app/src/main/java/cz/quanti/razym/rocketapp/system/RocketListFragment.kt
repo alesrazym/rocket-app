@@ -90,7 +90,7 @@ class RocketListFragment : Fragment() {
         RocketListFragmentContent(uiState.loading, uiState.rockets, viewModel::fetchRockets) { rocket ->
             findNavController().navigate(
                 RocketListFragmentDirections
-                    .actionRocketListFragmentToRocketDetailFragment(rocket.id),
+                    .actionRocketListFragmentToRocketDetailFragment(rocket.id, rocket.name),
                 getKoin().get<NavOptions>()
             )
         }
