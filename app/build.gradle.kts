@@ -84,7 +84,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
     // As we are not going to test UI, we use Coil default singleton.
     // If we need DI, use `io.coil-kt:coil-base` instead and configure loader(s) ourselves.
-    implementation("io.coil-kt:coil:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.mockk:mockk:1.13.8")

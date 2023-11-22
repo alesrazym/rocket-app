@@ -4,26 +4,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -33,10 +46,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.load
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketDetailBinding
-import cz.quanti.razym.rocketapp.databinding.RocketDetailPhotoItemBinding
 import cz.quanti.razym.rocketapp.model.RocketDetail
 import cz.quanti.razym.rocketapp.model.Stage
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
@@ -106,8 +119,30 @@ class RocketDetailFragment : Fragment() {
     private fun RocketDetailFragmentContent(viewModel: RocketDetailViewModel) {
         val uiState by viewModel.uiState.collectAsState()
 
-        if (uiState.state is RocketDetailViewModel.UiState.Success) {
-            RocketDetailFragmentContent((uiState.state as RocketDetailViewModel.UiState.Success).rocket)
+        when (uiState.state) {
+            is RocketDetailViewModel.UiState.Success -> {
+                RocketDetailFragmentContent((uiState.state as RocketDetailViewModel.UiState.Success).rocket)
+            }
+
+            is RocketDetailViewModel.UiState.Error -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = stringResource(R.string.getting_rocket_detail_failed),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+            }
+
+            else -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = stringResource(R.string.getting_rocket_detail_in_progress),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+            }
         }
     }
 
@@ -116,7 +151,8 @@ class RocketDetailFragment : Fragment() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-//                .padding(12.dp)
+                .padding(12.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             Title(stringResource(id = R.string.rocket_detail_overview))
             Text(
@@ -127,31 +163,105 @@ class RocketDetailFragment : Fragment() {
             Title(stringResource(id = R.string.rocket_detail_parameters))
             Row (
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                    .fillMaxWidth()
+                    .padding(0.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
             ){
                 ParameterCard(
-                    String.format("%.0fm", rocket.heightMeters),
-                    stringResource(R.string.rocket_detail_card_height),
+                    valueUnit = String.format("%.0fm", rocket.heightMeters),
+                    quantity = stringResource(R.string.rocket_detail_card_height),
                 )
                 ParameterCard(
-                    String.format("%.0fm", rocket.diameterMeters),
-                    stringResource(R.string.rocket_detail_card_diameter)
+                    valueUnit = String.format("%.0fm", rocket.diameterMeters),
+                    quantity = stringResource(R.string.rocket_detail_card_diameter)
                 )
                 ParameterCard(
-                    String.format("%.0ft", rocket.massTons),
-                    stringResource(R.string.rocket_detail_card_mass)
+                    valueUnit = String.format("%.0ft", rocket.massTons),
+                    quantity = stringResource(R.string.rocket_detail_card_mass)
                 )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            val stage1 = rocket.firstStage
+            StageCard(
+                title = stringResource(R.string.rocket_detail_first_stage),
+                reusable = formatReusable(stage1.reusable),
+                engines = pluralStringResource(
+                    id = R.plurals.engines,
+                    count = stage1.engines,
+                    stage1.engines
+                ),
+                fuel = stringResource(R.string.tons_of_fuel, stage1.fuelAmountTons),
+                burn = formatBurn(stage1.burnTimeSec)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            val stage2 = rocket.secondStage
+            StageCard(
+                title = stringResource(R.string.rocket_detail_second_stage),
+                reusable = formatReusable(stage2.reusable),
+                engines = pluralStringResource(
+                    id = R.plurals.engines,
+                    count = stage2.engines,
+                    stage2.engines
+                ),
+                fuel = stringResource(R.string.tons_of_fuel, stage2.fuelAmountTons),
+                burn = formatBurn(stage2.burnTimeSec)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Title(stringResource(id = R.string.rocket_detail_photos))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+            ) {
+                rocket.flickrImages.take(10).forEach {
+                    RocketImageCard(it)
+                }
             }
         }
     }
 
     @Composable
+    private fun RocketImageCard(url: String) {
+        AsyncImage(
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(24.dp)),
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(url)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(R.drawable.rocket_idle),
+            error = painterResource(R.drawable.rocket_error),
+            contentDescription = stringResource(R.string.rocket_icon_content_description),
+        )
+    }
+
+    @Composable
     private fun Title(text: String) {
         Text(
-            modifier = Modifier.padding(vertical = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
             text = text,
             style = MaterialTheme.typography.titleMedium
+        )
+    }
+
+    @Composable
+    private fun StageTitle(text: String) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = Color.Transparent),
+            text = text,
+            style = MaterialTheme.typography.titleMedium,
         )
     }
 
@@ -159,32 +269,125 @@ class RocketDetailFragment : Fragment() {
     private fun ParameterCard(valueUnit: String, quantity: String) {
         Card (
             modifier = Modifier
-                .size(120.dp)
-                .padding(16.dp),
+                .size(100.dp),
             shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFF25187),
+            ),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = Color(0xFFF25187)),
+                    .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .wrapContentSize(Alignment.BottomCenter),
-                    text = valueUnit,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.White,
-                )
-                Text(
+                Box(
                     modifier = Modifier
                         .weight(1f),
-                    text = quantity,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.White,
-                )
+                    contentAlignment = Alignment.BottomCenter,
+                ) {
+                    Text(
+                        text = valueUnit,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = quantity,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.White,
+                    )
+                }
             }
+        }
+    }
+
+    @Composable
+    private fun StageCard(
+        title: String,
+        reusable: String,
+        engines: String,
+        fuel: String,
+        burn: String
+    ) {
+        Card (
+            modifier = Modifier
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFF6F6F6),
+            ),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                StageTitle(title)
+                Spacer(modifier = Modifier.height(8.dp))
+                TextWithIcon(reusable, R.drawable.reusable)
+                TextWithIcon(engines, R.drawable.engine)
+                TextWithIcon(fuel, R.drawable.fuel)
+                TextWithIcon(burn, R.drawable.burn)
+            }
+        }
+    }
+
+    @Composable
+    private fun TextWithIcon(text: String, @DrawableRes icon: Int) {
+        Row(
+            Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(36.dp)
+                    .padding(8.dp),
+                painter = painterResource(id = icon),
+                // TODO
+                contentDescription = "",
+            )
+            Text(
+                modifier = Modifier
+                    .weight(1f)
+                    .wrapContentSize(Alignment.CenterStart),
+                text = text,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+    }
+
+    @Composable
+    fun formatBurn(burnSec: Int?) : String {
+        return if (burnSec == null) {
+            stringResource(R.string.unknown)
+        } else {
+            stringResource(R.string.seconds_burn_time, burnSec)
+        }
+    }
+
+    @Composable
+    fun formatReusable(reusable: Boolean) : String {
+        return if (reusable) {
+            stringResource(R.string.reusable)
+        } else {
+            stringResource(R.string.not_reusable)
+        }
+    }
+
+    @Preview
+    @Composable
+    private fun TextWithIconPreview() {
+        RocketappTheme {
+            TextWithIcon("Test", R.drawable.reusable)
         }
     }
 
@@ -199,75 +402,17 @@ class RocketDetailFragment : Fragment() {
     private fun processState(state: RocketDetailViewModel.UiState) {
         when (state) {
             is RocketDetailViewModel.UiState.Success -> {
-                binding.rocketDetailStatus.visibility = View.GONE
-                binding.rocketDetailContent.visibility = View.VISIBLE
                 binding.toolbar.menu.findItem(R.id.action_launch).isVisible = true
-                populateRocketDetail(state.rocket)
+                binding.toolbar.title = state.rocket.name
             }
 
             is RocketDetailViewModel.UiState.Error -> {
-                binding.rocketDetailStatus.visibility = View.VISIBLE
-                binding.rocketDetailContent.visibility = View.GONE
-                binding.rocketDetailStatus.text = getString(R.string.getting_rocket_detail_failed)
                 binding.toolbar.menu.findItem(R.id.action_launch).isVisible = false
             }
 
             is RocketDetailViewModel.UiState.Loading -> {
-                binding.rocketDetailStatus.text =
-                    getString(R.string.getting_rocket_detail_in_progress)
                 binding.toolbar.menu.findItem(R.id.action_launch).isVisible = false
             }
-        }
-    }
-
-    // TODO util class for formatting, rounding and unit handling.
-    // TODO is there any library for this? Or build in kotlin?
-    private fun populateRocketDetail(rocket: RocketDetail) {
-        fun formatBurn(burnSec: Int?) : String {
-            return if (burnSec == null) {
-                getString(R.string.unknown)
-            } else {
-                getString(R.string.seconds_burn_time, rocket.firstStage.burnTimeSec)
-            }
-        }
-        fun formatReusable(reusable: Boolean) : String {
-            return if (reusable) {
-                getString(R.string.reusable)
-            } else {
-                getString(R.string.not_reusable)
-            }
-        }
-        binding.toolbar.title = rocket.name
-        binding.rocketDetailFirstReusable.text = formatReusable(rocket.firstStage.reusable)
-        val firstStageEngines = rocket.firstStage.engines
-        binding.rocketDetailFirstEngines.text = resources.getQuantityString(
-            R.plurals.engines, firstStageEngines, firstStageEngines)
-        binding.rocketDetailFirstFuel.text = getString(R.string.tons_of_fuel, rocket.firstStage.fuelAmountTons)
-        binding.rocketDetailFirstBurn.text = formatBurn(rocket.firstStage.burnTimeSec)
-        binding.rocketDetailSecondReusable.text = formatReusable(rocket.secondStage.reusable)
-        val secondStageEngines = rocket.secondStage.engines
-        binding.rocketDetailSecondEngines.text = resources.getQuantityString(
-            R.plurals.engines, secondStageEngines, secondStageEngines)
-        binding.rocketDetailSecondFuel.text = getString(R.string.tons_of_fuel, rocket.secondStage.fuelAmountTons)
-        binding.rocketDetailSecondBurn.text = formatBurn(rocket.secondStage.burnTimeSec)
-        binding.rocketDetailPhotos.removeAllViews()
-
-        // Set the limit, not to flood app when not handled in any kind of clever presentation.
-        rocket.flickrImages
-            .take(10)
-            .forEach { createImageViewAndLoad(it) }
-    }
-
-    private fun createImageViewAndLoad(it: String) {
-        val view = RocketDetailPhotoItemBinding.inflate(
-            LayoutInflater.from(requireContext()), binding.rocketDetailPhotos, true
-        )
-
-        view.rocketPhoto.load(it) {
-            crossfade(true)
-            // Just for fun placeholder & error.
-            placeholder(R.drawable.rocket_idle)
-            error(R.drawable.rocket_error)
         }
     }
 
