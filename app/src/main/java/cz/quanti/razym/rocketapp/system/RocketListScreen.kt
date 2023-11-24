@@ -48,7 +48,7 @@ import org.koin.androidx.compose.getViewModel
 import java.util.Date
 import java.util.Locale
 
-private val firstFlightFormat = DateFormat.getDateInstance(
+private fun getFirstFlightFormat() = DateFormat.getDateInstance(
     DateFormat.MEDIUM,
     Locale.getDefault()
 )
@@ -230,7 +230,7 @@ private fun FirstFlightText(date: Date?) {
     } else {
         stringResource(
             R.string.first_flight,
-            firstFlightFormat.format(date)
+            getFirstFlightFormat().format(date)
         )
     }
 
