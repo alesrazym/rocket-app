@@ -3,9 +3,7 @@ package cz.quanti.razym.rocketapp.presentation
 import com.squareup.moshi.Types
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
-import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel.UiState
 import cz.quanti.razym.rocketapp.utils.TestUtils
-import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldStartWith
@@ -13,9 +11,11 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -77,10 +77,16 @@ class RocketDetailViewModelTest {
         viewModel.fetchRocket(id)
 
         // Loading state until we let the coroutine in model work with advanceUntilIdle()
-        viewModel.uiState.value.state shouldBe UiState.Loading
+        advanceTimeBy(1)
+        viewModel.uiState.value.let {
+            it.loading shouldBe true
+            it.rocket shouldBe null
+        }
 
         advanceUntilIdle()
-        viewModel.uiState.value.state shouldNotBe UiState.Loading
+        viewModel.uiState.value.let {
+            it.loading shouldBe false
+        }
     }
 
     @Test
@@ -103,8 +109,10 @@ class RocketDetailViewModelTest {
         viewModel.fetchRocket(errorId)
 
         advanceUntilIdle()
-        shouldNotThrowAny {
-            viewModel.uiState.value.state as UiState.Error
+        viewModel.uiState.value.let {
+            it.loading shouldBe false
+            it.rocket shouldBe null
+            it.messages.size shouldBe 1
         }
     }
 
@@ -124,7 +132,10 @@ class RocketDetailViewModelTest {
     }
 
     private fun createRepository() : RocketsRepository = mockk {
-        coEvery { getRocket(validIds[0]) } returns flowOf(rocketsData[0])
+        coEvery { getRocket(validIds[0]) } returns flow {
+            delay(1000)
+            emit(rocketsData[0])
+        }
         coEvery { getRocket(validIds[1]) } returns flowOf(rocketsData[1])
         coEvery { getRocket(errorId) } returns flow { throw Exception() }
     }
@@ -133,9 +144,10 @@ class RocketDetailViewModelTest {
         viewModel: RocketDetailViewModel,
         id: String
     ) {
-        val success = shouldNotThrowAny {
-            viewModel.uiState.value.state as UiState.Success
+        viewModel.uiState.value.let {
+            it.loading shouldBe false
+            it.rocket shouldNotBe null
+            it.rocket?.id shouldBe id
         }
-        success.rocket.id shouldBe id
     }
 }

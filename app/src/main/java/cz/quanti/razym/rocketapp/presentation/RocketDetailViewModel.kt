@@ -11,25 +11,20 @@ import cz.quanti.razym.rocketapp.model.RocketDetail
 import cz.quanti.razym.rocketapp.model.Stage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RocketDetailViewModel(
     private val repo: RocketsRepository
 )  : ViewModel() {
 
-    // TODO improve error state handling
-    // TODO interface needed?
-    sealed interface UiState {
-        data class Success(val rocket: RocketDetail) : UiState
-        data object Error : UiState
-        data object Loading : UiState
-    }
-
     data class ScreenUiState(
-        val state: UiState
+        var loading: Boolean = false,
+        var rocket: RocketDetail? = null,
+        val messages: MutableList<String> = mutableListOf(),
     )
 
-    private val _uiState = MutableStateFlow(ScreenUiState(UiState.Loading))
+    private val _uiState = MutableStateFlow(ScreenUiState())
     val uiState = _uiState.asStateFlow()
 
     fun fetchRocket(id: String) {
@@ -37,14 +32,29 @@ class RocketDetailViewModel(
             repo.getRocket(id)
                 .asResult()
                 .collect { result ->
-                    val state = when (result) {
-                        is Result.Success -> UiState.Success(result.data.asRocketDetail())
-                        is Result.Loading -> UiState.Loading
-                        is Result.Error -> UiState.Error
-                    }
+                    when (result) {
+                        is Result.Loading -> _uiState.update {
+                            it.copy(
+                                loading = true,
+                            )
+                        }
 
-                    _uiState.value =
-                        ScreenUiState(state)
+                        is Result.Success -> _uiState.update {
+                            it.copy(
+                                loading = false,
+                                rocket = result.data.asRocketDetail(),
+                            )
+                        }
+
+                        is Result.Error -> _uiState.update {
+                            it.copy(
+                                loading = false,
+                                messages = it.messages.apply {
+                                    add(result.exception?.message ?: "Unknown error")
+                                },
+                            )
+                        }
+                    }
                 }
         }
     }

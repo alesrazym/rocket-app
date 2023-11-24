@@ -21,14 +21,14 @@ class RocketListViewModel(
 )  : ViewModel() {
 
     data class ScreenUiState(
-        var loading: Boolean = true,
+        var loading: Boolean = false,
         // Null for not loaded yet, empty list for no rockets.
         var rockets: List<Rocket>? = null,
         val messages: MutableList<String> = mutableListOf(),
     )
 
     private var initializeCalled = false
-    private val _uiState = MutableStateFlow(ScreenUiState(loading = true))
+    private val _uiState = MutableStateFlow(ScreenUiState())
     val uiState = _uiState.asStateFlow()
 
     @MainThread

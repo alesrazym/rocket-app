@@ -10,8 +10,10 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -53,12 +55,16 @@ class RocketListViewModelTest {
     @Test
     fun `uiState should be loading first`() = runTest(testDispatcher) {
         val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { emit(emptyList()) }
+            coEvery { getRockets() } returns flow {
+                delay(1000)
+                emit(emptyList())
+            }
         }
 
         val viewModel = rocketListViewModel(repository)
 
         // Loading state until we let the coroutine in model work with advanceUntilIdle()
+        advanceTimeBy(1)
         viewModel.uiState.value.let {
             it.loading shouldBe true
             it.rockets shouldBe null
