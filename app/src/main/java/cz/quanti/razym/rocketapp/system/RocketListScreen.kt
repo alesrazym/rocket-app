@@ -37,6 +37,8 @@ import androidx.compose.ui.text.style.TextAlign.Companion.Center
 import androidx.compose.ui.text.style.TextAlign.Companion.Start
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.model.Rocket
@@ -51,32 +53,30 @@ private val firstFlightFormat = DateFormat.getDateInstance(
     Locale.getDefault()
 )
 
-@Composable
-fun RocketListScreen(
-    viewModel: RocketListViewModel = getViewModel(),
-    onItemClick: (Rocket) -> Unit = {},
+data object RocketListScreen : Screen("rocketList")
+
+fun NavGraphBuilder.rocketListScreen(
+    onRocketItemClick: (rocket: Rocket) -> Unit = {},
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    composable(RocketListScreen.route) {
+        val viewModel: RocketListViewModel = getViewModel()
+        val uiState by viewModel.uiState.collectAsState()
 
-    // TODO what is the best (correct) way to fetch data? As per
-    // https://developer.android.google.cn/topic/architecture/ui-layer/state-production#initializing-state-production
-    // it is not recommended to use init{} with coroutines.
+        LaunchedEffect(Unit) {
+            // TODO this is not perfect condition, as after configuration change
+            //  it will reload data if there has been an error and there are no rockets then.
+            if (!uiState.loading && uiState.rockets == null) {
+                viewModel.fetchRockets()
+            }
+        }
 
-    // One possible solution
-    // viewModel.initialize()
-
-    // Other possible solution
-    LaunchedEffect(Unit) {
-        if (!uiState.loading && uiState.rockets == null)
-            viewModel.fetchRockets()
+        RocketListScreen(
+            refreshing = uiState.loading,
+            rockets = uiState.rockets,
+            onRefresh = viewModel::fetchRockets,
+            onItemClick = onRocketItemClick,
+        )
     }
-
-    RocketListScreen(
-        uiState.loading,
-        uiState.rockets,
-        viewModel::fetchRockets,
-        onItemClick,
-    )
 }
 
 @Composable

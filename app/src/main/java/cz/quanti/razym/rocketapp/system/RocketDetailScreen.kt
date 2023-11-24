@@ -42,6 +42,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.NavType
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.quanti.razym.rocketapp.R
@@ -51,37 +57,67 @@ import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
 
-@Composable
-fun RocketDetailScreen(
-    viewModel: RocketDetailViewModel = getViewModel(),
-    rocketId: String,
+
+private const val ROCKET_DETAIL = "rocketDetail"
+
+private const val ROCKET_ID = "rocketId"
+
+data object RocketDetailScreen : Screen(
+    route = "$ROCKET_DETAIL/{$ROCKET_ID}",
+    navArguments = listOf(
+        navArgument(ROCKET_ID) { type = NavType.StringType },
+    )
+) {
+    fun createRoute(rocketId: String) = "$ROCKET_DETAIL/${rocketId}"
+}
+
+fun NavGraphBuilder.rocketDetailScreen(
     onBackClick: () -> Unit = {},
     onLaunchClick: () -> Unit = {},
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    composable(
+        route = RocketDetailScreen.route,
+        arguments = RocketDetailScreen.navArguments,
+    ) {
+        val viewModel: RocketDetailViewModel = getViewModel()
+        val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        if (!uiState.loading && uiState.rocket == null)
-            viewModel.fetchRocket(rocketId)
+        val rocketId = it.arguments!!.getString(RocketDetailScreen.navArguments[0].name)!!
+
+        LaunchedEffect(rocketId) {
+            // TODO this is not perfect condition, as after configuration change
+            //  it will reload data if there has been an error and there are no rockets then.
+            if (!uiState.loading && uiState.rocket == null) {
+                viewModel.fetchRocket(rocketId)
+            }
+        }
+
+        RocketDetailScreen(
+            uiState = uiState,
+            onBackClick = onBackClick,
+            onLaunchClick = onLaunchClick,
+            onErrorClick = { viewModel.fetchRocket(rocketId) },
+        )
     }
+}
 
-    RocketDetailScreen(
-        rocket = uiState.rocket,
-        loading = uiState.loading,
-        onBackClick = onBackClick,
-        onLaunchClick = onLaunchClick,
-        onErrorClick = { viewModel.fetchRocket(rocketId) },
+fun NavController.navigateToRocketDetail(rocketId: String, navOptions: NavOptions? = null) {
+    this.navigate(
+        route = RocketDetailScreen.createRoute(rocketId),
+        navOptions = navOptions
     )
 }
 
 @Composable
-private fun RocketDetailScreen(
-    rocket: RocketDetail?,
-    loading: Boolean,
+fun RocketDetailScreen(
+    uiState: RocketDetailViewModel.ScreenUiState,
     onBackClick: () -> Unit = {},
     onLaunchClick: () -> Unit = {},
     onErrorClick: () -> Unit = {},
 ) {
+    val rocket = uiState.rocket
+    val loading = uiState.loading
+
     Scaffold(
         topBar = {
             RocketDetailFragmentTopBar(

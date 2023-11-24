@@ -20,7 +20,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import cz.quanti.razym.rocketapp.R
+
+data object RocketLaunchScreen : Screen("rocketLaunch")
+
+fun NavGraphBuilder.rocketLaunchScreen(
+    onBackClick: () -> Unit = {},
+) {
+    composable(RocketLaunchScreen.route) {
+        RocketLaunchScreen(
+            onBackClick = onBackClick,
+        )
+    }
+}
 
 @Preview
 @Composable
