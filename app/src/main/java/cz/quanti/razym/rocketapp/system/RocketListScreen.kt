@@ -1,7 +1,8 @@
-@file:OptIn(ExperimentalMaterialApi::class)
+@file:OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialApi::class)
 
 package cz.quanti.razym.rocketapp.system
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.icu.text.DateFormat
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -12,18 +13,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,8 +35,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign.Companion.Center
 import androidx.compose.ui.text.style.TextAlign.Companion.Start
 import androidx.compose.ui.tooling.preview.Preview
@@ -86,8 +92,16 @@ private fun RocketListScreen(
     onRefresh: () -> Unit,
     onItemClick: (Rocket) -> Unit = {},
 ) {
-    RocketappTheme {
-        Column(Modifier.fillMaxSize()) {
+    Surface(
+        modifier = Modifier
+            .fillMaxSize(),
+        color = MaterialTheme.colorScheme.surface,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+        ) {
             RocketListTitle(
                 text = R.string.rockets_title,
             )
@@ -105,10 +119,12 @@ private fun RocketListScreen(
 private fun RocketListTitle(@StringRes text: Int) {
     Text(
         text = stringResource(text),
-        style = MaterialTheme.typography.titleLarge,
+        style = MaterialTheme.typography.headlineLarge.copy(
+            fontWeight = FontWeight.Bold,
+        ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(vertical = 16.dp),
         textAlign = Start,
     )
 }
@@ -146,6 +162,8 @@ private fun RocketListBox(
 
         // TODO handle error messages
 
+        // TODO update to material3 once 1.2 with pull to refresh released
+        // https://developer.android.com/jetpack/androidx/releases/compose-material3#version_12_2
         PullRefreshIndicator(
             refreshing = refreshing,
             state = state,
@@ -169,14 +187,36 @@ private fun RocketListText(@StringRes text: Int) {
 
 @Composable
 private fun RocketList(rockets: List<Rocket>, onItemClick: (Rocket) -> Unit = {}) {
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.primaryContainer,
     ) {
-        items(rockets) { rocket ->
-            RocketListItem(
-                rocket = rocket,
-                onClick = onItemClick,
-            )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth(),
+        ) {
+            itemsIndexed(
+                items = rockets,
+                key = { _, rocket -> rocket.id },
+            ) { index, rocket ->
+                RocketListItem(
+                    rocket = rocket,
+                    onClick = onItemClick,
+                )
+
+                if (index < rockets.lastIndex)
+                    // Will be HorizontalDivider when available
+                    Divider(
+                        // TODO hardcoded color should be extracted as secondary, tertiary, etc.
+                        color = Color(0xFFF6F6F6),
+                        thickness = 1.dp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp),
+                    )
+            }
         }
     }
 }
@@ -185,16 +225,18 @@ private fun RocketList(rockets: List<Rocket>, onItemClick: (Rocket) -> Unit = {}
 private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
     Row(
         modifier = Modifier
-            .height(100.dp)
+            .wrapContentHeight()
             .fillMaxWidth()
-            .padding(16.dp)
-            .clickable { onClick(rocket) },
+            // Note that order matters, so apply click before padding.
+            .clickable { onClick(rocket) }
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+        ,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
             painter = painterResource(id = R.drawable.rocket),
             contentDescription = stringResource(R.string.rocket_icon_content_description),
-            modifier = Modifier.size(64.dp)
+            modifier = Modifier.size(32.dp)
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -202,20 +244,26 @@ private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = rocket.name,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                ),
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+//            Spacer(modifier = Modifier.height(8.dp))
 
             FirstFlightText(date = rocket.firstFlight)
         }
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        Image(
-            painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24),
+        Icon(
+            painter = painterResource(
+                id = R.drawable.baseline_arrow_forward_ios_24,
+            ),
             contentDescription = stringResource(R.string.arrow_icon_content_description),
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier.size(16.dp),
+            // TODO hardcoded color should be extracted as secondary, tertiary, etc.
+            tint = Color(0xFFA1A1A5),
         )
     }
 }
@@ -236,43 +284,89 @@ private fun FirstFlightText(date: Date?) {
 
     Text(
         text = str,
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.bodyMedium.copy(
+            // TODO hardcoded color should be extracted as secondary, tertiary, etc.
+            color = Color(0xFFB8B8BB),
+        ),
     )
 }
 
-@Preview
+@Preview(showBackground = true, widthDp = previewWidth, heightDp = 600)
+@Composable
+private fun RocketListScreenLessItemsPreview() {
+    RocketListScreenPreview(previewRockets(4))
+}
+
+@Preview(showBackground = true, widthDp = previewWidth, heightDp = 600)
+@Composable
+private fun RocketListScreenMoreItemsPreview() {
+    RocketListScreenPreview(previewRockets(20))
+}
+
+@Composable
+private fun RocketListScreenPreview(rockets: List<Rocket>) {
+    RocketappTheme {
+        RocketListScreen(
+            refreshing = false,
+            rockets = rockets,
+            onRefresh = { },
+            onItemClick = { },
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    widthDp = previewWidth,
+    uiMode = UI_MODE_NIGHT_YES,
+    name = "Dark",
+    heightDp = 600,
+)
+@Preview(showBackground = true, widthDp = previewWidth, heightDp = 600)
 @Composable
 private fun RocketListPreview() {
-    RocketList(
-        rockets = List(4) {
-            previewRocket()
-        }
-    )
+    RocketappTheme {
+        RocketList(
+            rockets = previewRockets(8),
+        )
+    }
 }
 
-@Preview
+@Preview(showBackground = true, widthDp = previewWidth, heightDp = 100)
 @Composable
 private fun RocketListItemPreview() {
-    RocketListItem(
-        rocket = previewRocket(),
-        onClick = {},
-    )
+    RocketappTheme {
+        RocketListItem(
+            rocket = previewRocket(),
+            onClick = {},
+        )
+    }
 }
 
-@Preview
+@Preview(showBackground = true, widthDp = previewWidth, heightDp = 100)
 @Composable
 private fun RocketListTextPreview() {
-    RocketListText(R.string.rockets_loading)
+    RocketappTheme {
+        RocketListText(R.string.rockets_loading)
+    }
 }
 
-@Preview
+@Preview(showBackground = true, widthDp = previewWidth)
 @Composable
 private fun RocketListTitlePreview() {
-    RocketListTitle(R.string.rockets_title)
+    RocketappTheme {
+        RocketListTitle(R.string.rockets_title)
+    }
 }
 
-private fun previewRocket() = Rocket(
-    "Falcon 9",
+private fun previewRockets(num: Int = 9) = List(num) {
+    previewRocket(it)
+}
+
+private fun previewRocket(num: Int = 9) = Rocket(
+    "Falcon $num",
     RocketData.firstFlightParser.parse("2010-06-04"),
     "falcon9",
 )
+
+const val previewWidth = 375
