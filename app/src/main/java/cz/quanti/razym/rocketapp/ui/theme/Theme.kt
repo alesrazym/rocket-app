@@ -61,17 +61,20 @@ data class RocketappColors(
     val actionItem: Color = Color(0xFF1F89FE)
 )
 
-private val lightModeColors = RocketappColors(
-)
+private val lightModeColors by lazy {
+    RocketappColors()
+}
 
-private val darkModeColors = RocketappColors(
-    background = Color(0xFF121212),
-    onBackground = Color(0xFFFFFFFF),
-    surface = Color(0xFF000000),
-    onSurface = Color(0xFFFFFFFF),
-    primary = Color(0xFFF25187),
-    primaryContainer = Color.Black,
-    onPrimaryContainer = Color.White,
-    secondaryContainer = Color(0xFF121212),
-    onSecondaryContainer = Color.White,
-)
+private val darkModeColors by lazy {
+    RocketappColors(
+        background = Color(0xFF121212),
+        onBackground = Color(0xFFFFFFFF),
+        surface = Color(0xFF000000),
+        onSurface = Color(0xFFFFFFFF),
+        primary = Color(0xFFF25187),
+        primaryContainer = Color.Black,
+        onPrimaryContainer = Color.White,
+        secondaryContainer = Color(0xFF121212),
+        onSecondaryContainer = Color.White,
+    )
+}
