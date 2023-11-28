@@ -1,9 +1,11 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package cz.quanti.razym.rocketapp.system
 
+import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +29,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,7 +37,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -56,6 +58,7 @@ import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.model.RocketDetail
 import cz.quanti.razym.rocketapp.model.Stage
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
+import cz.quanti.razym.rocketapp.ui.theme.LocalColors
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
 
@@ -140,27 +143,25 @@ private fun RocketDetailScreen(
                 onBackClick = onBackClick,
                 onLaunchClick = onLaunchClick,
             )
-        }
+        },
+        contentColor = LocalColors.current.onBackground,
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(LocalColors.current.primaryContainer)
                 .padding(innerPadding)
+            ,
         ) {
             if (rocket == null && loading) {
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = stringResource(R.string.getting_rocket_detail_in_progress),
-                    style = MaterialTheme.typography.titleMedium,
+                ContentStatusText(
+                    text = R.string.getting_rocket_detail_in_progress,
                 )
             } else {
                 if (rocket == null) {
-                    Text(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .clickable { onErrorClick() },
-                        text = stringResource(R.string.getting_rocket_detail_failed),
-                        style = MaterialTheme.typography.titleMedium,
+                    ContentStatusText(
+                        text = R.string.getting_rocket_detail_failed,
+                        onClick = onErrorClick,
                     )
                 } else {
                     RocketDetailContent(rocket)
@@ -186,6 +187,7 @@ private fun TopBar(
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.ExtraBold,
                 ),
+                color = LocalColors.current.onBackground,
             )
         },
         navigationIcon = {
@@ -193,7 +195,8 @@ private fun TopBar(
                 modifier = Modifier
                     .size(36.dp)
                     .clickable { onBackClick() }
-                    .padding(8.dp),
+                    .padding(8.dp)
+                ,
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = stringResource(R.string.back_to_list_back_arrow),
             )
@@ -201,14 +204,24 @@ private fun TopBar(
         actions = {
             Text(
                 text = stringResource(R.string.launch),
-                modifier = Modifier.clickable { onLaunchClick() },
+                modifier = Modifier
+                    .clickable { onLaunchClick() }
+                    .padding(8.dp)
+                ,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    // TODO color to theme.
-                    color = Color(0xFF1F89FE),
+                    color = LocalColors.current.actionItem,
                 ),
             )
         },
+        colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = LocalColors.current.background,
+                scrolledContainerColor = LocalColors.current.background,
+                navigationIconContentColor = LocalColors.current.onBackground,
+                // TODO why does navigation content color works and title and action does not?
+                titleContentColor = LocalColors.current.onBackground,
+                actionIconContentColor = LocalColors.current.actionItem,
+        ),
     )
 }
 
@@ -217,8 +230,8 @@ private fun RocketDetailContent(rocket: RocketDetail) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp)
             .verticalScroll(rememberScrollState())
+            .padding(12.dp)
     ) {
         Overview(rocket.overview)
 
@@ -249,7 +262,8 @@ private fun Overview(overview: String) {
     Title(stringResource(id = R.string.rocket_detail_overview))
     Text(
         text = overview,
-        style = MaterialTheme.typography.bodyLarge
+        style = MaterialTheme.typography.bodyLarge,
+        color = LocalColors.current.onPrimaryContainer,
     )
 }
 
@@ -284,7 +298,7 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
             .size(100.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor = LocalColors.current.primary,
         ),
     ) {
         Column(
@@ -303,7 +317,7 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,
                     ),
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = LocalColors.current.onPrimary,
                     textAlign = TextAlign.Center,
                 )
             }
@@ -318,7 +332,7 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
                     //  Also, for such a small area texts, here will be trouble with translations.
                     //  Can be solved by dynamic text size?
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = LocalColors.current.onPrimary,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
@@ -354,7 +368,9 @@ private fun StageCard(
             .fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF6F6F6),
+            containerColor = LocalColors.current.secondaryContainer,
+            // TODO content color does not work as expected.
+            contentColor = LocalColors.current.onSecondaryContainer,
         ),
     ) {
         Column(
@@ -381,6 +397,7 @@ private fun StageTitle(text: String) {
         ,
         text = text,
         style = MaterialTheme.typography.titleLarge,
+        color = LocalColors.current.onSecondaryContainer,
     )
 }
 
@@ -401,7 +418,7 @@ private fun TextWithIcon(
                 .padding(8.dp)
             ,
             painter = painterResource(id = icon),
-            tint = MaterialTheme.colorScheme.primary,
+            tint = LocalColors.current.primary,
             contentDescription = stringResource(contentDescription),
         )
         Text(
@@ -410,6 +427,7 @@ private fun TextWithIcon(
                 .wrapContentSize(Alignment.CenterStart),
             text = text,
             style = MaterialTheme.typography.bodyLarge,
+            color = LocalColors.current.onSecondaryContainer,
         )
     }
 }
@@ -455,6 +473,7 @@ private fun Title(text: String) {
         style = MaterialTheme.typography.titleLarge.copy(
             fontWeight = FontWeight.Bold,
         ),
+        color = LocalColors.current.onPrimaryContainer,
     )
 }
 
@@ -476,14 +495,13 @@ fun formatReusable(reusable: Boolean): String {
     }
 }
 
-@Preview(showBackground = true, widthDp = previewWidth, heightDp = 50)
-@Composable
-private fun TextWithIconPreview() {
-    RocketappTheme {
-        TextWithIcon("Test", R.drawable.reusable)
-    }
-}
-
+@Preview(
+    showBackground = true,
+    widthDp = previewWidth,
+    heightDp = 600,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "Dark",
+)
 @Preview(showBackground = true, widthDp = previewWidth, heightDp = 600)
 @Composable
 fun RocketDetailScreenContentPreview() {

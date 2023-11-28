@@ -1,67 +1,77 @@
 package cz.quanti.razym.rocketapp.ui.theme
 
 import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-
-val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-val LightColorScheme = lightColorScheme(
-    surface = Color(0xFFF6F6F6),
-    onSurface = Color.Black,
-
-    primary = Color(0xFFF25187),
-    onPrimary = Color.White,
-    primaryContainer = Color.White,
-    onPrimaryContainer = Color.Black,
-
-)
 
 @Composable
 fun RocketappTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    // TODO do not use dynamic color for now.
-    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val colors = if (darkTheme) darkModeColors else lightModeColors
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = colors.background.toArgb()
+            // TODO this works quite opposite, don't know why.
+            //  Tested on 3 emulators, API 26, 31, 34
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    CompositionLocalProvider(
+        LocalColors provides colors,
+    ) {
+        MaterialTheme(
+            colorScheme = MaterialTheme.colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }
+
+val LocalColors = staticCompositionLocalOf {
+    lightModeColors
+}
+
+data class RocketappColors(
+    val background: Color = Color(0xFFF5F5F5),
+    val onBackground: Color = Color.Black,
+    val surface: Color = Color.White,
+    val onSurface: Color = Color.Black,
+    val primary: Color = Color(0xFFF25187),
+    val onPrimary: Color = Color.White,
+    val primaryContainer: Color = Color.White,
+    val onPrimaryContainer: Color = Color.Black,
+    val secondary: Color = Color(0xFFB8B8BB),
+    val secondaryContainer: Color = Color(0xFFF5F5F5),
+    val onSecondaryContainer: Color = Color.Black,
+    val outline: Color = Color(0xFFA1A1A5),
+    val actionItem: Color = Color(0xFF1F89FE)
+)
+
+private val lightModeColors = RocketappColors(
+)
+
+private val darkModeColors = RocketappColors(
+    background = Color(0xFF121212),
+    onBackground = Color(0xFFFFFFFF),
+    surface = Color(0xFF000000),
+    onSurface = Color(0xFFFFFFFF),
+    primary = Color(0xFFF25187),
+    primaryContainer = Color.Black,
+    onPrimaryContainer = Color.White,
+    secondaryContainer = Color(0xFF121212),
+    onSecondaryContainer = Color.White,
+)
