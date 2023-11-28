@@ -366,7 +366,7 @@ private fun previewRockets(num: Int = 9) = List(num) {
 private fun previewRocket(num: Int = 9) = Rocket(
     "Falcon $num",
     RocketData.firstFlightParser.parse("2010-06-04"),
-    "falcon9",
+    "falcon_$num",
 )
 
 const val previewWidth = 375
