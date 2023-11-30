@@ -32,6 +32,7 @@ dependencies {
     implementation(projects.ui)
     // instead of
     // implementation(project(":ui"))
+    implementation(projects.rocketRepository)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)

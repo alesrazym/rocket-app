@@ -31,6 +31,10 @@ gradlePlugin {
             id = "quanti.android.library"
             implementationClass = "plugins.AndroidLibConventionPlugin"
         }
+        register("kmpLib") {
+            id = "quanti.kmp.library"
+            implementationClass = "plugins.KmpLibConventionPlugin"
+        }
         register("androidAppBase") {
             id = "quanti.android.application.base"
             implementationClass = "plugins.AndroidAppBaseDependenciesConventionPlugin"

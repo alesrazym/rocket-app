@@ -9,7 +9,8 @@ pluginManagement {
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // PREFER_PROJECT as I don't know the iOS ivy repository..
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
@@ -23,6 +24,7 @@ rootProject.name = "rocket-app"
 // See https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:type-safe-project-accessors.
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
+include(":RocketRepository")
 include(":ui")
 
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {

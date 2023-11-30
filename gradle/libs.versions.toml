@@ -19,6 +19,8 @@ mockk = "1.13.8"
 kotest = "5.7.2"
 coroutines-test = "1.7.3"
 
+#// TODO there is more recent version https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android/1.9.21
+#//  and v2 will be soon. Now, need 1.9.20 as per latest compose 1.5.5 works with it
 androidGradlePlugin = "8.2.0"
 androidKotlin = "1.9.20"
 
@@ -82,6 +84,7 @@ ktlint-kotlinter = { group = "org.jmailen.gradle", name = "kotlinter-gradle", ve
 android-application = { id = "com.android.application", version.ref="androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref="androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref="androidKotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref="androidKotlin" }
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 # ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
