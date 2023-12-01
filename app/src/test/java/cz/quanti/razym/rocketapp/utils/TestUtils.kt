@@ -1,9 +1,6 @@
 package cz.quanti.razym.rocketapp.utils
 
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import java.lang.reflect.Type
-
+/*
 class TestUtils {
     companion object {
         fun <T> loadJsonResource(filename: String, type: Type): T {
@@ -15,3 +12,4 @@ class TestUtils {
         }
     }
 }
+*/

@@ -37,4 +37,5 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
     implementation(libs.koinAndroidCompose)
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 }

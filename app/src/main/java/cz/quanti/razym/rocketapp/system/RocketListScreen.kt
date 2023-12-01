@@ -38,7 +38,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import cz.quanti.razym.rocketapp.R
-import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.model.Rocket
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import cz.quanti.razym.rocketapp.presentation.UiScreenState
@@ -51,6 +50,9 @@ import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
 import java.util.Date
 import java.util.Locale
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toLocalDate
 
 private fun getFirstFlightFormat() = DateFormat.getDateInstance(
     DateFormat.MEDIUM,
@@ -329,6 +331,7 @@ private fun previewRockets(num: Int = 9) = List(num) {
 
 private fun previewRocket(num: Int = 9) = Rocket(
     "Falcon $num",
-    RocketData.firstFlightParser.parse("2010-06-04"),
+    // TODO temporary java Date, maybe incorrect zone convert...
+    Date("2010-06-04".toLocalDate().atStartOfDayIn(TimeZone.UTC).toEpochMilliseconds()),
     "falcon_$num",
 )

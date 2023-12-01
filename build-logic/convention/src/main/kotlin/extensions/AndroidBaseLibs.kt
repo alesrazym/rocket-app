@@ -10,9 +10,7 @@ internal fun Project.configureAndroidBaseLibs(
     commonExtension.apply {
         dependencies {
             add("implementation", libs.findLibrary("koinAndroid").get())
-            add("implementation", libs.findLibrary("moshiKotlin").get())
             add("implementation", libs.findLibrary("coil").get())
-            add("implementation", libs.findBundle("retrofit").get())
         }
     }
 }
