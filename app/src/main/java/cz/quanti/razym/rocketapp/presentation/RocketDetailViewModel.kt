@@ -5,16 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.asResult
-import cz.quanti.razym.rocketapp.domain.RocketsRepository
 import cz.quanti.razym.rocketapp.model.asRocketDetail
+import cz.quanti.razym.rocketropository.domain.RocketsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class RocketDetailViewModel(
     private val repo: RocketsRepository
-)  : ViewModel() {
-
+) : ViewModel() {
     private val _uiState: MutableStateFlow<UiScreenState<RocketDetailUiState>> =
         MutableStateFlow(UiScreenState.Loading(UiText.StringResource(R.string.getting_rocket_detail_in_progress)))
     val uiState = _uiState.asStateFlow()

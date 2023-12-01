@@ -1,13 +1,12 @@
 package cz.quanti.razym.rocketapp.presentation
 
+import android.net.http.HttpException
 import android.util.MalformedJsonException
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.squareup.moshi.JsonDataException
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.Result
 import cz.quanti.razym.rocketapp.system.LocalSnackbar
-import retrofit2.HttpException
 import java.io.IOException
 import java.util.concurrent.TimeoutException
 import kotlinx.coroutines.flow.Flow
@@ -130,7 +129,7 @@ fun UiScreenState.Error.ShowMessageInSnackBar() {
 
 private fun defaultErrorTransform(): (Throwable?) -> UiText = {
     when (it) {
-        is JsonDataException -> UiText.StringResource(R.string.error_json)
+//        is JsonDataException -> UiText.StringResource(R.string.error_json)
         is MalformedJsonException -> UiText.StringResource(R.string.error_json)
         is TimeoutException -> UiText.StringResource(R.string.error_timeout)
         is IOException -> UiText.StringResource(R.string.error_io)

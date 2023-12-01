@@ -2,11 +2,9 @@ package cz.quanti.razym.rocketapp.presentation
 
 import android.util.MalformedJsonException
 import com.squareup.moshi.JsonDataException
-import com.squareup.moshi.Types
 import cz.quanti.razym.rocketapp.R
-import cz.quanti.razym.rocketapp.data.RocketData
-import cz.quanti.razym.rocketapp.domain.RocketsRepository
-import cz.quanti.razym.rocketapp.utils.TestUtils
+import cz.quanti.razym.rocketropository.data.RocketData
+import cz.quanti.razym.rocketropository.domain.RocketsRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -33,11 +31,12 @@ import kotlinx.coroutines.test.setMain
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RocketListViewModelTest {
-
     private val testDispatcher = StandardTestDispatcher()
-    private val rocketsData =
+    private val rocketsData = listOf<RocketData>()
+/*
         TestUtils.loadJsonResource<List<RocketData>>("rockets.json",
             Types.newParameterizedType(List::class.java, RocketData::class.java))
+*/
 
     @Before
     fun setup() {

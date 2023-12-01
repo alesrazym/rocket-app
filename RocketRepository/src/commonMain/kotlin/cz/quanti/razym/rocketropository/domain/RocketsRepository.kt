@@ -1,6 +1,6 @@
-package cz.quanti.razym.rocketapp.domain
+package cz.quanti.razym.rocketropository.domain
 
-import cz.quanti.razym.rocketapp.data.RocketData
+import cz.quanti.razym.rocketropository.data.RocketData
 import kotlinx.coroutines.flow.Flow
 
 interface RocketsRepository {

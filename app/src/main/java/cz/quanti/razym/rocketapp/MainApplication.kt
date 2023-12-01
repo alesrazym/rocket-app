@@ -8,6 +8,7 @@ import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import cz.quanti.razym.rocketapp.di.rocketModule
 import cz.quanti.razym.rocketropository.Greeting
+import cz.quanti.razym.rocketropository.di.rocketRepositoryModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
@@ -28,7 +29,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
             androidLogger(Level.DEBUG)
 
-            modules(rocketModule)
+            modules(rocketRepositoryModule, rocketModule)
         }
     }
 

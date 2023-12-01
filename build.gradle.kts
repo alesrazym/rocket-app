@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.20" apply false
+
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.dependencyAnalysis)
 }

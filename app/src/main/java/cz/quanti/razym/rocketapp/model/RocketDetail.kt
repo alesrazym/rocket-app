@@ -1,7 +1,7 @@
 package cz.quanti.razym.rocketapp.model
 
-import cz.quanti.razym.rocketapp.data.RocketData
-import cz.quanti.razym.rocketapp.data.StageData
+import cz.quanti.razym.rocketropository.data.RocketData
+import cz.quanti.razym.rocketropository.data.StageData
 
 data class RocketDetail(
     val name: String,
