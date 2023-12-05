@@ -1,3 +1,18 @@
 # Default ignored files
+# as per https://intellij-support.jetbrains.com/hc/en-us/articles/206544839-How-to-manage-projects-under-Version-Control-Systems
+*.iml
+/libraries/
 /shelf/
+/gradle.xml
+/modules.xml
+/usage.statistics.xml
 /workspace.xml
+
+# Ignored as described here https://betterprogramming.pub/exploring-the-idea-folder-790931c19191
+/caches/
+/modules/
+/assetWizardSettings.xml
+/deploymentTargetDropDown.xml
+/jarRepositories.xml
+/misc.xml
+/navEditor.xml
