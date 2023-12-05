@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="KtLint plugin">
+    <ktlintMode>MANUAL</ktlintMode>
+    <externalJarPaths>
+      <list>
+        <!-- TODO add rules to git? -->
+        <option value="$USER_HOME$/Downloads/ktlint-compose-0.3.8-all.jar" />
+      </list>
+    </externalJarPaths>
+  </component>
+</project>
