@@ -30,6 +30,10 @@ coroutines-test = "1.7.3"
 androidGradlePlugin = "8.2.0"
 androidKotlin = "1.9.20"
 
+dependencyAnalysis = "1.26.0"
+detekt = "1.23.4"
+twitter-detekt = "0.0.26"
+
 [libraries]
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -65,10 +69,17 @@ test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
 
+detekt-twitter-compose = { module = "com.twitter.compose.rules:detekt", version.ref = "twitter-detekt" }
+detekt-rules = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref="androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref="androidKotlin" }
 androidx-navigationSafeArgsKotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
+dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [bundles]
 lifecycle = ["androidx-lifecycleExtensions", "androidx-lifecycleRuntimeKtx", "androidx-lifecycleLivedataKtx", "androidx-lifecycleViewmodelKtx"]

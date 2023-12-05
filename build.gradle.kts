@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.androidx.navigationSafeArgsKotlin) apply false
+    alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.dependencyAnalysis)
 }
 
 // TODO: Don't know if this buildscript is needed, or not.
@@ -18,4 +20,10 @@ buildscript {
     dependencies {
         classpath(libs.androidx.navigationSafeargsPlugin)
     }
+}
+
+dependencyAnalysis {
+    // TODO configuration goes here.
+    //  Also, configure when to run `buildHealth` task.
+    //  Now, this plugin is here as a reminder it exists and may be worth of use.
 }

@@ -3,6 +3,16 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.androidx.navigationSafeArgsKotlin)
+    alias(libs.plugins.detekt)
+}
+
+detekt {
+    // Version of detekt that will be used. When unspecified the latest detekt
+    // version found will be used. Override to stay on the same version.
+    toolVersion = "1.23.4"
+    buildUponDefaultConfig = false
+    allRules = false
+    config.setFrom("$rootDir/detekt.yml")
 }
 
 android {
@@ -70,4 +80,8 @@ dependencies {
     implementation(libs.coil)
 
     testImplementation(libs.bundles.test)
+
+    detektPlugins(libs.detekt.rules)
+    detektPlugins(libs.detekt.formatting)
+    detektPlugins(libs.detekt.twitter.compose)
 }
