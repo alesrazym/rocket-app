@@ -26,6 +26,13 @@ coroutines-test = "1.7.3"
 androidGradlePlugin = "8.2.0"
 androidKotlin = "1.9.20"
 
+dependencyAnalysis = "1.26.0"
+detekt = "1.23.4"
+ktlint = "1.0.1"
+# ktlintGradle = "12.0.2"
+kotlinterGradle = "4.1.0"
+composeRules = "0.3.8"
+
 [libraries]
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -55,10 +62,28 @@ test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
 
+detekt-rules = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+# detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "composeRules" }
+ktlint-rule-compose = { module = "io.nlopez.compose.rules:ktlint", version.ref = "composeRules" }
+ktlint-rule-engine = { module = "com.pinterest.ktlint:ktlint-rule-engine", version.ref = "ktlint" }
+ktlint-rule-engine-core = { module = "com.pinterest.ktlint:ktlint-rule-engine-core", version.ref = "ktlint" }
+ktlint-cli-reporter-core = { module = "com.pinterest.ktlint:ktlint-cli-reporter-core", version.ref = "ktlint" }
+ktlint-cli-reporter-checkstyle = { module = "com.pinterest.ktlint:ktlint-cli-reporter-checkstyle", version.ref = "ktlint" }
+ktlint-cli-reporter-json = { module = "com.pinterest.ktlint:ktlint-cli-reporter-json", version.ref = "ktlint" }
+ktlint-cli-reporter-html = { module = "com.pinterest.ktlint:ktlint-cli-reporter-html", version.ref = "ktlint" }
+ktlint-cli-reporter-plain = { module = "com.pinterest.ktlint:ktlint-cli-reporter-plain", version.ref = "ktlint" }
+ktlint-cli-reporter-sarif = { module = "com.pinterest.ktlint:ktlint-cli-reporter-sarif", version.ref = "ktlint" }
+ktlint-ruleset-standard = { module = "com.pinterest.ktlint:ktlint-ruleset-standard", version.ref = "ktlint" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref="androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref="androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref="androidKotlin" }
+dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+# ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
+kotlinterGradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinterGradle" }
 
 [bundles]
 compose = ["androidx-activityCompose", "androidx-composeUi", "androidx-composeUiGraphics",
