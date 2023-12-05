@@ -32,7 +32,10 @@ androidKotlin = "1.9.20"
 
 dependencyAnalysis = "1.26.0"
 detekt = "1.23.4"
-twitter-detekt = "0.0.26"
+ktlint = "1.0.1"
+# ktlintGradle = "12.0.2"
+kotlinterGradle = "4.1.0"
+twitterDetekt = "0.0.26"
 
 [libraries]
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -69,17 +72,28 @@ test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
 
-detekt-twitter-compose = { module = "com.twitter.compose.rules:detekt", version.ref = "twitter-detekt" }
 detekt-rules = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
-
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+# detekt-twitter-compose = { module = "com.twitter.compose.rules:detekt", version.ref = "twitter-detekt" }
+ktlint-twitter-compose = { module = "com.twitter.compose.rules:ktlint", version.ref = "twitterDetekt" }
+ktlint-rule-engine = { module = "com.pinterest.ktlint:ktlint-rule-engine", version.ref = "ktlint" }
+ktlint-rule-engine-core = { module = "com.pinterest.ktlint:ktlint-rule-engine-core", version.ref = "ktlint" }
+ktlint-cli-reporter-core = { module = "com.pinterest.ktlint:ktlint-cli-reporter-core", version.ref = "ktlint" }
+ktlint-cli-reporter-checkstyle = { module = "com.pinterest.ktlint:ktlint-cli-reporter-checkstyle", version.ref = "ktlint" }
+ktlint-cli-reporter-json = { module = "com.pinterest.ktlint:ktlint-cli-reporter-json", version.ref = "ktlint" }
+ktlint-cli-reporter-html = { module = "com.pinterest.ktlint:ktlint-cli-reporter-html", version.ref = "ktlint" }
+ktlint-cli-reporter-plain = { module = "com.pinterest.ktlint:ktlint-cli-reporter-plain", version.ref = "ktlint" }
+ktlint-cli-reporter-sarif = { module = "com.pinterest.ktlint:ktlint-cli-reporter-sarif", version.ref = "ktlint" }
+ktlint-ruleset-standard = { module = "com.pinterest.ktlint:ktlint-ruleset-standard", version.ref = "ktlint" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref="androidGradlePlugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref="androidKotlin" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "androidKotlin" }
 androidx-navigationSafeArgsKotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+# ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
+kotlinterGradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinterGradle" }
 
 [bundles]
 lifecycle = ["androidx-lifecycleExtensions", "androidx-lifecycleRuntimeKtx", "androidx-lifecycleLivedataKtx", "androidx-lifecycleViewmodelKtx"]

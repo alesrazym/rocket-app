@@ -5,20 +5,44 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.androidx.navigationSafeArgsKotlin) apply false
     alias(libs.plugins.detekt) apply false
+//    alias(libs.plugins.ktlintGradle) apply false
+    alias(libs.plugins.kotlinterGradle) apply false
     alias(libs.plugins.dependencyAnalysis)
 }
 
-// TODO: Don't know if this buildscript is needed, or not.
-//  Anyway, this will be removed by compose navigation.
-// Project compiles without it, but there is no relevant (lib catalog) documentation on
-// https://developer.android.com/guide/navigation/use-graph/safe-args#kts
-// In some repositories on github, it's only added to libs.versions.kts, not to buildscript {}.
 buildscript {
+    // TODO: Don't know if this buildscript is needed, or not.
+    //  Anyway, this will be removed by compose navigation.
+    // Project compiles without it, but there is no relevant (lib catalog) documentation on
+    // https://developer.android.com/guide/navigation/use-graph/safe-args#kts
+    // In some repositories on github, it's only added to libs.versions.kts, not to buildscript {}.
     repositories {
         google()
     }
     dependencies {
         classpath(libs.androidx.navigationSafeargsPlugin)
+    }
+
+    // kotlinter force rules version.
+    configurations.classpath {
+        resolutionStrategy {
+            force(
+                libs.ktlint.rule.engine,
+                libs.ktlint.rule.engine.core,
+                libs.ktlint.cli.reporter.core,
+                libs.ktlint.cli.reporter.checkstyle,
+                libs.ktlint.cli.reporter.json,
+                libs.ktlint.cli.reporter.html,
+                libs.ktlint.cli.reporter.plain,
+                libs.ktlint.cli.reporter.sarif,
+                libs.ktlint.ruleset.standard,
+            )
+        }
+    }
+
+    // kotlinter add rules.
+    dependencies {
+        classpath(libs.ktlint.twitter.compose)
     }
 }
 

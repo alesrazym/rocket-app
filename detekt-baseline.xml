@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+    <ManuallySuppressedIssues></ManuallySuppressedIssues>
+    <CurrentIssues>
+        <ID>ImplicitDefaultLocale:RocketDetailFragment.kt$RocketDetailFragment$String.format("%.0fm", rocket.diameterMeters)</ID>
+        <ID>ImplicitDefaultLocale:RocketDetailFragment.kt$RocketDetailFragment$String.format("%.0fm", rocket.heightMeters)</ID>
+        <ID>ImplicitDefaultLocale:RocketDetailFragment.kt$RocketDetailFragment$String.format("%.0ft", rocket.massTons)</ID>
+        <ID>MagicNumber:MainApplication.kt$MainApplication$0.02</ID>
+        <ID>MagicNumber:MainApplication.kt$MainApplication$0.25</ID>
+        <ID>MagicNumber:RocketDetailFragment.kt$RocketDetailFragment$10</ID>
+        <ID>MagicNumber:RocketDetailViewModel.kt$1000.0</ID>
+        <ID>MagicNumber:RocketModule.kt$5</ID>
+        <ID>TooGenericExceptionThrown:RocketDetailViewModelTest.kt$RocketDetailViewModelTest$throw Exception()</ID>
+        <ID>TooGenericExceptionThrown:RocketListViewModelTest.kt$RocketListViewModelTest$throw Exception()</ID>
+    </CurrentIssues>
+</SmellBaseline>

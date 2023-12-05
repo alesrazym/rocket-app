@@ -8,22 +8,52 @@ charset = utf-8
 trim_trailing_whitespace = true
 
 [*.{kt,kts}]
-ktlint_code_style = ktlint_official
-ktlint_ignore_back_ticked_identifier = true
-ktlint_chain_method_rule_force_multiline_when_chain_operator_count_greater_or_equal_than = 2
-ktlint_function_naming_ignore_when_annotated_with = Composable
 max_line_length = 120
 indent_style = space
 indent_size = 4
+
+ktlint_code_style = ktlint_official
+ktlint_standard = enabled
+ktlint_experimental = disabled
+ktlint_chain_method_continuation = enabled
+ktlint_ignore_back_ticked_identifier = true
+ktlint_chain_method_rule_force_multiline_when_chain_operator_count_greater_or_equal_than = 3
+ktlint_function_signature_wrapping_rule_always_with_minimum_parameters = 3
+ktlint_function_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than = 3
+ktlint_function_signature_body_expression_wrapping = multiline
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+# TODO: add all ij_* rules, so that all developers has the same (not overridden by IDE)
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true
 ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL
+ij_kotlin_imports_layout=*,java.**,javax.**,kotlin.**,kotlinx.**,^
 # Prevent wildcard imports
 ij_kotlin_name_count_to_use_star_import = 99
 ij_kotlin_name_count_to_use_star_import_for_members = 99
 # Don't allow any wildcard imports
 ij_kotlin_packages_to_use_import_on_demand = unset
+ij_kotlin_method_call_chain_wrap = split_into_lines
 
 [*.md]
+# TODO: add all ij_* rules, so that all developers has the same (not overridden by IDE)
 trim_trailing_whitespace = false
 max_line_length = unset
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+ij_yaml_align_values_properties = do_not_align
+ij_yaml_autoinsert_sequence_marker = true
+ij_yaml_indent_sequence_value = true
+ij_yaml_keep_indents_on_empty_lines = false
+ij_yaml_keep_line_breaks = true
+ij_yaml_sequence_on_new_line = true
+ij_yaml_space_before_colon = false
+ij_yaml_spaces_within_braces = false
+ij_yaml_spaces_within_brackets = false
+ij_yaml_block_mapping_on_new_line = true
+
+[*.xml]
+# TODO: add all ij_* rules, so that all developers has the same (not overridden by IDE)
+ij_xml_continuation_indent_size = 4

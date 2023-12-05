@@ -3,8 +3,20 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.androidx.navigationSafeArgsKotlin)
+
+    // TODO: Create a ConventionPlugin for detekt and ktlint configuration
     alias(libs.plugins.detekt)
+//    alias(libs.plugins.ktlintGradle)
+    alias(libs.plugins.kotlinterGradle)
 }
+
+/*
+ktlint {
+    debug.set(true)
+    android.set(true)
+    version.set("1.0.1")
+}
+*/
 
 detekt {
     // Version of detekt that will be used. When unspecified the latest detekt
@@ -13,6 +25,7 @@ detekt {
     buildUponDefaultConfig = false
     allRules = false
     config.setFrom("$rootDir/detekt.yml")
+    baseline = File("$rootDir/detekt-baseline.xml")
 }
 
 android {
@@ -37,7 +50,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -82,6 +95,8 @@ dependencies {
     testImplementation(libs.bundles.test)
 
     detektPlugins(libs.detekt.rules)
-    detektPlugins(libs.detekt.formatting)
-    detektPlugins(libs.detekt.twitter.compose)
+//    detektPlugins(libs.detekt.formatting)
+//    detektPlugins(libs.detekt.twitter.compose)
+
+//    ktlintRuleset(libs.ktlint.twitter.compose)
 }
