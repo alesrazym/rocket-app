@@ -131,7 +131,10 @@ class RocketDetailViewModelTest {
             emit(rocketsData[0])
         }
         coEvery { getRocket(validIds[1]) } returns flowOf(rocketsData[1])
-        coEvery { getRocket(errorId) } returns flow { throw Exception() }
+        coEvery { getRocket(errorId) } returns flow {
+            @Suppress("detekt:TooGenericExceptionThrown")
+            throw Exception()
+        }
     }
 
     private fun assertSuccess(

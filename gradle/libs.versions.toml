@@ -1,8 +1,4 @@
 [versions]
-minSdk = "26"
-targetSdk = "34"
-compileSdk = "34"
-
 kotlinCompilerExtensionVersion = "1.5.5"
 
 coreKtx = "1.9.0"
@@ -25,6 +21,16 @@ coroutines-test = "1.7.3"
 
 androidGradlePlugin = "8.2.0"
 androidKotlin = "1.9.20"
+
+dependencyAnalysis = "1.26.0"
+
+# Try keep all ktlint match the same version,
+# as well as with https://github.com/nbadal/ktlint-intellij-plugin
+# As of detekt 1.23.4 uses ktlint 0.50, we're waiting for next release to see
+# 1.1.0 from https://github.com/detekt/detekt/pull/6739 or higher.
+detekt = "1.23.4" # ktlint 0.50
+composeRules = "0.3.8" # ktlint 1.0.1
+# Ktlint IDEA plugin 0.20 -> ktlint 1.1.0
 
 [libraries]
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -55,10 +61,21 @@ test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
 
+detekt-rules = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "composeRules" }
+
+# Dependencies of the included build-logic
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "androidKotlin" }
+detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref="androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref="androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref="androidKotlin" }
+dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [bundles]
 compose = ["androidx-activityCompose", "androidx-composeUi", "androidx-composeUiGraphics",

@@ -11,6 +11,9 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.logger.Level
 
+private const val MaxMemoryCacheSizePercent = 0.25
+private const val MaxDiskCacheSizePercent = 0.02
+
 class MainApplication : Application(), ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
@@ -31,13 +34,13 @@ class MainApplication : Application(), ImageLoaderFactory {
         ImageLoader.Builder(this)
             .memoryCache {
                 MemoryCache.Builder(this)
-                    .maxSizePercent(0.25)
+                    .maxSizePercent(MaxMemoryCacheSizePercent)
                     .build()
             }
             .diskCache {
                 DiskCache.Builder()
                     .directory(this.cacheDir.resolve("image_cache"))
-                    .maxSizePercent(0.02)
+                    .maxSizePercent(MaxDiskCacheSizePercent)
                     .build()
             }
             .build()
