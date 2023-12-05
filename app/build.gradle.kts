@@ -8,7 +8,7 @@ plugins {
 
 detekt {
     // Version of detekt that will be used. When unspecified the latest detekt
-    // version found will be used. Override to stay on the same version.
+    // version found will be used. Overridden to stay on the same version.
     toolVersion = "1.23.4"
     buildUponDefaultConfig = false
     allRules = false
