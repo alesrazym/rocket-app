@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/rocket_list_dest">
+    app:startDestination="@id/rocket_list_dest"
+    >
 
     <fragment
         android:id="@+id/rocket_list_dest"
@@ -13,25 +15,30 @@
         >
         <action
             android:id="@+id/action_rocketListFragment_to_rocketDetailFragment"
-            app:destination="@id/rocket_detail_dest" />
+            app:destination="@id/rocket_detail_dest"
+            />
     </fragment>
     <fragment
         android:id="@+id/rocket_detail_dest"
         android:name="cz.quanti.razym.rocketapp.system.RocketDetailFragment"
         android:label="fragment_rocket_detail"
-        tools:layout="@layout/fragment_rocket_detail" >
+        tools:layout="@layout/fragment_rocket_detail"
+        >
         <action
             android:id="@+id/action_rocketDetailFragment_to_rocketLaunchFragment"
-            app:destination="@id/rocket_launch_dest" />
+            app:destination="@id/rocket_launch_dest"
+            />
         <!--suppress NavigationFile (rocketId not a valid destination) -->
         <argument
             android:name="rocketId"
-            app:argType="string" />
+            app:argType="string"
+            />
     </fragment>
     <fragment
         android:id="@+id/rocket_launch_dest"
         android:name="cz.quanti.razym.rocketapp.system.RocketLaunchFragment"
         android:label="fragment_rocket_launch"
-        tools:layout="@layout/fragment_rocket_launch" />
+        tools:layout="@layout/fragment_rocket_launch"
+        />
 
 </navigation>

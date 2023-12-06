@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,7 +16,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/rocket" />
+        app:srcCompat="@drawable/rocket"
+        />
 
     <TextView
         android:id="@+id/rocket_item_title"
@@ -28,7 +30,8 @@
         app:layout_constraintStart_toEndOf="@id/rocket_item_image"
         app:layout_constraintEnd_toStartOf="@id/rocket_item_chevron"
         app:layout_constraintTop_toTopOf="@+id/rocket_item_image"
-        tools:text="Falcon 1" />
+        tools:text="Falcon 1"
+        />
 
     <TextView
         android:id="@+id/rocket_item_subtitle"
@@ -39,7 +42,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/rocket_item_image"
         app:layout_constraintStart_toEndOf="@id/rocket_item_image"
         app:layout_constraintEnd_toStartOf="@id/rocket_item_chevron"
-        tools:text="First Flight 2006-03-24" />
+        tools:text="First Flight 2006-03-24"
+        />
 
     <ImageView
         android:id="@+id/rocket_item_chevron"
