@@ -11,6 +11,9 @@ import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldStartWith
 import io.mockk.coEvery
 import io.mockk.mockk
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -20,9 +23,6 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RocketDetailViewModelTest {

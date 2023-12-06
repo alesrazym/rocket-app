@@ -5,9 +5,9 @@ import cz.quanti.razym.rocketapp.utils.TestUtils
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
+import org.junit.Test
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
 
 class RocketsRepositoryImplTest {
     private val rocketsData =

@@ -14,9 +14,9 @@ import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketListBinding
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel.UiState
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlinx.coroutines.launch
 
 class RocketListFragment : Fragment() {
 

@@ -17,10 +17,10 @@ import cz.quanti.razym.rocketapp.databinding.FragmentRocketDetailBinding
 import cz.quanti.razym.rocketapp.databinding.RocketDetailPhotoItemBinding
 import cz.quanti.razym.rocketapp.model.RocketDetail
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 
 class RocketDetailFragment : Fragment() {
 
