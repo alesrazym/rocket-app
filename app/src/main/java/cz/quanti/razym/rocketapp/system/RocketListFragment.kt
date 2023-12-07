@@ -19,7 +19,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.coroutines.launch
 
 class RocketListFragment : Fragment() {
-
     private val viewModel by viewModel<RocketListViewModel>()
 
     private var _binding: FragmentRocketListBinding? = null
@@ -41,14 +40,15 @@ class RocketListFragment : Fragment() {
                 binding.rocketListLayout.isRefreshing = false
                 binding.rocketListLoading.visibility = View.GONE
                 binding.rocketList.visibility = View.VISIBLE
-                binding.rocketList.adapter = RocketListAdapter(state.rockets) { rocket ->
-                    findNavController().navigate(
-                        RocketListFragmentDirections.actionRocketListFragmentToRocketDetailFragment(
-                            rocket.id,
-                        ),
-                        getKoin().get<NavOptions>(),
-                    )
-                }
+                binding.rocketList.adapter =
+                    RocketListAdapter(state.rockets) { rocket ->
+                        findNavController().navigate(
+                            RocketListFragmentDirections.actionRocketListFragmentToRocketDetailFragment(
+                                rocket.id,
+                            ),
+                            getKoin().get<NavOptions>(),
+                        )
+                    }
             }
 
             is UiState.Error -> {

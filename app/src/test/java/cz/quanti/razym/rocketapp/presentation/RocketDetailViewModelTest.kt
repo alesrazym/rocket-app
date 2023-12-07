@@ -26,14 +26,14 @@ import kotlinx.coroutines.test.setMain
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RocketDetailViewModelTest {
-
     private val testDispatcher = StandardTestDispatcher()
     private val validIds = listOf("5e9d0d95eda69955f709d1eb", "5e9d0d95eda69973a809d1ec")
     private val errorId = "non-existing-id"
-    private val rocketsData = TestUtils.loadJsonResource<List<RocketData>>(
-        "rockets.json",
-        Types.newParameterizedType(List::class.java, RocketData::class.java),
-    )
+    private val rocketsData =
+        TestUtils.loadJsonResource<List<RocketData>>(
+            "rockets.json",
+            Types.newParameterizedType(List::class.java, RocketData::class.java),
+        )
     private val repository = createRepository()
 
     @Before
@@ -70,73 +70,76 @@ class RocketDetailViewModelTest {
     }
 
     @Test
-    fun `uiState should be loading first`() = runTest(testDispatcher) {
-        // repository is mocked
-        val id = validIds[0]
+    fun `uiState should be loading first`() =
+        runTest(testDispatcher) {
+            // repository is mocked
+            val id = validIds[0]
 
-        val viewModel = RocketDetailViewModel(repository)
-        viewModel.fetchRocket(id)
+            val viewModel = RocketDetailViewModel(repository)
+            viewModel.fetchRocket(id)
 
-        // Loading state until we let the coroutine in model work with advanceUntilIdle()
-        viewModel.uiState.value.state shouldBe UiState.Loading
+            // Loading state until we let the coroutine in model work with advanceUntilIdle()
+            viewModel.uiState.value.state shouldBe UiState.Loading
 
-        advanceUntilIdle()
-        viewModel.uiState.value.state shouldNotBe UiState.Loading
-    }
-
-    @Test
-    fun `uiState should be success`() = runTest(testDispatcher) {
-        // repository is mocked
-        val id = validIds[0]
-
-        val viewModel = RocketDetailViewModel(repository)
-        viewModel.fetchRocket(id)
-
-        advanceUntilIdle()
-        assertSuccess(viewModel, id)
-    }
-
-    @Test
-    fun `uiState should be error`() = runTest(testDispatcher) {
-        // repository is mocked
-
-        val viewModel = RocketDetailViewModel(repository)
-        viewModel.fetchRocket(errorId)
-
-        advanceUntilIdle()
-        shouldNotThrowAny {
-            viewModel.uiState.value.state as UiState.Error
+            advanceUntilIdle()
+            viewModel.uiState.value.state shouldNotBe UiState.Loading
         }
-    }
 
     @Test
-    fun `uiState should be updated after fetch`() = runTest(testDispatcher) {
-        // repository is mocked
+    fun `uiState should be success`() =
+        runTest(testDispatcher) {
+            // repository is mocked
+            val id = validIds[0]
 
-        val viewModel = RocketDetailViewModel(repository)
+            val viewModel = RocketDetailViewModel(repository)
+            viewModel.fetchRocket(id)
 
-        viewModel.fetchRocket(validIds[0])
-        advanceUntilIdle()
-        assertSuccess(viewModel, rocketsData[0].id)
-
-        viewModel.fetchRocket(validIds[1])
-        advanceUntilIdle()
-        assertSuccess(viewModel, rocketsData[1].id)
-    }
-
-    private fun createRepository(): RocketsRepository = mockk {
-        coEvery { getRocket(validIds[0]) } returns flowOf(rocketsData[0])
-        coEvery { getRocket(validIds[1]) } returns flowOf(rocketsData[1])
-        coEvery { getRocket(errorId) } returns flow { throw Exception() }
-    }
-
-    private fun assertSuccess(
-        viewModel: RocketDetailViewModel,
-        id: String,
-    ) {
-        val success = shouldNotThrowAny {
-            viewModel.uiState.value.state as UiState.Success
+            advanceUntilIdle()
+            assertSuccess(viewModel, id)
         }
+
+    @Test
+    fun `uiState should be error`() =
+        runTest(testDispatcher) {
+            // repository is mocked
+
+            val viewModel = RocketDetailViewModel(repository)
+            viewModel.fetchRocket(errorId)
+
+            advanceUntilIdle()
+            shouldNotThrowAny {
+                viewModel.uiState.value.state as UiState.Error
+            }
+        }
+
+    @Test
+    fun `uiState should be updated after fetch`() =
+        runTest(testDispatcher) {
+            // repository is mocked
+
+            val viewModel = RocketDetailViewModel(repository)
+
+            viewModel.fetchRocket(validIds[0])
+            advanceUntilIdle()
+            assertSuccess(viewModel, rocketsData[0].id)
+
+            viewModel.fetchRocket(validIds[1])
+            advanceUntilIdle()
+            assertSuccess(viewModel, rocketsData[1].id)
+        }
+
+    private fun createRepository(): RocketsRepository =
+        mockk {
+            coEvery { getRocket(validIds[0]) } returns flowOf(rocketsData[0])
+            coEvery { getRocket(validIds[1]) } returns flowOf(rocketsData[1])
+            coEvery { getRocket(errorId) } returns flow { throw Exception() }
+        }
+
+    private fun assertSuccess(viewModel: RocketDetailViewModel, id: String) {
+        val success =
+            shouldNotThrowAny {
+                viewModel.uiState.value.state as UiState.Success
+            }
         success.rocket.id shouldBe id
     }
 }

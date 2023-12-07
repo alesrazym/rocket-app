@@ -16,12 +16,13 @@ import kotlinx.coroutines.launch
 class RocketDetailViewModel(
     private val repo: RocketsRepository,
 ) : ViewModel() {
-
     // TODO improve error state handling
     // TODO interface needed?
     sealed interface UiState {
         data class Success(val rocket: RocketDetail) : UiState
+
         data object Error : UiState
+
         data object Loading : UiState
     }
 
@@ -37,11 +38,12 @@ class RocketDetailViewModel(
             repo.getRocket(id)
                 .asResult()
                 .collect { result ->
-                    val state = when (result) {
-                        is Result.Success -> UiState.Success(result.data.asRocketDetail())
-                        is Result.Loading -> UiState.Loading
-                        is Result.Error -> UiState.Error
-                    }
+                    val state =
+                        when (result) {
+                            is Result.Success -> UiState.Success(result.data.asRocketDetail())
+                            is Result.Loading -> UiState.Loading
+                            is Result.Error -> UiState.Error
+                        }
 
                     _uiState.value =
                         ScreenUiState(state)

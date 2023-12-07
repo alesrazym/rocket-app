@@ -8,5 +8,7 @@ interface SpaceXApi {
     suspend fun listRockets(): List<RocketData>
 
     @GET("v4/rockets/{id}")
-    suspend fun getRocket(@Path("id") id: String): RocketData
+    suspend fun getRocket(
+        @Path("id") id: String,
+    ): RocketData
 }

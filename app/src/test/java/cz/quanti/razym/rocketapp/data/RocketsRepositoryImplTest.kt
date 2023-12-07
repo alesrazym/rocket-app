@@ -17,14 +17,16 @@ class RocketsRepositoryImplTest {
         )
 
     @Test
-    fun `should convert api result to flow`() = runTest {
-        val api = mockk<SpaceXApi> {
-            coEvery { listRockets() } returns rocketsData
+    fun `should convert api result to flow`() =
+        runTest {
+            val api =
+                mockk<SpaceXApi> {
+                    coEvery { listRockets() } returns rocketsData
+                }
+            val sut = RocketsRepositoryImpl(api)
+
+            val result = sut.getRockets()
+
+            result.first().size shouldBe 4
         }
-        val sut = RocketsRepositoryImpl(api)
-
-        val result = sut.getRockets()
-
-        result.first().size shouldBe 4
-    }
 }

@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import cz.quanti.razym.rocketapp.databinding.FragmentRocketLaunchBinding
 
 class RocketLaunchFragment : Fragment() {
-
     private var _binding: FragmentRocketLaunchBinding? = null
     private val binding get() = _binding!!
 

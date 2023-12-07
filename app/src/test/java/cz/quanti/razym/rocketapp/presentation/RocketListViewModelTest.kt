@@ -24,7 +24,6 @@ import kotlinx.coroutines.test.setMain
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RocketListViewModelTest {
-
     private val testDispatcher = StandardTestDispatcher()
     private val rocketsData =
         TestUtils.loadJsonResource<List<RocketData>>(
@@ -54,65 +53,74 @@ class RocketListViewModelTest {
     }
 
     @Test
-    fun `uiState should be loading first`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { emit(emptyList()) }
+    fun `uiState should be loading first`() =
+        runTest(testDispatcher) {
+            val repository =
+                mockk<RocketsRepository> {
+                    coEvery { getRockets() } returns flow { emit(emptyList()) }
+                }
+
+            val viewModel = RocketListViewModel(repository)
+
+            // Loading state until we let the coroutine in model work with advanceUntilIdle()
+            viewModel.uiState.value.state shouldBe UiState.Loading
+
+            advanceUntilIdle()
+            viewModel.uiState.value.state shouldBe UiState.Success(emptyList())
         }
-
-        val viewModel = RocketListViewModel(repository)
-
-        // Loading state until we let the coroutine in model work with advanceUntilIdle()
-        viewModel.uiState.value.state shouldBe UiState.Loading
-
-        advanceUntilIdle()
-        viewModel.uiState.value.state shouldBe UiState.Success(emptyList())
-    }
 
     @Test
-    fun `uiState should be success`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { emit(rocketsData) }
+    fun `uiState should be success`() =
+        runTest(testDispatcher) {
+            val repository =
+                mockk<RocketsRepository> {
+                    coEvery { getRockets() } returns flow { emit(rocketsData) }
+                }
+
+            val viewModel = RocketListViewModel(repository)
+
+            advanceUntilIdle()
+            val success = viewModel.uiState.value.state as UiState.Success
+            success shouldNotBe null
+            success.rockets.size shouldBe 4
         }
-
-        val viewModel = RocketListViewModel(repository)
-
-        advanceUntilIdle()
-        val success = viewModel.uiState.value.state as UiState.Success
-        success shouldNotBe null
-        success.rockets.size shouldBe 4
-    }
 
     @Test
-    fun `uiState should be error`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { throw Exception() }
+    fun `uiState should be error`() =
+        runTest(testDispatcher) {
+            val repository =
+                mockk<RocketsRepository> {
+                    coEvery { getRockets() } returns flow { throw Exception() }
+                }
+
+            val viewModel = RocketListViewModel(repository)
+
+            advanceUntilIdle()
+            val error = viewModel.uiState.value.state as UiState.Error
+            error shouldNotBe null
         }
-
-        val viewModel = RocketListViewModel(repository)
-
-        advanceUntilIdle()
-        val error = viewModel.uiState.value.state as UiState.Error
-        error shouldNotBe null
-    }
 
     @Test
-    fun `uiState should be updated after fetch`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returnsMany listOf(
-                flow { emit(emptyList()) },
-                flow { emit(rocketsData) },
-            )
+    fun `uiState should be updated after fetch`() =
+        runTest(testDispatcher) {
+            val repository =
+                mockk<RocketsRepository> {
+                    coEvery { getRockets() } returnsMany
+                        listOf(
+                            flow { emit(emptyList()) },
+                            flow { emit(rocketsData) },
+                        )
+                }
+
+            val viewModel = RocketListViewModel(repository)
+
+            advanceUntilIdle()
+            viewModel.uiState.value.state shouldBe UiState.Success(emptyList())
+
+            viewModel.fetchRockets()
+            advanceUntilIdle()
+            val state = viewModel.uiState.value.state as UiState.Success
+            state shouldNotBe null
+            state.rockets.size shouldNotBe 0
         }
-
-        val viewModel = RocketListViewModel(repository)
-
-        advanceUntilIdle()
-        viewModel.uiState.value.state shouldBe UiState.Success(emptyList())
-
-        viewModel.fetchRockets()
-        advanceUntilIdle()
-        val state = viewModel.uiState.value.state as UiState.Success
-        state shouldNotBe null
-        state.rockets.size shouldNotBe 0
-    }
 }

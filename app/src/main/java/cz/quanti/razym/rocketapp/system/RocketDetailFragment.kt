@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class RocketDetailFragment : Fragment() {
-
     private val viewModel by viewModel<RocketDetailViewModel>()
 
     private var _binding: FragmentRocketDetailBinding? = null
@@ -122,16 +121,18 @@ class RocketDetailFragment : Fragment() {
         binding.rocketDetailMass.text = String.format("%.0ft", rocket.massTons)
         binding.rocketDetailFirstReusable.text = formatReusable(rocket.firstStage.reusable)
         val firstStageEngines = rocket.firstStage.engines
-        binding.rocketDetailFirstEngines.text = resources.getQuantityString(
-            R.plurals.engines, firstStageEngines, firstStageEngines,
-        )
+        binding.rocketDetailFirstEngines.text =
+            resources.getQuantityString(
+                R.plurals.engines, firstStageEngines, firstStageEngines,
+            )
         binding.rocketDetailFirstFuel.text = getString(R.string.tons_of_fuel, rocket.firstStage.fuelAmountTons)
         binding.rocketDetailFirstBurn.text = formatBurn(rocket.firstStage.burnTimeSec)
         binding.rocketDetailSecondReusable.text = formatReusable(rocket.secondStage.reusable)
         val secondStageEngines = rocket.secondStage.engines
-        binding.rocketDetailSecondEngines.text = resources.getQuantityString(
-            R.plurals.engines, secondStageEngines, secondStageEngines,
-        )
+        binding.rocketDetailSecondEngines.text =
+            resources.getQuantityString(
+                R.plurals.engines, secondStageEngines, secondStageEngines,
+            )
         binding.rocketDetailSecondFuel.text = getString(R.string.tons_of_fuel, rocket.secondStage.fuelAmountTons)
         binding.rocketDetailSecondBurn.text = formatBurn(rocket.secondStage.burnTimeSec)
         binding.rocketDetailPhotos.removeAllViews()
@@ -143,11 +144,12 @@ class RocketDetailFragment : Fragment() {
     }
 
     private fun createImageViewAndLoad(it: String) {
-        val view = RocketDetailPhotoItemBinding.inflate(
-            LayoutInflater.from(requireContext()),
-            binding.rocketDetailPhotos,
-            true,
-        )
+        val view =
+            RocketDetailPhotoItemBinding.inflate(
+                LayoutInflater.from(requireContext()),
+                binding.rocketDetailPhotos,
+                true,
+            )
 
         view.rocketPhoto.load(it) {
             crossfade(true)

@@ -30,6 +30,7 @@ data class StageData(
     @Json(name = "reusable") val reusable: Boolean,
 )
 
-fun RocketData.parseFirstFlight() = runCatching {
-    RocketData.firstFlightParser.parse(this.firstFlight)
-}.getOrNull()
+fun RocketData.parseFirstFlight() =
+    runCatching {
+        RocketData.firstFlightParser.parse(this.firstFlight)
+    }.getOrNull()

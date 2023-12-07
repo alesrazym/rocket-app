@@ -7,11 +7,13 @@ import kotlinx.coroutines.flow.flow
 class RocketsRepositoryImpl(
     private val api: SpaceXApi,
 ) : RocketsRepository {
-    override fun getRockets(): Flow<List<RocketData>> = flow {
-        emit(api.listRockets())
-    }
+    override fun getRockets(): Flow<List<RocketData>> =
+        flow {
+            emit(api.listRockets())
+        }
 
-    override fun getRocket(id: String): Flow<RocketData> = flow {
-        emit(api.getRocket(id))
-    }
+    override fun getRocket(id: String): Flow<RocketData> =
+        flow {
+            emit(api.getRocket(id))
+        }
 }

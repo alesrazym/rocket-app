@@ -19,17 +19,18 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-val rocketModule = module {
-    single { provideClient() }
-    single { provideMoshi() }
-    single { provideConverterFactory(get()) }
-    single { provideRetrofit(get(), get()) }
-    single { provideSpaceXApi(get()) }
-    single { provideNavOptions() }
-    singleOf(::RocketsRepositoryImpl) { bind<RocketsRepository>() }
-    viewModelOf(::RocketListViewModel)
-    viewModelOf(::RocketDetailViewModel)
-}
+val rocketModule =
+    module {
+        single { provideClient() }
+        single { provideMoshi() }
+        single { provideConverterFactory(get()) }
+        single { provideRetrofit(get(), get()) }
+        single { provideSpaceXApi(get()) }
+        single { provideNavOptions() }
+        singleOf(::RocketsRepositoryImpl) { bind<RocketsRepository>() }
+        viewModelOf(::RocketListViewModel)
+        viewModelOf(::RocketDetailViewModel)
+    }
 
 private fun provideMoshi(): Moshi {
     return Moshi.Builder()
@@ -57,11 +58,12 @@ private fun provideRetrofit(client: OkHttpClient, converter: Converter.Factory):
 
 private fun provideSpaceXApi(retrofit: Retrofit): SpaceXApi = retrofit.create(SpaceXApi::class.java)
 
-private fun provideNavOptions() = navOptions {
-    anim {
-        enter = R.anim.slide_in
-        exit = R.anim.fade_out
-        popEnter = R.anim.fade_in
-        popExit = R.anim.slide_out
+private fun provideNavOptions() =
+    navOptions {
+        anim {
+            enter = R.anim.slide_in
+            exit = R.anim.fade_out
+            popEnter = R.anim.fade_in
+            popExit = R.anim.slide_out
+        }
     }
-}

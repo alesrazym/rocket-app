@@ -13,15 +13,14 @@ class RocketListAdapter(
     private val rockets: List<Rocket>,
     private val onItemClick: (Rocket) -> Unit,
 ) : RecyclerView.Adapter<RocketListAdapter.ViewHolder>() {
-
     class ViewHolder(
         private val binding: RocketListItemBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
-
-        private val firstFlightFormat = DateFormat.getDateInstance(
-            DateFormat.MEDIUM,
-            Locale.getDefault(),
-        )
+        private val firstFlightFormat =
+            DateFormat.getDateInstance(
+                DateFormat.MEDIUM,
+                Locale.getDefault(),
+            )
 
         fun bind(rocket: Rocket) {
             val ctx = binding.root.context
