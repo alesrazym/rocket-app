@@ -5,31 +5,10 @@ plugins {
     id("quanti.android.application")
     id("quanti.android.application.base")
     id("quanti.android.application.compose")
+    id("quanti.android.detekt")
+    id("quanti.android.ktlint")
 
     alias(libs.plugins.androidx.navigationSafeArgsKotlin)
-
-    // TODO: Create a ConventionPlugin for detekt and ktlint configuration
-    alias(libs.plugins.detekt)
-//    alias(libs.plugins.ktlintGradle)
-    alias(libs.plugins.kotlinterGradle)
-}
-
-/*
-ktlint {
-    debug.set(true)
-    android.set(true)
-    version.set("1.0.1")
-}
-*/
-
-detekt {
-    // Version of detekt that will be used. When unspecified the latest detekt
-    // version found will be used. Overridden to stay on the same version.
-    toolVersion = "1.23.4"
-    buildUponDefaultConfig = false
-    allRules = false
-    config.setFrom("$rootDir/detekt.yml")
-    baseline = File("$rootDir/detekt-baseline.xml")
 }
 
 android {
@@ -61,10 +40,4 @@ dependencies {
     implementation(libs.androidx.swipeRefreshLayout)
     implementation(libs.android.material)
     implementation(libs.bundles.navigation)
-
-    detektPlugins(libs.detekt.rules)
-//    detektPlugins(libs.detekt.formatting)
-//    detektPlugins(libs.detekt.compose)
-
-//    ktlintRuleset(libs.ktlint.rule.compose)
 }

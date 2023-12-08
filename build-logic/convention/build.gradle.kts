@@ -15,8 +15,10 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 dependencies {
-    compileOnly(libs.android.gradle.plugin)
-    compileOnly(libs.kotlin.gradle.plugin)
+    compileOnly(libs.android.gradlePlugin)
+    compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.detekt.gradlePlugin)
+    compileOnly(libs.ktlint.kotlinter)
 }
 
 gradlePlugin {
@@ -44,6 +46,14 @@ gradlePlugin {
         register("androidLibCompose") {
             id = "quanti.android.lib.compose"
             implementationClass = "plugins.AndroidLibComposeConventionPlugin"
+        }
+        register("androidDetekt") {
+            id = "quanti.android.detekt"
+            implementationClass = "plugins.DetektConventionPlugin"
+        }
+        register("androidKtlint") {
+            id = "quanti.android.ktlint"
+            implementationClass = "plugins.KtlintConventionPlugin"
         }
     }
 }
