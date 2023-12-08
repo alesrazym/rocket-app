@@ -1,11 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-// As per doc https://developer.android.com/build/migrate-to-catalogs#migrate-plugins
-//  If you are using a version of Gradle below 8.1, you need to annotate the plugins{} block with
-//  @Suppress("DSL_SCOPE_VIOLATION") when using version catalogs.
-//  Refer to issue #22797 https://github.com/gradle/gradle/issues/22797 for more info.
-
-@file:Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false

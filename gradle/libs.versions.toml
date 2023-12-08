@@ -3,7 +3,7 @@ minSdk = "26"
 targetSdk = "34"
 compileSdk = "34"
 
-kotlinCompilerExtensionVersion = "1.5.2"
+kotlinCompilerExtensionVersion = "1.5.5"
 
 coreKtx = "1.9.0"
 appcompat = "1.6.1"
@@ -27,8 +27,8 @@ mockk = "1.13.8"
 kotest = "5.7.2"
 coroutines-test = "1.7.3"
 
-androidGradlePlugin = "8.1.2"
-androidKotlin = "1.8.10"
+androidGradlePlugin = "8.2.0"
+androidKotlin = "1.9.20"
 
 [libraries]
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
