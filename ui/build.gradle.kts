@@ -1,6 +1,7 @@
 plugins {
     id("quanti.android.library")
     id("quanti.android.library.base")
+    id("quanti.android.library.compose")
 }
 
 android {
@@ -14,15 +15,4 @@ android {
         release {
         }
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
-    }
-}
-
-dependencies {
-    implementation(platform(libs.androidx.composeBom))
-    implementation(libs.bundles.compose)
 }
