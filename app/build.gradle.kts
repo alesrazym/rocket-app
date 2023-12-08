@@ -4,6 +4,7 @@ import config.AppBuildType
 plugins {
     id("quanti.android.application")
     id("quanti.android.application.base")
+    id("quanti.android.application.compose")
 
     alias(libs.plugins.androidx.navigationSafeArgsKotlin)
 
@@ -50,12 +51,7 @@ android {
     }
 
     buildFeatures {
-        compose = true
         viewBinding = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
     }
 }
 
@@ -64,8 +60,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.swipeRefreshLayout)
     implementation(libs.android.material)
-    implementation(platform(libs.androidx.composeBom))
-    implementation(libs.bundles.compose)
     implementation(libs.bundles.navigation)
 
     detektPlugins(libs.detekt.rules)

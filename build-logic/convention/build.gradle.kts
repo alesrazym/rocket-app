@@ -37,10 +37,8 @@ gradlePlugin {
             id = "quanti.android.library.base"
             implementationClass = "plugins.AndroidLibBaseDependenciesConventionPlugin"
         }
-    }
-/*
         register("androidAppCompose") {
-            id = "quanti.android.app.compose"
+            id = "quanti.android.application.compose"
             implementationClass = "plugins.AndroidAppComposeConventionPlugin"
         }
         register("androidLibCompose") {
@@ -48,5 +46,4 @@ gradlePlugin {
             implementationClass = "plugins.AndroidLibComposeConventionPlugin"
         }
     }
-*/
 }
