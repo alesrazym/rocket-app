@@ -3,6 +3,7 @@ import config.AppBuildType
 plugins {
     id("quanti.android.application")
     id("quanti.android.application.base")
+    id("quanti.android.application.compose")
 
     // TODO: Create a ConventionPlugin for detekt and ktlint configuration
     alias(libs.plugins.detekt)
@@ -45,14 +46,6 @@ android {
             applicationIdSuffix = AppBuildType.RELEASE.applicationIdSuffix
         }
     }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
-    }
 }
 
 dependencies {
@@ -63,8 +56,7 @@ dependencies {
 
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
-    implementation(platform(libs.androidx.composeBom))
-    implementation(libs.bundles.compose)
+    implementation(libs.koinAndroidCompose)
 
     detektPlugins(libs.detekt.rules)
 //    detektPlugins(libs.detekt.formatting)
