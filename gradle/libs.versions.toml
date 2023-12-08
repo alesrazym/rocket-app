@@ -1,8 +1,4 @@
 [versions]
-minSdk = "26"
-targetSdk = "34"
-compileSdk = "34"
-
 kotlinCompilerExtensionVersion = "1.5.5"
 
 coreKtx = "1.9.0"
@@ -75,6 +71,10 @@ ktlint-cli-reporter-html = { module = "com.pinterest.ktlint:ktlint-cli-reporter-
 ktlint-cli-reporter-plain = { module = "com.pinterest.ktlint:ktlint-cli-reporter-plain", version.ref = "ktlint" }
 ktlint-cli-reporter-sarif = { module = "com.pinterest.ktlint:ktlint-cli-reporter-sarif", version.ref = "ktlint" }
 ktlint-ruleset-standard = { module = "com.pinterest.ktlint:ktlint-ruleset-standard", version.ref = "ktlint" }
+
+# Dependencies of the included build-logic
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "androidKotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref="androidGradlePlugin" }
