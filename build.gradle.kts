@@ -42,7 +42,7 @@ buildscript {
 
     // kotlinter add rules.
     dependencies {
-        classpath(libs.ktlint.twitter.compose)
+        classpath(libs.ktlint.rule.compose)
     }
 }
 

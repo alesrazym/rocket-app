@@ -70,7 +70,7 @@ dependencies {
 
     detektPlugins(libs.detekt.rules)
 //    detektPlugins(libs.detekt.formatting)
-//    detektPlugins(libs.detekt.twitter.compose)
+//    detektPlugins(libs.detekt.compose)
 
-//    ktlintRuleset(libs.ktlint.twitter.compose)
+//    ktlintRuleset(libs.ktlint.rule.compose)
 }

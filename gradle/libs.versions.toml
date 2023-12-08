@@ -31,7 +31,7 @@ detekt = "1.23.4"
 ktlint = "1.0.1"
 # ktlintGradle = "12.0.2"
 kotlinterGradle = "4.1.0"
-twitterDetekt = "0.0.26"
+composeRules = "0.3.5"
 
 [libraries]
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -70,8 +70,8 @@ test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 
 detekt-rules = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
 # detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
-# detekt-twitter-compose = { module = "com.twitter.compose.rules:detekt", version.ref = "twitter-detekt" }
-ktlint-twitter-compose = { module = "com.twitter.compose.rules:ktlint", version.ref = "twitterDetekt" }
+# detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "composeRules" }
+ktlint-rule-compose = { module = "io.nlopez.compose.rules:ktlint", version.ref = "composeRules" }
 ktlint-rule-engine = { module = "com.pinterest.ktlint:ktlint-rule-engine", version.ref = "ktlint" }
 ktlint-rule-engine-core = { module = "com.pinterest.ktlint:ktlint-rule-engine-core", version.ref = "ktlint" }
 ktlint-cli-reporter-core = { module = "com.pinterest.ktlint:ktlint-cli-reporter-core", version.ref = "ktlint" }
