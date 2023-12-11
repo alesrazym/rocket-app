@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import cz.quanti.razym.rocketapp.ui.theme.LocalColors
+import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 
 @Composable
 fun ContentStatusText(@StringRes text: Int, onClick: () -> Unit = { }) {
@@ -26,6 +26,6 @@ fun ContentStatusText(@StringRes text: Int, onClick: () -> Unit = { }) {
             .clickable { onClick() }
             .padding(16.dp),
         textAlign = TextAlign.Center,
-        color = LocalColors.current.onBackground,
+        color = RocketappTheme.colors.onBackground,
     )
 }

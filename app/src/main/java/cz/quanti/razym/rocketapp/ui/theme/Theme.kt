@@ -5,12 +5,33 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+
+object RocketappTheme {
+    val colors: RocketappColors
+        @Composable
+        get() = LocalColors.current
+    val dimens: RocketappDimens
+        @Composable
+        get() = LocalDimensions.current
+    // TODO typography, etc..
+/*
+    val typography: Typography
+        @Composable
+        get() = LocalCustomTypography.current
+    val elevation: CustomElevation
+        @Composable
+        get() = LocalCustomElevation.current
+*/
+}
 
 @Composable
 fun RocketappTheme(
@@ -32,7 +53,9 @@ fun RocketappTheme(
 
     CompositionLocalProvider(
         LocalColors provides colors,
+        LocalDimensions provides RocketappDimens(),
     ) {
+        // TODO: since we don't have custom typography and dimension, we use MaterialTheme
         MaterialTheme(
             colorScheme = MaterialTheme.colorScheme,
             typography = Typography,
@@ -41,10 +64,15 @@ fun RocketappTheme(
     }
 }
 
-val LocalColors = staticCompositionLocalOf {
+private val LocalColors = staticCompositionLocalOf {
     lightModeColors
 }
 
+private val LocalDimensions = staticCompositionLocalOf {
+    RocketappDimens()
+}
+
+@Immutable
 data class RocketappColors(
     val background: Color = Color(0xFFF5F5F5),
     val onBackground: Color = Color.Black,
@@ -78,3 +106,21 @@ private val darkModeColors by lazy {
         onSecondaryContainer = Color.White,
     )
 }
+
+@Immutable
+data class RocketappDimens(
+    val zeroPadding: Dp = 0.dp,
+    val smallPadding: Dp = 4.dp,
+    val defaultPadding: Dp = 8.dp,
+    val largePadding: Dp = 12.dp,
+    val extraLargePadding: Dp = 16.dp,
+    val chevronItemIconSize: Dp = 16.dp,
+    val listItemIconSize: Dp = 32.dp,
+    val navigationIconSize: Dp = 36.dp,
+    val stageItemIconSize: Dp = 40.dp,
+    val smallSpacerSize: Dp = 8.dp,
+    val defaultSpacerSize: Dp = 16.dp,
+    val parameterCardSize: Dp = 100.dp,
+    val defaultCornerSize: Dp = 24.dp,
+    val listItemDividerSize: Dp = 1.dp,
+)

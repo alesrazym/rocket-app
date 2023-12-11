@@ -37,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,7 +45,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -57,7 +57,6 @@ import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.presentation.RocketDetail
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
 import cz.quanti.razym.rocketapp.presentation.Stage
-import cz.quanti.razym.rocketapp.ui.theme.LocalColors
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
 
@@ -143,12 +142,12 @@ private fun RocketDetailScreen(
                 onLaunchClick = onLaunchClick,
             )
         },
-        contentColor = LocalColors.current.onBackground,
+        contentColor = RocketappTheme.colors.onBackground,
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(LocalColors.current.primaryContainer)
+                .background(RocketappTheme.colors.primaryContainer)
                 .padding(innerPadding)
             ,
         ) {
@@ -186,15 +185,15 @@ private fun TopBar(
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.ExtraBold,
                 ),
-                color = LocalColors.current.onBackground,
+                color = RocketappTheme.colors.onBackground,
             )
         },
         navigationIcon = {
             Icon(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(RocketappTheme.dimens.navigationIconSize)
                     .clickable { onBackClick() }
-                    .padding(8.dp)
+                    .padding(RocketappTheme.dimens.defaultPadding)
                 ,
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = stringResource(R.string.back_to_list_back_arrow),
@@ -205,21 +204,21 @@ private fun TopBar(
                 text = stringResource(R.string.launch),
                 modifier = Modifier
                     .clickable { onLaunchClick() }
-                    .padding(8.dp)
+                    .padding(RocketappTheme.dimens.defaultPadding)
                 ,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    color = LocalColors.current.actionItem,
+                    color = RocketappTheme.colors.actionItem,
                 ),
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = LocalColors.current.background,
-                scrolledContainerColor = LocalColors.current.background,
-                navigationIconContentColor = LocalColors.current.onBackground,
+                containerColor = RocketappTheme.colors.background,
+                scrolledContainerColor = RocketappTheme.colors.background,
+                navigationIconContentColor = RocketappTheme.colors.onBackground,
                 // TODO why does navigation content color works and title and action does not?
-                titleContentColor = LocalColors.current.onBackground,
-                actionIconContentColor = LocalColors.current.actionItem,
+                titleContentColor = RocketappTheme.colors.onBackground,
+                actionIconContentColor = RocketappTheme.colors.actionItem,
         ),
     )
 }
@@ -230,30 +229,35 @@ private fun RocketDetailContent(rocket: RocketDetail) {
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
-            .padding(12.dp)
+            .padding(RocketappTheme.dimens.largePadding)
     ) {
         Overview(rocket.overview)
 
         Parameters(rocket)
 
-        Spacer(modifier = Modifier.height(16.dp))
+        ContentSpaceVertical()
 
         StageCard(
             stage = rocket.firstStage,
             title = stringResource(R.string.rocket_detail_first_stage),
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        ContentSpaceVertical()
 
         StageCard(
             stage = rocket.secondStage,
             title = stringResource(R.string.rocket_detail_second_stage),
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        ContentSpaceVertical()
 
         Photos(rocket.flickrImages)
     }
+}
+
+@Composable
+private fun ContentSpaceVertical() {
+    Spacer(modifier = Modifier.height(RocketappTheme.dimens.defaultSpacerSize))
 }
 
 @Composable
@@ -262,7 +266,7 @@ private fun Overview(overview: String) {
     Text(
         text = overview,
         style = MaterialTheme.typography.bodyLarge,
-        color = LocalColors.current.onPrimaryContainer,
+        color = RocketappTheme.colors.onPrimaryContainer,
     )
 }
 
@@ -272,7 +276,7 @@ private fun Parameters(rocket: RocketDetail) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp),
+            .padding(RocketappTheme.dimens.zeroPadding),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         ParameterCard(
@@ -294,10 +298,10 @@ private fun Parameters(rocket: RocketDetail) {
 private fun ParameterCard(valueUnit: String, quantity: String) {
     Card(
         modifier = Modifier
-            .size(100.dp),
-        shape = RoundedCornerShape(24.dp),
+            .size(RocketappTheme.dimens.parameterCardSize),
+        shape = RoundedCornerShape(RocketappTheme.dimens.defaultCornerSize),
         colors = CardDefaults.cardColors(
-            containerColor = LocalColors.current.primary,
+            containerColor = RocketappTheme.colors.primary,
         ),
     ) {
         Column(
@@ -316,7 +320,7 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,
                     ),
-                    color = LocalColors.current.onPrimary,
+                    color = RocketappTheme.colors.onPrimary,
                     textAlign = TextAlign.Center,
                 )
             }
@@ -331,7 +335,7 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
                     //  Also, for such a small area texts, here will be trouble with translations.
                     //  Can be solved by dynamic text size?
                     style = MaterialTheme.typography.titleLarge,
-                    color = LocalColors.current.onPrimary,
+                    color = RocketappTheme.colors.onPrimary,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
@@ -361,21 +365,21 @@ private fun StageCard(
     Card(
         modifier = Modifier
             .fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(RocketappTheme.dimens.defaultCornerSize),
         colors = CardDefaults.cardColors(
-            containerColor = LocalColors.current.secondaryContainer,
+            containerColor = RocketappTheme.colors.secondaryContainer,
             // TODO content color does not work as expected.
-            contentColor = LocalColors.current.onSecondaryContainer,
+            contentColor = RocketappTheme.colors.onSecondaryContainer,
         ),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(RocketappTheme.dimens.extraLargePadding),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             StageTitle(title)
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(RocketappTheme.dimens.smallSpacerSize))
             TextWithIcon(reusable, R.drawable.reusable, R.string.reusable_icon_content_description)
             TextWithIcon(engines, R.drawable.engine, R.string.engine_icon_content_description)
             TextWithIcon(fuel, R.drawable.fuel, R.string.fuel_icon_content_description)
@@ -392,7 +396,7 @@ private fun StageTitle(text: String) {
         ,
         text = text,
         style = MaterialTheme.typography.titleLarge,
-        color = LocalColors.current.onSecondaryContainer,
+        color = RocketappTheme.colors.onSecondaryContainer,
     )
 }
 
@@ -409,11 +413,11 @@ private fun TextWithIcon(
     ) {
         Icon(
             modifier = Modifier
-                .size(40.dp)
-                .padding(8.dp)
+                .size(RocketappTheme.dimens.stageItemIconSize)
+                .padding(RocketappTheme.dimens.defaultPadding)
             ,
             painter = painterResource(id = icon),
-            tint = LocalColors.current.primary,
+            tint = RocketappTheme.colors.primary,
             contentDescription = stringResource(contentDescription),
         )
         Text(
@@ -422,7 +426,7 @@ private fun TextWithIcon(
                 .wrapContentSize(Alignment.CenterStart),
             text = text,
             style = MaterialTheme.typography.bodyLarge,
-            color = LocalColors.current.onSecondaryContainer,
+            color = RocketappTheme.colors.onSecondaryContainer,
         )
     }
 }
@@ -445,9 +449,9 @@ private fun Photos(flickrImages: List<String>) {
 private fun RocketImageCard(url: String) {
     AsyncImage(
         modifier = Modifier
-            .padding(vertical = 8.dp)
+            .padding(vertical = RocketappTheme.dimens.defaultPadding)
             .fillMaxWidth()
-            .clip(RoundedCornerShape(24.dp)),
+            .clip(RoundedCornerShape(RocketappTheme.dimens.defaultCornerSize)),
         model = ImageRequest.Builder(LocalContext.current)
             .data(url)
             .crossfade(true)
@@ -463,12 +467,12 @@ private fun Title(text: String) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = RocketappTheme.dimens.defaultPadding),
         text = text,
         style = MaterialTheme.typography.titleLarge.copy(
             fontWeight = FontWeight.Bold,
         ),
-        color = LocalColors.current.onPrimaryContainer,
+        color = RocketappTheme.colors.onPrimaryContainer,
     )
 }
 

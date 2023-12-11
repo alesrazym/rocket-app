@@ -38,14 +38,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign.Companion.Start
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.model.Rocket
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
-import cz.quanti.razym.rocketapp.ui.theme.LocalColors
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
 import java.util.Date
@@ -92,12 +90,12 @@ private fun RocketListScreen(
     Surface(
         modifier = Modifier
             .fillMaxSize(),
-        color = LocalColors.current.background,
+        color = RocketappTheme.colors.background,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(RocketappTheme.dimens.extraLargePadding),
         ) {
             RocketListTitle(
                 text = R.string.rockets_title,
@@ -121,9 +119,9 @@ private fun RocketListTitle(@StringRes text: Int) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp),
+            .padding(vertical = RocketappTheme.dimens.extraLargePadding),
         textAlign = Start,
-        color = LocalColors.current.onBackground,
+        color = RocketappTheme.colors.onBackground,
     )
 }
 
@@ -176,7 +174,7 @@ private fun RocketList(rockets: List<Rocket>, onItemClick: (Rocket) -> Unit = {}
         modifier = Modifier
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        color = LocalColors.current.primaryContainer,
+        color = RocketappTheme.colors.primaryContainer,
     ) {
         LazyColumn(
             modifier = Modifier
@@ -194,11 +192,11 @@ private fun RocketList(rockets: List<Rocket>, onItemClick: (Rocket) -> Unit = {}
                 if (index < rockets.lastIndex)
                     // Will be HorizontalDivider when available
                     Divider(
-                        color = LocalColors.current.background,
-                        thickness = 1.dp,
+                        color = RocketappTheme.colors.background,
+                        thickness = RocketappTheme.dimens.listItemDividerSize,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 16.dp),
+                            .padding(start = RocketappTheme.dimens.extraLargePadding),
                     )
             }
         }
@@ -213,18 +211,21 @@ private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
             .fillMaxWidth()
             // Note that order matters, so apply click before padding.
             .clickable { onClick(rocket) }
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(
+                horizontal = RocketappTheme.dimens.extraLargePadding,
+                vertical = RocketappTheme.dimens.defaultPadding,
+            )
         ,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(id = R.drawable.rocket),
             contentDescription = stringResource(R.string.rocket_icon_content_description),
-            modifier = Modifier.size(32.dp),
-            tint = LocalColors.current.primary,
+            modifier = Modifier.size(RocketappTheme.dimens.listItemIconSize),
+            tint = RocketappTheme.colors.primary,
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(RocketappTheme.dimens.defaultSpacerSize))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
@@ -232,23 +233,23 @@ private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
                 ),
-                color = LocalColors.current.onPrimaryContainer,
+                color = RocketappTheme.colors.onPrimaryContainer,
             )
 
-//            Spacer(modifier = Modifier.height(8.dp))
+//            Spacer(modifier = Modifier.height(RocketappTheme.dimens.smallSpacerSize))
 
             FirstFlightText(date = rocket.firstFlight)
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(RocketappTheme.dimens.defaultSpacerSize))
 
         Icon(
             painter = painterResource(
                 id = R.drawable.baseline_arrow_forward_ios_24,
             ),
             contentDescription = stringResource(R.string.arrow_icon_content_description),
-            modifier = Modifier.size(16.dp),
-            tint = LocalColors.current.outline,
+            modifier = Modifier.size(RocketappTheme.dimens.chevronItemIconSize),
+            tint = RocketappTheme.colors.outline,
         )
     }
 }
@@ -270,7 +271,7 @@ private fun FirstFlightText(date: Date?) {
     Text(
         text = str,
         style = MaterialTheme.typography.bodyMedium.copy(
-            color = LocalColors.current.secondary,
+            color = RocketappTheme.colors.secondary,
         ),
     )
 }
