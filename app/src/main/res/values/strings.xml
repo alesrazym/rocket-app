@@ -28,4 +28,5 @@
     <string name="engine_icon_content_description">Engine icon</string>
     <string name="fuel_icon_content_description">Fuel icon</string>
     <string name="burn_icon_content_description">Burn icon</string>
+    <string name="loading">Loading</string>
 </resources>

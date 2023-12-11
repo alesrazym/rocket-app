@@ -137,7 +137,7 @@ private fun RocketDetailScreen(
             TopBar(
                 // TODO, because we does not persist data, use a placeholder for title
                 //  when not loaded yet.
-                title = rocket?.name ?: "Loading",
+                title = rocket?.name ?: stringResource(R.string.loading),
                 onBackClick = onBackClick,
                 onLaunchClick = onLaunchClick,
             )
