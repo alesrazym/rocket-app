@@ -435,7 +435,7 @@ private fun Photos(flickrImages: List<String>) {
         modifier = Modifier
             .fillMaxWidth(),
     ) {
-        flickrImages.take(10).forEach {
+        flickrImages.forEach {
             RocketImageCard(it)
         }
     }

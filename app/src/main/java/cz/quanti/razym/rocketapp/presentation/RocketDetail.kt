@@ -25,7 +25,9 @@ data class RocketDetail(
         detail.massTons,
         Stage(detail.firstStage),
         Stage(detail.secondStage),
-        detail.flickrImages,
+        // TODO: do we prefer constructor or extension function?
+        //  This example shows that extension function in a view model class/file seems to be better solution.
+        detail.flickrImages.take(10),
     )
 }
 
