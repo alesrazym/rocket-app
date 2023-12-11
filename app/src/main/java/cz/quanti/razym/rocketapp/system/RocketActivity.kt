@@ -33,7 +33,7 @@ class RocketActivity : AppCompatActivity() {
         NavHost(navController = navController, startDestination = RocketListScreen.route) {
             rocketListScreen(
                 onRocketItemClick = { rocket ->
-                    navController.navigateToRocketDetail(rocket.id, getKoin().get())
+                    navController.navigateToRocketDetail(rocket.id, rocket.name, getKoin().get())
                 }
             )
             rocketDetailScreen(

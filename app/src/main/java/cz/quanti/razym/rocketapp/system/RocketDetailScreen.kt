@@ -60,18 +60,19 @@ import cz.quanti.razym.rocketapp.presentation.Stage
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
 
-
 private const val ROCKET_DETAIL = "rocketDetail"
-
 private const val ROCKET_ID = "rocketId"
+private const val ROCKET_NAME = "rocketName"
 
 data object RocketDetailScreen : Screen(
-    route = "$ROCKET_DETAIL/{$ROCKET_ID}",
+    route = "$ROCKET_DETAIL/{$ROCKET_ID}?rocketName={$ROCKET_NAME}",
     navArguments = listOf(
         navArgument(ROCKET_ID) { type = NavType.StringType },
+        navArgument(ROCKET_NAME) { type = NavType.StringType; nullable = true },
     )
 ) {
-    fun createRoute(rocketId: String) = "$ROCKET_DETAIL/${rocketId}"
+    fun createRoute(rocketId: String, rocketName: String? = null) =
+        "$ROCKET_DETAIL/${rocketId}?rocketName=${rocketName}"
 }
 
 fun NavGraphBuilder.rocketDetailScreen(
@@ -81,11 +82,12 @@ fun NavGraphBuilder.rocketDetailScreen(
     composable(
         route = RocketDetailScreen.route,
         arguments = RocketDetailScreen.navArguments,
-    ) {
+    ) { backStackEntry ->
         val viewModel: RocketDetailViewModel = getViewModel()
         val uiState by viewModel.uiState.collectAsState()
 
-        val rocketId = it.arguments!!.getString(RocketDetailScreen.navArguments[0].name)!!
+        val rocketId = backStackEntry.arguments!!.getString(ROCKET_ID)!!
+        val rocketName = backStackEntry.arguments!!.getString(ROCKET_NAME)
 
         LaunchedEffect(rocketId) {
             // TODO this is not perfect condition, as after configuration change
@@ -97,6 +99,7 @@ fun NavGraphBuilder.rocketDetailScreen(
 
         RocketDetailScreen(
             uiState = uiState,
+            rocketName = rocketName,
             onBackClick = onBackClick,
             onLaunchClick = onLaunchClick,
             onErrorClick = { viewModel.fetchRocket(rocketId) },
@@ -104,16 +107,17 @@ fun NavGraphBuilder.rocketDetailScreen(
     }
 }
 
-fun NavController.navigateToRocketDetail(rocketId: String, navOptions: NavOptions? = null) {
+fun NavController.navigateToRocketDetail(rocketId: String, rocketName: String? = null, navOptions: NavOptions? = null) {
     this.navigate(
-        route = RocketDetailScreen.createRoute(rocketId),
-        navOptions = navOptions
+        route = RocketDetailScreen.createRoute(rocketId, rocketName),
+        navOptions = navOptions,
     )
 }
 
 @Composable
 fun RocketDetailScreen(
     uiState: RocketDetailViewModel.ScreenUiState,
+    rocketName: String?,
     onBackClick: () -> Unit = {},
     onLaunchClick: () -> Unit = {},
     onErrorClick: () -> Unit = {},
@@ -121,13 +125,14 @@ fun RocketDetailScreen(
     val rocket = uiState.rocket
     val loading = uiState.loading
 
-    RocketDetailScreen(loading, rocket, onBackClick, onLaunchClick, onErrorClick)
+    RocketDetailScreen(loading, rocket, rocketName, onBackClick, onLaunchClick, onErrorClick)
 }
 
 @Composable
 private fun RocketDetailScreen(
     loading: Boolean,
     rocket: RocketDetail?,
+    rocketName: String?,
     onBackClick: () -> Unit = { },
     onLaunchClick: () -> Unit = { },
     onErrorClick: () -> Unit = { },
@@ -136,8 +141,8 @@ private fun RocketDetailScreen(
         topBar = {
             TopBar(
                 // TODO, because we does not persist data, use a placeholder for title
-                //  when not loaded yet.
-                title = rocket?.name ?: stringResource(R.string.loading),
+                //  when not loaded yet nor provided via argument.
+                title = rocket?.name ?: rocketName ?: stringResource(R.string.loading),
                 onBackClick = onBackClick,
                 onLaunchClick = onLaunchClick,
             )
@@ -488,7 +493,8 @@ private fun Title(text: String) {
 @Composable
 fun RocketDetailScreenContentPreview() {
     RocketappTheme {
-        RocketDetailScreen(false, previewRocketDetail())
+        val rocket = previewRocketDetail()
+        RocketDetailScreen(false, rocket, rocket.name)
     }
 }
 
