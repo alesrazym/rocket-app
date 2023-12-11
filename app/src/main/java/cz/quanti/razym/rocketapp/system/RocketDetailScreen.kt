@@ -459,6 +459,7 @@ private fun RocketImageCard(url: String) {
         placeholder = painterResource(R.drawable.rocket_idle),
         error = painterResource(R.drawable.rocket_error),
         contentDescription = stringResource(R.string.rocket_icon_content_description),
+        contentScale = ContentScale.Crop,
     )
 }
 
