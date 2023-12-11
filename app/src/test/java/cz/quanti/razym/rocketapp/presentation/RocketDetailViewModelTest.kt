@@ -3,12 +3,16 @@ package cz.quanti.razym.rocketapp.presentation
 import com.squareup.moshi.Types
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
+import cz.quanti.razym.rocketapp.model.asRocketDetail
 import cz.quanti.razym.rocketapp.utils.TestUtils
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldStartWith
 import io.mockk.coEvery
 import io.mockk.mockk
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -20,9 +24,6 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RocketDetailViewModelTest {

@@ -39,7 +39,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -55,9 +54,9 @@ import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.quanti.razym.rocketapp.R
-import cz.quanti.razym.rocketapp.model.RocketDetail
-import cz.quanti.razym.rocketapp.model.Stage
+import cz.quanti.razym.rocketapp.presentation.RocketDetail
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
+import cz.quanti.razym.rocketapp.presentation.Stage
 import cz.quanti.razym.rocketapp.ui.theme.LocalColors
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
@@ -344,14 +343,10 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
 private fun StageCard(stage: Stage, title: String = "") {
     StageCard(
         title = title,
-        reusable = formatReusable(stage.reusable),
-        engines = pluralStringResource(
-            id = R.plurals.engines,
-            count = stage.engines,
-            stage.engines
-        ),
-        fuel = stringResource(R.string.tons_of_fuel, stage.fuelAmountTons),
-        burn = formatBurn(stage.burnTimeSec)
+        reusable = stage.reusable.asString(),
+        engines = stage.engines.asString(),
+        fuel = stage.fuelAmount.asString(),
+        burn = stage.burnTimeSec.asString(),
     )
 }
 
@@ -475,24 +470,6 @@ private fun Title(text: String) {
         ),
         color = LocalColors.current.onPrimaryContainer,
     )
-}
-
-@Composable
-fun formatBurn(burnSec: Int?): String {
-    return if (burnSec == null) {
-        stringResource(R.string.unknown)
-    } else {
-        stringResource(R.string.seconds_burn_time, burnSec)
-    }
-}
-
-@Composable
-fun formatReusable(reusable: Boolean): String {
-    return if (reusable) {
-        stringResource(R.string.reusable)
-    } else {
-        stringResource(R.string.not_reusable)
-    }
 }
 
 @Preview(

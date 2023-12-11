@@ -4,11 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.quanti.razym.rocketapp.Result
 import cz.quanti.razym.rocketapp.asResult
-import cz.quanti.razym.rocketapp.data.RocketData
-import cz.quanti.razym.rocketapp.data.StageData
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
-import cz.quanti.razym.rocketapp.model.RocketDetail
-import cz.quanti.razym.rocketapp.model.Stage
+import cz.quanti.razym.rocketapp.model.asRocketDetail
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -42,7 +39,9 @@ class RocketDetailViewModel(
                         is Result.Success -> _uiState.update {
                             it.copy(
                                 loading = false,
-                                rocket = result.data.asRocketDetail(),
+                                // TODO: do we prefer constructor or extension function?
+                                // rocket = RocketDetail(RocketDetail(result.data)),
+                                rocket = RocketDetail(result.data.asRocketDetail()),
                             )
                         }
 
@@ -58,21 +57,4 @@ class RocketDetailViewModel(
                 }
         }
     }
-}
-
-fun RocketData.asRocketDetail(): RocketDetail {
-    return RocketDetail(
-        this.name,
-        this.id,
-        this.overview,
-        this.height[RocketData.METERS] ?: 0.0,
-        this.diameter[RocketData.METERS] ?: 0.0,
-        (this.mass[RocketData.KG] ?: 0.0) / 1000.0,
-        this.firstStage.asStage(),
-        this.secondStage.asStage(),
-        this.flickrImages)
-}
-
-fun StageData.asStage(): Stage {
-    return Stage(this.burnTimeSec, this.engines, this.fuelAmountTons, this.reusable)
 }
