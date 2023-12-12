@@ -60,7 +60,6 @@ data class Stage(
     )
 }
 
-// TODO: This belongs here or to view model?
 fun Int?.asBurnUiText(): UiText {
     return if (this == null) {
         UiText.StringResource(R.string.unknown)

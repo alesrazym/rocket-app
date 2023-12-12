@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialApi::class)
+@file:OptIn(ExperimentalMaterialApi::class)
 
 package cz.quanti.razym.rocketapp.system
 
@@ -65,11 +65,7 @@ fun NavGraphBuilder.rocketListScreen(
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
         LaunchedEffect(Unit) {
-            // TODO this is not perfect condition, as after configuration change
-            //  it will reload data if there has been an error and there are no rockets then.
-            if (!uiState.loading && uiState.rockets == null) {
-                viewModel.fetchRockets()
-            }
+            viewModel.initialize()
         }
 
         RocketListScreen(
