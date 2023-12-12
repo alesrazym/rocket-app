@@ -2,7 +2,6 @@ package cz.quanti.razym.rocketapp.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
@@ -11,6 +10,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -22,15 +22,9 @@ object RocketappTheme {
     val dimens: RocketappDimens
         @Composable
         get() = LocalDimensions.current
-    // TODO typography, etc..
-/*
-    val typography: Typography
+    val typography: RocketAppTypography
         @Composable
-        get() = LocalCustomTypography.current
-    val elevation: CustomElevation
-        @Composable
-        get() = LocalCustomElevation.current
-*/
+        get() = LocalTypography.current
 }
 
 @Composable
@@ -54,14 +48,9 @@ fun RocketappTheme(
     CompositionLocalProvider(
         LocalColors provides colors,
         LocalDimensions provides RocketappDimens(),
-    ) {
-        // TODO: since we don't have custom typography and dimension, we use MaterialTheme
-        MaterialTheme(
-            colorScheme = MaterialTheme.colorScheme,
-            typography = Typography,
-            content = content
-        )
-    }
+        LocalTypography provides RocketAppTypography(),
+        content = content
+    )
 }
 
 private val LocalColors = staticCompositionLocalOf {
@@ -70,6 +59,10 @@ private val LocalColors = staticCompositionLocalOf {
 
 private val LocalDimensions = staticCompositionLocalOf {
     RocketappDimens()
+}
+
+private val LocalTypography = staticCompositionLocalOf {
+    RocketAppTypography()
 }
 
 @Immutable
@@ -123,4 +116,29 @@ data class RocketappDimens(
     val parameterCardSize: Dp = 100.dp,
     val defaultCornerSize: Dp = 24.dp,
     val listItemDividerSize: Dp = 1.dp,
+)
+
+@Immutable
+data class RocketAppTypography(
+    // Copy from MaterialTheme (commented out not used in app now).
+//    val displayLarge: TextStyle = Typography.displayLarge,
+//    val displayMedium: TextStyle = Typography.displayMedium,
+//    val displaySmall: TextStyle = Typography.displaySmall,
+    val headlineLarge: TextStyle = Typography.headlineLarge,
+    val headlineMedium: TextStyle = Typography.headlineMedium,
+//    val headlineSmall: TextStyle = Typography.headlineSmall,
+    val titleLarge: TextStyle = Typography.titleLarge,
+    val titleMedium: TextStyle = Typography.titleMedium,
+//    val titleSmall: TextStyle = Typography.titleSmall,
+    val bodyLarge: TextStyle = Typography.bodyLarge,
+    val bodyMedium: TextStyle = Typography.bodyMedium,
+//    val bodySmall: TextStyle = Typography.bodySmall,
+//    val labelLarge: TextStyle = Typography.labelLarge,
+//    val labelMedium: TextStyle = Typography.labelMedium,
+//    val labelSmall: TextStyle = Typography.labelSmall,
+
+    // Custom (maybe FFU).
+//    val title: TextStyle = TextStyle.Default,
+//    val body: TextStyle = TextStyle.Default,
+//    val label: TextStyle = TextStyle.Default,
 )

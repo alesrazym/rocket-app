@@ -27,7 +27,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -188,7 +187,7 @@ private fun TopBar(
         title = {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleMedium.copy(
+                style = RocketappTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.ExtraBold,
                 ),
                 color = RocketappTheme.colors.onBackground,
@@ -212,7 +211,7 @@ private fun TopBar(
                     .clickable { onLaunchClick() }
                     .padding(RocketappTheme.dimens.defaultPadding)
                 ,
-                style = MaterialTheme.typography.titleMedium.copy(
+                style = RocketappTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = RocketappTheme.colors.actionItem,
                 ),
@@ -271,7 +270,7 @@ private fun Overview(overview: String) {
     Title(stringResource(id = R.string.rocket_detail_overview))
     Text(
         text = overview,
-        style = MaterialTheme.typography.bodyLarge,
+        style = RocketappTheme.typography.bodyLarge,
         color = RocketappTheme.colors.onPrimaryContainer,
     )
 }
@@ -323,7 +322,7 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
             ) {
                 Text(
                     text = valueUnit,
-                    style = MaterialTheme.typography.headlineMedium.copy(
+                    style = RocketappTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,
                     ),
                     color = RocketappTheme.colors.onPrimary,
@@ -340,7 +339,7 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
                     // TODO big step between medium 16sp and large 22sp.
                     //  Also, for such a small area texts, here will be trouble with translations.
                     //  Can be solved by dynamic text size?
-                    style = MaterialTheme.typography.titleLarge,
+                    style = RocketappTheme.typography.titleLarge,
                     color = RocketappTheme.colors.onPrimary,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -401,7 +400,7 @@ private fun StageTitle(text: String) {
             .fillMaxWidth()
         ,
         text = text,
-        style = MaterialTheme.typography.titleLarge,
+        style = RocketappTheme.typography.titleLarge,
         color = RocketappTheme.colors.onSecondaryContainer,
     )
 }
@@ -431,7 +430,7 @@ private fun TextWithIcon(
                 .weight(1f)
                 .wrapContentSize(Alignment.CenterStart),
             text = text,
-            style = MaterialTheme.typography.bodyLarge,
+            style = RocketappTheme.typography.bodyLarge,
             color = RocketappTheme.colors.onSecondaryContainer,
         )
     }
@@ -476,7 +475,7 @@ private fun Title(text: String) {
             .fillMaxWidth()
             .padding(vertical = RocketappTheme.dimens.defaultPadding),
         text = text,
-        style = MaterialTheme.typography.titleLarge.copy(
+        style = RocketappTheme.typography.titleLarge.copy(
             fontWeight = FontWeight.Bold,
         ),
         color = RocketappTheme.colors.onPrimaryContainer,

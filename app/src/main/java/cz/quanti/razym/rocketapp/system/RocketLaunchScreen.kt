@@ -11,7 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,10 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import cz.quanti.razym.rocketapp.R
+import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 
 data object RocketLaunchScreen : Screen("rocketLaunch")
 
@@ -57,7 +56,7 @@ fun RocketLaunchScreen(
                 modifier = Modifier
                     .align(Alignment.Center),
                 text = "Rocket Launch",
-                style = MaterialTheme.typography.titleMedium,
+                style = RocketappTheme.typography.titleMedium,
             )
         }
     }
@@ -72,14 +71,14 @@ private fun RocketLaunchFragmentTopBar(
         title = {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleLarge,
+                style = RocketappTheme.typography.titleLarge,
             )
         },
         navigationIcon = {
             Icon(
                 modifier = Modifier
-                    .size(36.dp)
-                    .padding(8.dp)
+                    .size(RocketappTheme.dimens.navigationIconSize)
+                    .padding(RocketappTheme.dimens.defaultPadding)
                     .clickable { onBackClick() },
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 // TODO

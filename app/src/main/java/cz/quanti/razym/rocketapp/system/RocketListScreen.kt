@@ -115,7 +115,7 @@ private fun RocketListScreen(
 private fun RocketListTitle(@StringRes text: Int) {
     Text(
         text = stringResource(text),
-        style = MaterialTheme.typography.headlineLarge.copy(
+        style = RocketappTheme.typography.headlineLarge.copy(
             fontWeight = FontWeight.Bold,
         ),
         modifier = Modifier
@@ -231,7 +231,7 @@ private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = rocket.name,
-                style = MaterialTheme.typography.titleLarge.copy(
+                style = RocketappTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
                 ),
                 color = RocketappTheme.colors.onPrimaryContainer,
@@ -271,7 +271,7 @@ private fun FirstFlightText(date: Date?) {
 
     Text(
         text = str,
-        style = MaterialTheme.typography.bodyMedium.copy(
+        style = RocketappTheme.typography.bodyMedium.copy(
             color = RocketappTheme.colors.secondary,
         ),
     )
