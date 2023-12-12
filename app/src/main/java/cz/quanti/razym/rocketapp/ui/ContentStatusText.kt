@@ -1,4 +1,4 @@
-package cz.quanti.razym.rocketapp.system
+package cz.quanti.razym.rocketapp.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
@@ -16,15 +16,20 @@ import androidx.compose.ui.unit.dp
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 
 @Composable
-fun ContentStatusText(@StringRes text: Int, onClick: () -> Unit = { }) {
+fun ContentStatusText(
+    @StringRes text: Int,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = { },
+) {
     Text(
         text = stringResource(text),
         style = MaterialTheme.typography.bodyLarge,
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentSize(Alignment.Center)
-            .clickable { onClick() }
-            .padding(16.dp),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .wrapContentSize(Alignment.Center)
+                .clickable { onClick() }
+                .padding(16.dp),
         textAlign = TextAlign.Center,
         color = RocketappTheme.colors.onBackground,
     )
