@@ -17,11 +17,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -77,24 +81,45 @@ private fun RocketListScreen(
     onRefresh: () -> Unit,
     onItemClick: (Rocket) -> Unit = {},
 ) {
-    Surface(
-        modifier = Modifier
-            .fillMaxSize(),
-        color = RocketappTheme.colors.background,
-    ) {
-        Column(
+
+    // TODO Is this the only way to show toasts here? Make local composition? Or scaffold adds it by default?
+    val snackbarHostState = remember { SnackbarHostState() }
+    if (uiState is UiScreenState.Success) {
+        if (uiState.errorMessage != UiText.Empty) {
+            // Can get a string in @Composable only...
+            val string = uiState.errorMessage.asString()
+            LaunchedEffect(uiState) {
+                snackbarHostState.showSnackbar(string)
+            }
+        }
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+        contentColor = RocketappTheme.colors.onBackground,
+    ) { innerPadding ->
+        Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(RocketappTheme.dimens.extraLargePadding),
+                .padding(innerPadding),
+            color = RocketappTheme.colors.background,
         ) {
-            RocketListTitle(
-                text = R.string.rockets_title,
-            )
-            RocketListBox(
-                uiState = uiState,
-                onRefresh = onRefresh,
-                onItemClick = onItemClick,
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(RocketappTheme.dimens.extraLargePadding),
+            ) {
+                RocketListTitle(
+                    text = R.string.rockets_title,
+                )
+                RocketListBox(
+                    uiState = uiState,
+                    onRefresh = onRefresh,
+                    onItemClick = onItemClick,
+                )
+            }
         }
     }
 }

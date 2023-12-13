@@ -27,11 +27,14 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,6 +61,7 @@ import cz.quanti.razym.rocketapp.presentation.RocketDetailUiState
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
 import cz.quanti.razym.rocketapp.presentation.StageUiState
 import cz.quanti.razym.rocketapp.presentation.UiScreenState
+import cz.quanti.razym.rocketapp.presentation.UiText
 import cz.quanti.razym.rocketapp.presentation.asStageUiState
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
@@ -123,7 +127,22 @@ fun RocketDetailScreen(
 ) {
     val rocket = (uiState as? UiScreenState.Success)?.data
 
+    // TODO Is this the only way to show toasts here? Make local composition? Or scaffold adds it by default?
+    val snackbarHostState = remember { SnackbarHostState() }
+    if (uiState is UiScreenState.Success) {
+        if (uiState.errorMessage != UiText.Empty) {
+            // Can get a string in @Composable only...
+            val string = uiState.errorMessage.asString()
+            LaunchedEffect(uiState) {
+                snackbarHostState.showSnackbar(string)
+            }
+        }
+    }
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             TopBar(
                 // TODO, because we does not persist data, use a placeholder for title
