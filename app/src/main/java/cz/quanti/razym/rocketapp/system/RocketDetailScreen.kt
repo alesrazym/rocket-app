@@ -57,9 +57,9 @@ import cz.quanti.razym.rocketapp.model.Stage
 import cz.quanti.razym.rocketapp.presentation.RocketDetailUiState
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
 import cz.quanti.razym.rocketapp.presentation.StageUiState
-import cz.quanti.razym.rocketapp.presentation.UiText.StringResource
+import cz.quanti.razym.rocketapp.presentation.UiScreenState
 import cz.quanti.razym.rocketapp.presentation.asStageUiState
-import cz.quanti.razym.rocketapp.ui.ContentStatusText
+import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
 
@@ -93,11 +93,7 @@ fun NavGraphBuilder.rocketDetailScreen(
         val rocketName = backStackEntry.arguments!!.getString(ROCKET_NAME)
 
         LaunchedEffect(rocketId) {
-            // TODO this is not perfect condition, as after configuration change
-            //  it will reload data if there has been an error and there are no rockets then.
-            if (!uiState.loading && uiState.rocket == null) {
-                viewModel.fetchRocket(rocketId)
-            }
+            viewModel.initialize(rocketId)
         }
 
         RocketDetailScreen(
@@ -119,27 +115,14 @@ fun NavController.navigateToRocketDetail(rocketId: String, rocketName: String? =
 
 @Composable
 fun RocketDetailScreen(
-    uiState: RocketDetailViewModel.ScreenUiState,
-    rocketName: String?,
-    onBackClick: () -> Unit = {},
-    onLaunchClick: () -> Unit = {},
-    onErrorClick: () -> Unit = {},
-) {
-    val rocket = uiState.rocket
-    val loading = uiState.loading
-
-    RocketDetailScreen(loading, rocket, rocketName, onBackClick, onLaunchClick, onErrorClick)
-}
-
-@Composable
-private fun RocketDetailScreen(
-    loading: Boolean,
-    rocket: RocketDetailUiState?,
+    uiState: UiScreenState<RocketDetailUiState>,
     rocketName: String?,
     onBackClick: () -> Unit = { },
     onLaunchClick: () -> Unit = { },
     onErrorClick: () -> Unit = { },
 ) {
+    val rocket = (uiState as? UiScreenState.Success)?.data
+
     Scaffold(
         topBar = {
             TopBar(
@@ -152,30 +135,16 @@ private fun RocketDetailScreen(
         },
         contentColor = RocketappTheme.colors.onBackground,
     ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(RocketappTheme.colors.primaryContainer)
-                .padding(innerPadding)
-            ,
+        StateFullPullToRefresh(
+            uiState = uiState,
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(RocketappTheme.colors.primaryContainer)
+                    .padding(innerPadding),
+            onRefresh = onErrorClick,
         ) {
-            if (rocket == null && loading) {
-                ContentStatusText(
-                    text = StringResource(R.string.getting_rocket_detail_in_progress),
-                )
-            } else {
-                if (rocket == null) {
-                    ContentStatusText(
-                        text = StringResource(R.string.getting_rocket_detail_failed),
-                        onClick = onErrorClick,
-                    )
-                } else {
-                    RocketDetailContent(rocket)
-                }
-            }
-
-            // TODO handle error messages
-
+            RocketDetailContent(rocket!!)
         }
     }
 }
@@ -497,7 +466,7 @@ private fun Title(text: String) {
 fun RocketDetailScreenContentPreview() {
     RocketappTheme {
         val rocket = previewRocketDetail()
-        RocketDetailScreen(false, rocket, rocket.name)
+        RocketDetailScreen(UiScreenState.Success(rocket), rocket.name)
     }
 }
 

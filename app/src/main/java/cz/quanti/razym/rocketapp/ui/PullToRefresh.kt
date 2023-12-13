@@ -44,32 +44,33 @@ fun PullToRefresh(
 @Composable
 fun StateFullPullToRefresh(
     uiState: UiScreenState<*>,
-    onRefresh: () -> Unit,
+    modifier: Modifier = Modifier,
+    onRefresh: () -> Unit = { },
     successContent: @Composable () -> Unit = { },
 ) {
     // TODO check refreshing like this, or use a separate field in UiScreenState? (in all states)
-    val refreshing = uiState is UiScreenState.Loading ||
-        (uiState is UiScreenState.Success<*> && uiState.refreshing)
+    val refreshing =
+        uiState is UiScreenState.Loading ||
+            (uiState is UiScreenState.Success<*> && uiState.refreshing)
 
-    PullToRefresh(refreshing = refreshing, onRefresh = onRefresh) {
+    PullToRefresh(refreshing = refreshing, onRefresh = onRefresh, modifier = modifier) {
         when (uiState) {
             is UiScreenState.Error ->
                 ContentStatusText(
                     text = uiState.errorMessage,
                     onClick = onRefresh,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState()),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState()),
                 )
             is UiScreenState.Loading ->
                 ContentStatusText(
                     text = uiState.message,
                 )
-            is UiScreenState.Success ->
+            is UiScreenState.Success -> {
                 successContent()
+            }
         }
-
-        // TODO handle error messages
-
     }
 }
