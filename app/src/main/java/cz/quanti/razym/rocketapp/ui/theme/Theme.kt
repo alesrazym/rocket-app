@@ -2,6 +2,8 @@ package cz.quanti.razym.rocketapp.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
@@ -25,6 +27,9 @@ object RocketappTheme {
     val typography: RocketAppTypography
         @Composable
         get() = LocalTypography.current
+    val shapes: Shapes
+        @Composable
+        get() = LocalShapes.current
 }
 
 @Composable
@@ -49,6 +54,7 @@ fun RocketappTheme(
         LocalColors provides colors,
         LocalDimensions provides RocketappDimens(),
         LocalTypography provides RocketAppTypography(),
+        LocalShapes provides Shapes(),
         content = content
     )
 }
@@ -63,6 +69,10 @@ private val LocalDimensions = staticCompositionLocalOf {
 
 private val LocalTypography = staticCompositionLocalOf {
     RocketAppTypography()
+}
+
+private val LocalShapes = staticCompositionLocalOf {
+    Shapes()
 }
 
 @Immutable
@@ -141,4 +151,15 @@ data class RocketAppTypography(
 //    val title: TextStyle = TextStyle.Default,
 //    val body: TextStyle = TextStyle.Default,
 //    val label: TextStyle = TextStyle.Default,
+)
+
+@Immutable
+class Shapes(
+    // Copy from MaterialTheme (commented out not used in app now).
+    // Shapes None and Full are omitted as None is a RectangleShape and Full is a CircleShape.
+//    val extraSmall: CornerBasedShape = ShapeDefaults.ExtraSmall,
+//    val small: CornerBasedShape = ShapeDefaults.Small,
+    val medium: CornerBasedShape = ShapeDefaults.Medium,
+//    val large: CornerBasedShape = ShapeDefaults.Large,
+//    val extraLarge: CornerBasedShape = ShapeDefaults.ExtraLarge,
 )

@@ -24,7 +24,6 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -170,7 +169,7 @@ private fun RocketList(rockets: List<Rocket>, onItemClick: (Rocket) -> Unit = {}
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
+        shape = RocketappTheme.shapes.medium,
         color = RocketappTheme.colors.primaryContainer,
     ) {
         LazyColumn(
