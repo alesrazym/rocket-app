@@ -274,18 +274,18 @@ private fun FirstFlightText(date: Date?) {
 
 @Preview(
     showBackground = true,
-    widthDp = previewWidth,
+    widthDp = PREVIEW_WIDTH,
     uiMode = UI_MODE_NIGHT_YES,
     name = "Dark",
     heightDp = 600,
 )
-@Preview(showBackground = true, widthDp = previewWidth, heightDp = 600)
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 600)
 @Composable
 private fun RocketListScreenLessItemsPreview() {
     RocketListScreenPreview(previewRockets(4))
 }
 
-@Preview(showBackground = true, widthDp = previewWidth, heightDp = 600)
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 600)
 @Composable
 private fun RocketListScreenMoreItemsPreview() {
     RocketListScreenPreview(previewRockets(20))
@@ -303,7 +303,7 @@ private fun RocketListScreenPreview(rockets: List<Rocket>) {
     }
 }
 
-@Preview(showBackground = true, widthDp = previewWidth, heightDp = 600)
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 600)
 @Composable
 private fun RocketListScreenLoadingPreview() {
     RocketappTheme {
@@ -316,7 +316,7 @@ private fun RocketListScreenLoadingPreview() {
     }
 }
 
-@Preview(showBackground = true, widthDp = previewWidth, heightDp = 100)
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 100)
 @Composable
 private fun RocketListItemPreview() {
     RocketappTheme {
@@ -327,7 +327,7 @@ private fun RocketListItemPreview() {
     }
 }
 
-@Preview(showBackground = true, widthDp = previewWidth, heightDp = 100)
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 100)
 @Composable
 private fun RocketListTextPreview() {
     RocketappTheme {
@@ -335,7 +335,7 @@ private fun RocketListTextPreview() {
     }
 }
 
-@Preview(showBackground = true, widthDp = previewWidth)
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH)
 @Composable
 private fun RocketListTitlePreview() {
     RocketappTheme {
@@ -353,4 +353,4 @@ private fun previewRocket(num: Int = 9) = Rocket(
     "falcon_$num",
 )
 
-const val previewWidth = 375
+const val PREVIEW_WIDTH = 375

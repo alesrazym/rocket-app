@@ -486,12 +486,12 @@ private fun Title(text: String) {
 
 @Preview(
     showBackground = true,
-    widthDp = previewWidth,
+    widthDp = PREVIEW_WIDTH,
     heightDp = 600,
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     name = "Dark",
 )
-@Preview(showBackground = true, widthDp = previewWidth, heightDp = 600)
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 600)
 @Composable
 fun RocketDetailScreenContentPreview() {
     RocketappTheme {
