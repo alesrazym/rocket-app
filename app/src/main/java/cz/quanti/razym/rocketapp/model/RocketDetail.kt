@@ -3,8 +3,6 @@ package cz.quanti.razym.rocketapp.model
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.data.StageData
 
-// TODO: do we prefer constructor or extension function?
-
 data class RocketDetail(
     val name: String,
     val id: String,
@@ -15,33 +13,14 @@ data class RocketDetail(
     val firstStage: Stage,
     val secondStage: Stage,
     val flickrImages: List<String>,
-) {
-    constructor(data: RocketData) : this(
-        data.name,
-        data.id,
-        data.overview,
-        data.height[RocketData.METERS] ?: 0.0,
-        data.diameter[RocketData.METERS] ?: 0.0,
-        (data.mass[RocketData.KG] ?: 0.0) / 1000.0,
-        Stage(data.firstStage),
-        Stage(data.secondStage),
-        data.flickrImages,
-    )
-}
+)
 
 data class Stage(
     val burnTimeSec: Int?,
     val engines: Int,
     val fuelAmountTons: Double,
     val reusable: Boolean,
-) {
-    constructor(stage: StageData) : this(
-        stage.burnTimeSec,
-        stage.engines,
-        stage.fuelAmountTons,
-        stage.reusable,
-    )
-}
+)
 
 fun RocketData.asRocketDetail(): RocketDetail {
     return RocketDetail(

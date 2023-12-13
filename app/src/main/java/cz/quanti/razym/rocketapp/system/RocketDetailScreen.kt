@@ -53,9 +53,11 @@ import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.quanti.razym.rocketapp.R
-import cz.quanti.razym.rocketapp.presentation.RocketDetail
+import cz.quanti.razym.rocketapp.model.Stage
+import cz.quanti.razym.rocketapp.presentation.RocketDetailUiState
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
-import cz.quanti.razym.rocketapp.presentation.Stage
+import cz.quanti.razym.rocketapp.presentation.StageUiState
+import cz.quanti.razym.rocketapp.presentation.asStageUiState
 import cz.quanti.razym.rocketapp.ui.ContentStatusText
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
@@ -131,7 +133,7 @@ fun RocketDetailScreen(
 @Composable
 private fun RocketDetailScreen(
     loading: Boolean,
-    rocket: RocketDetail?,
+    rocket: RocketDetailUiState?,
     rocketName: String?,
     onBackClick: () -> Unit = { },
     onLaunchClick: () -> Unit = { },
@@ -229,7 +231,7 @@ private fun TopBar(
 }
 
 @Composable
-private fun RocketDetailContent(rocket: RocketDetail) {
+private fun RocketDetailContent(rocket: RocketDetailUiState) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -276,7 +278,7 @@ private fun Overview(overview: String) {
 }
 
 @Composable
-private fun Parameters(rocket: RocketDetail) {
+private fun Parameters(rocket: RocketDetailUiState) {
     Title(stringResource(id = R.string.rocket_detail_parameters))
     Row(
         modifier = Modifier
@@ -349,7 +351,7 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
 }
 
 @Composable
-private fun StageCard(stage: Stage, title: String = "") {
+private fun StageCard(stage: StageUiState, title: String = "") {
     StageCard(
         title = title,
         reusable = stage.reusable.asString(),
@@ -498,8 +500,8 @@ fun RocketDetailScreenContentPreview() {
     }
 }
 
-private fun previewRocketDetail(): RocketDetail {
-    return RocketDetail(
+private fun previewRocketDetail(): RocketDetailUiState {
+    return RocketDetailUiState(
         id = "1",
         name = "Falcon 1",
         overview = "Falcon 1 was an expendable launch system privately developed and manufactured by SpaceX during 2006-2009. On 28 September 2008, Falcon 1 became the first privately-developed liquid-fuel launch vehicle to go into orbit around the Earth.",
@@ -511,13 +513,13 @@ private fun previewRocketDetail(): RocketDetail {
             engines = 1,
             fuelAmountTons = 44.3,
             burnTimeSec = 169
-        ),
+        ).asStageUiState(),
         secondStage = Stage(
             reusable = false,
             engines = 1,
             fuelAmountTons = 3.38,
             burnTimeSec = 378
-        ),
+        ).asStageUiState(),
         flickrImages = listOf(
             "https://farm1.staticflickr.com/929/28787338307_3453a11a77_b.jpg",
             "https://farm4.staticflickr.com/3955/32915197674_eee74d81bb_b.jpg",

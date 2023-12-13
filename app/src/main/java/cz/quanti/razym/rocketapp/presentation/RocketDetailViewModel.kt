@@ -17,7 +17,7 @@ class RocketDetailViewModel(
 
     data class ScreenUiState(
         var loading: Boolean = false,
-        var rocket: RocketDetail? = null,
+        var rocket: RocketDetailUiState? = null,
         val messages: MutableList<String> = mutableListOf(),
     )
 
@@ -39,9 +39,7 @@ class RocketDetailViewModel(
                         is Result.Success -> _uiState.update {
                             it.copy(
                                 loading = false,
-                                // TODO: do we prefer constructor or extension function?
-                                // rocket = RocketDetail(RocketDetail(result.data)),
-                                rocket = RocketDetail(result.data.asRocketDetail()),
+                                rocket = result.data.asRocketDetail().asRocketDetailUiState(),
                             )
                         }
 
