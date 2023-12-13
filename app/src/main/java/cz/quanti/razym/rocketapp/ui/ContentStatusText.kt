@@ -1,6 +1,5 @@
 package cz.quanti.razym.rocketapp.ui
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,18 +8,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import cz.quanti.razym.rocketapp.presentation.UiText
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 
 @Composable
 fun ContentStatusText(
-    @StringRes text: Int,
+    text: UiText,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
 ) {
     Text(
-        text = stringResource(text),
+        text = text.asString(),
         style = RocketappTheme.typography.bodyLarge,
         modifier =
             modifier

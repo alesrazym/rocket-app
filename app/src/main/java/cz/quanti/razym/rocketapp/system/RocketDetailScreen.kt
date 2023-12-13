@@ -57,6 +57,7 @@ import cz.quanti.razym.rocketapp.model.Stage
 import cz.quanti.razym.rocketapp.presentation.RocketDetailUiState
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
 import cz.quanti.razym.rocketapp.presentation.StageUiState
+import cz.quanti.razym.rocketapp.presentation.UiText.StringResource
 import cz.quanti.razym.rocketapp.presentation.asStageUiState
 import cz.quanti.razym.rocketapp.ui.ContentStatusText
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
@@ -160,12 +161,12 @@ private fun RocketDetailScreen(
         ) {
             if (rocket == null && loading) {
                 ContentStatusText(
-                    text = R.string.getting_rocket_detail_in_progress,
+                    text = StringResource(R.string.getting_rocket_detail_in_progress),
                 )
             } else {
                 if (rocket == null) {
                     ContentStatusText(
-                        text = R.string.getting_rocket_detail_failed,
+                        text = StringResource(R.string.getting_rocket_detail_failed),
                         onClick = onErrorClick,
                     )
                 } else {

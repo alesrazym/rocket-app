@@ -12,6 +12,8 @@ import androidx.compose.ui.res.stringResource
  * displaying different types of text resources in the UI.
  */
 sealed class UiText {
+    data object Empty : UiText()
+
     // Just in case or example usage, DynamicString should not be used in production.
     data class DynamicString(
         val value: String,
@@ -20,17 +22,52 @@ sealed class UiText {
     class StringResource(
         @StringRes val resId: Int,
         vararg val args: Any,
-    ) : UiText()
+    ) : UiText() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as StringResource
+
+            if (resId != other.resId) return false
+            return args.contentEquals(other.args)
+        }
+
+        override fun hashCode(): Int {
+            var result = resId
+            result = 31 * result + args.contentHashCode()
+            return result
+        }
+    }
 
     class PluralResource(
         @PluralsRes val resId: Int,
         val count: Int,
         vararg val args: Any,
-    ) : UiText()
+    ) : UiText() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as PluralResource
+
+            if (resId != other.resId) return false
+            if (count != other.count) return false
+            return args.contentEquals(other.args)
+        }
+
+        override fun hashCode(): Int {
+            var result = resId
+            result = 31 * result + count
+            result = 31 * result + args.contentHashCode()
+            return result
+        }
+    }
 
     @Composable
     fun asString(): String {
         return when (this) {
+            Empty -> ""
             is DynamicString -> value
             is StringResource -> stringResource(resId, *args)
             is PluralResource -> pluralStringResource(resId, count, *args)

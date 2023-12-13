@@ -43,6 +43,7 @@ import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.model.Rocket
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
+import cz.quanti.razym.rocketapp.presentation.UiText
 import cz.quanti.razym.rocketapp.ui.ContentStatusText
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
@@ -137,12 +138,12 @@ private fun RocketListBox(
     ) {
         if (rockets == null && refreshing) {
             ContentStatusText(
-                text = R.string.rockets_loading,
+                text = UiText.StringResource(R.string.rockets_loading),
             )
         } else {
             if (rockets == null)
                 ContentStatusText(
-                    text = R.string.rockets_loading_error,
+                    text = UiText.StringResource(R.string.rockets_loading_error),
                     onClick = onRefresh,
                 )
             else
@@ -331,7 +332,7 @@ private fun RocketListItemPreview() {
 @Composable
 private fun RocketListTextPreview() {
     RocketappTheme {
-        ContentStatusText(R.string.rockets_loading)
+        ContentStatusText(UiText.StringResource(R.string.rockets_loading))
     }
 }
 
