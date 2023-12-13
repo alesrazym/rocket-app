@@ -29,4 +29,9 @@
     <string name="fuel_icon_content_description">Fuel icon</string>
     <string name="burn_icon_content_description">Burn icon</string>
     <string name="loading">Loading</string>
+    <string name="unknown_error">Unknown error.</string>
+    <string name="error_server_response">Server returned error, maybe bad request.</string>
+    <string name="error_io">Error connecting to server. Please, check your internet connection.</string>
+    <string name="error_json">Received corrupted data. Please, check your application is up-to-date.</string>
+    <string name="error_timeout">Connection to server has timed out. Please, try again.</string>
 </resources>

@@ -1,12 +1,9 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
 package cz.quanti.razym.rocketapp.system
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.icu.text.DateFormat
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,10 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -43,8 +36,10 @@ import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.model.Rocket
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
+import cz.quanti.razym.rocketapp.presentation.UiScreenState
 import cz.quanti.razym.rocketapp.presentation.UiText
 import cz.quanti.razym.rocketapp.ui.ContentStatusText
+import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
 import java.util.Date
@@ -69,8 +64,7 @@ fun NavGraphBuilder.rocketListScreen(
         }
 
         RocketListScreen(
-            refreshing = uiState.loading,
-            rockets = uiState.rockets,
+            uiState = uiState,
             onRefresh = viewModel::fetchRockets,
             onItemClick = onRocketItemClick,
         )
@@ -79,8 +73,7 @@ fun NavGraphBuilder.rocketListScreen(
 
 @Composable
 private fun RocketListScreen(
-    refreshing: Boolean = false,
-    rockets: List<Rocket>?,
+    uiState: UiScreenState<List<Rocket>>,
     onRefresh: () -> Unit,
     onItemClick: (Rocket) -> Unit = {},
 ) {
@@ -98,8 +91,7 @@ private fun RocketListScreen(
                 text = R.string.rockets_title,
             )
             RocketListBox(
-                rockets = rockets,
-                refreshing = refreshing,
+                uiState = uiState,
                 onRefresh = onRefresh,
                 onItemClick = onItemClick,
             )
@@ -124,43 +116,17 @@ private fun RocketListTitle(@StringRes text: Int) {
 
 @Composable
 private fun RocketListBox(
-    rockets: List<Rocket>?,
-    refreshing: Boolean,
+    uiState: UiScreenState<List<Rocket>>,
     onRefresh: () -> Unit,
     onItemClick: (Rocket) -> Unit = {},
 ) {
-    val state = rememberPullRefreshState(refreshing, onRefresh)
-
-    Box(
-        Modifier
-            .pullRefresh(state)
-            .fillMaxSize()
+    StateFullPullToRefresh(
+        uiState = uiState,
+        onRefresh = onRefresh,
     ) {
-        if (rockets == null && refreshing) {
-            ContentStatusText(
-                text = UiText.StringResource(R.string.rockets_loading),
-            )
-        } else {
-            if (rockets == null)
-                ContentStatusText(
-                    text = UiText.StringResource(R.string.rockets_loading_error),
-                    onClick = onRefresh,
-                )
-            else
-                RocketList(
-                    rockets = rockets,
-                    onItemClick = onItemClick,
-                )
-        }
-
-        // TODO handle error messages
-
-        // TODO update to material3 once 1.2 with pull to refresh released
-        // https://developer.android.com/jetpack/androidx/releases/compose-material3#version_12_2
-        PullRefreshIndicator(
-            refreshing = refreshing,
-            state = state,
-            modifier = Modifier.align(Alignment.TopCenter),
+        RocketList(
+            rockets = (uiState as UiScreenState.Success).data,
+            onItemClick = onItemClick,
         )
     }
 }
@@ -296,8 +262,11 @@ private fun RocketListScreenMoreItemsPreview() {
 private fun RocketListScreenPreview(rockets: List<Rocket>) {
     RocketappTheme {
         RocketListScreen(
-            refreshing = false,
-            rockets = rockets,
+            uiState =
+                UiScreenState.Success(
+                    data = rockets,
+                    refreshing = false,
+                ),
             onRefresh = { },
             onItemClick = { },
         )
@@ -309,8 +278,10 @@ private fun RocketListScreenPreview(rockets: List<Rocket>) {
 private fun RocketListScreenLoadingPreview() {
     RocketappTheme {
         RocketListScreen(
-            refreshing = true,
-            rockets = null,
+            uiState =
+                UiScreenState.Loading(
+                    message = UiText.StringResource(R.string.rockets_loading),
+                ),
             onRefresh = { },
             onItemClick = { },
         )
