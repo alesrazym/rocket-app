@@ -47,11 +47,11 @@ fun PullToRefresh(
 }
 
 @Composable
-fun StateFullPullToRefresh(
-    uiState: UiScreenState<*>,
+fun <T> StateFullPullToRefresh(
+    uiState: UiScreenState<T>,
     modifier: Modifier = Modifier,
     onRefresh: () -> Unit = { },
-    successContent: @Composable () -> Unit = { },
+    successContent: @Composable (T) -> Unit = { },
 ) {
     // TODO check refreshing like this, or use a separate field in UiScreenState? (in all states)
     val refreshing =
@@ -74,7 +74,7 @@ fun StateFullPullToRefresh(
                     text = uiState.message,
                 )
             is UiScreenState.Data -> {
-                successContent()
+                successContent(uiState.data)
             }
         }
     }

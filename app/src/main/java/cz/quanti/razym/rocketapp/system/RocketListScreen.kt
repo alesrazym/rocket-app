@@ -150,7 +150,7 @@ private fun RocketListBox(
         onRefresh = onRefresh,
     ) {
         RocketList(
-            rockets = (uiState as UiScreenState.Data).data,
+            rockets = it,
             onItemClick = onItemClick,
         )
     }

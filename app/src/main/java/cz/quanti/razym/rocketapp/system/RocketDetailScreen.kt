@@ -161,7 +161,7 @@ fun RocketDetailScreen(
                     .padding(innerPadding),
             onRefresh = onErrorClick,
         ) {
-            RocketDetailContent(rocket!!)
+            RocketDetailContent(it)
         }
     }
 }
