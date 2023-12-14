@@ -56,7 +56,7 @@ fun StateFullPullToRefresh(
     // TODO check refreshing like this, or use a separate field in UiScreenState? (in all states)
     val refreshing =
         uiState is UiScreenState.Loading ||
-            (uiState is UiScreenState.Success<*> && uiState.refreshing)
+            (uiState is UiScreenState.Data<*> && uiState.refreshing)
 
     PullToRefresh(refreshing = refreshing, onRefresh = onRefresh, modifier = modifier) {
         when (uiState) {
@@ -73,7 +73,7 @@ fun StateFullPullToRefresh(
                 ContentStatusText(
                     text = uiState.message,
                 )
-            is UiScreenState.Success -> {
+            is UiScreenState.Data -> {
                 successContent()
             }
         }
@@ -115,11 +115,11 @@ private fun StateFullPullToRefreshPreview(
 private class StateProvider : PreviewParameterProvider<UiScreenState<String>> {
     override val values =
         sequenceOf(
-            UiScreenState.Success(
+            UiScreenState.Data(
                 data = "Content",
                 refreshing = false,
             ),
-            UiScreenState.Success(
+            UiScreenState.Data(
                 data = "Content",
                 refreshing = true,
             ),

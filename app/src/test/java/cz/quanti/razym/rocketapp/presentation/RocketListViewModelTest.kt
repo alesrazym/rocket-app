@@ -76,7 +76,7 @@ class RocketListViewModelTest {
         viewModel.uiState.value is UiScreenState.Loading
 
         advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Success(emptyList())
+        viewModel.uiState.value shouldBe UiScreenState.Data(emptyList())
     }
 
     @Test
@@ -88,7 +88,7 @@ class RocketListViewModelTest {
         val viewModel = rocketListViewModel(repository)
 
         advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Success(rocketsData.map { it.asRocket() })
+        viewModel.uiState.value shouldBe UiScreenState.Data(rocketsData.map { it.asRocket() })
     }
 
     // TODO can we use parametrized test case? How will we test in KMP?
@@ -171,11 +171,11 @@ class RocketListViewModelTest {
         val viewModel = rocketListViewModel(repository)
 
         advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Success(emptyList())
+        viewModel.uiState.value shouldBe UiScreenState.Data(emptyList())
 
         viewModel.fetchRockets()
         advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Success(rocketsData.map { it.asRocket() })
+        viewModel.uiState.value shouldBe UiScreenState.Data(rocketsData.map { it.asRocket() })
     }
 
     private fun rocketListViewModel(repository: RocketsRepository): RocketListViewModel {

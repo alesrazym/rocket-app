@@ -123,11 +123,11 @@ fun RocketDetailScreen(
     onLaunchClick: () -> Unit = { },
     onErrorClick: () -> Unit = { },
 ) {
-    val rocket = (uiState as? UiScreenState.Success)?.data
+    val rocket = (uiState as? UiScreenState.Data)?.data
 
     // TODO Is this the only way to show toasts here? Make local composition? Or scaffold adds it by default?
     val snackbarHostState = remember { SnackbarHostState() }
-    if (uiState is UiScreenState.Success) {
+    if (uiState is UiScreenState.Data) {
         if (uiState.errorMessage != UiText.Empty) {
             // Can get a string in @Composable only...
             val string = uiState.errorMessage.asString()
@@ -468,7 +468,7 @@ private fun Title(text: String) {
 private fun RocketDetailScreenContentPreview() {
     RocketappTheme {
         val rocket = previewRocketDetail()
-        RocketDetailScreen(UiScreenState.Success(rocket), rocket.name)
+        RocketDetailScreen(UiScreenState.Data(rocket), rocket.name)
     }
 }
 

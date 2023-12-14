@@ -86,7 +86,7 @@ private fun RocketListScreen(
 
     // TODO Is this the only way to show toasts here? Make local composition? Or scaffold adds it by default?
     val snackbarHostState = remember { SnackbarHostState() }
-    if (uiState is UiScreenState.Success) {
+    if (uiState is UiScreenState.Data) {
         if (uiState.errorMessage != UiText.Empty) {
             // Can get a string in @Composable only...
             val string = uiState.errorMessage.asString()
@@ -150,7 +150,7 @@ private fun RocketListBox(
         onRefresh = onRefresh,
     ) {
         RocketList(
-            rockets = (uiState as UiScreenState.Success).data,
+            rockets = (uiState as UiScreenState.Data).data,
             onItemClick = onItemClick,
         )
     }
@@ -308,15 +308,15 @@ private fun RocketListTitlePreview() {
 private class RocketsProvider : PreviewParameterProvider<UiScreenState<List<Rocket>>> {
     override val values =
         sequenceOf(
-            UiScreenState.Success(
+            UiScreenState.Data(
                 data = previewRockets(4),
                 refreshing = false,
             ),
-            UiScreenState.Success(
+            UiScreenState.Data(
                 data = previewRockets(20),
                 refreshing = false,
             ),
-            UiScreenState.Success(
+            UiScreenState.Data(
                 data = previewRockets(4),
                 refreshing = true,
             ),

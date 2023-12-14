@@ -25,7 +25,7 @@ sealed interface UiScreenState<out T> {
      * In addition, refresh may be performed. In this case, [refreshing] is true.
      * If refreshing fails, [errorMessage] will contain error message.
      */
-    data class Success<T>(
+    data class Data<T>(
         val data: T,
         val refreshing: Boolean = false,
         val errorMessage: UiText = UiText.Empty,
@@ -57,7 +57,7 @@ fun <T, S> UiScreenState<S>.update(
 ) : UiScreenState<S> {
     return when (result) {
         is Result.Loading ->
-            if (this is UiScreenState.Success) {
+            if (this is UiScreenState.Data) {
                 this.copy(
                     refreshing = true,
                 )
@@ -67,12 +67,12 @@ fun <T, S> UiScreenState<S>.update(
 
         is Result.Success<T> ->
             // Clear all messages now.
-            UiScreenState.Success(
+            UiScreenState.Data(
                 data = transform(result.data),
             )
 
         is Result.Error ->
-            if (this is UiScreenState.Success) {
+            if (this is UiScreenState.Data) {
                 this.copy(
                     refreshing = false,
                     errorMessage = errorTransform(result.exception),
