@@ -2,6 +2,7 @@
 
 package cz.quanti.razym.rocketapp.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
@@ -13,7 +14,11 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import cz.quanti.razym.rocketapp.presentation.UiScreenState
+import cz.quanti.razym.rocketapp.presentation.UiText
+import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 
 @Composable
 fun PullToRefresh(
@@ -73,4 +78,56 @@ fun StateFullPullToRefresh(
             }
         }
     }
+}
+
+@RocketAppPreview
+@Composable
+private fun PullToRefreshPreview() {
+    RocketappTheme {
+        PullToRefresh(
+            refreshing = false,
+            modifier = Modifier
+                .background(RocketappTheme.colors.background),
+            onRefresh = {},
+        ) {
+            ContentStatusText(text = UiText.DynamicString("Content"))
+        }
+    }
+}
+
+@RocketAppPreview
+@Composable
+private fun StateFullPullToRefreshPreview(
+    @PreviewParameter(StateProvider::class) uiState: UiScreenState<String>,
+) {
+    RocketappTheme {
+        StateFullPullToRefresh(
+            uiState = uiState,
+            modifier = Modifier
+                .background(RocketappTheme.colors.background),
+            onRefresh = {},
+        ) {
+            ContentStatusText(text = UiText.DynamicString("Content"))
+        }
+    }
+}
+
+private class StateProvider : PreviewParameterProvider<UiScreenState<String>> {
+    override val values =
+        sequenceOf(
+            UiScreenState.Success(
+                data = "Content",
+                refreshing = false,
+            ),
+            UiScreenState.Success(
+                data = "Content",
+                refreshing = true,
+            ),
+            UiScreenState.Loading(
+                message = UiText.DynamicString("Loading"),
+            ),
+            UiScreenState.Error(
+                errorMessage = UiText.DynamicString("Error"),
+            ),
+        )
 }

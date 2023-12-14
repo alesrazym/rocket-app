@@ -2,7 +2,6 @@
 
 package cz.quanti.razym.rocketapp.system
 
-import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -45,7 +44,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -63,6 +61,7 @@ import cz.quanti.razym.rocketapp.presentation.StageUiState
 import cz.quanti.razym.rocketapp.presentation.UiScreenState
 import cz.quanti.razym.rocketapp.presentation.UiText
 import cz.quanti.razym.rocketapp.presentation.asStageUiState
+import cz.quanti.razym.rocketapp.ui.RocketAppPreview
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
@@ -473,16 +472,9 @@ private fun Title(text: String) {
     )
 }
 
-@Preview(
-    showBackground = true,
-    widthDp = PREVIEW_WIDTH,
-    heightDp = 600,
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    name = "Dark",
-)
-@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 600)
+@RocketAppPreview
 @Composable
-fun RocketDetailScreenContentPreview() {
+private fun RocketDetailScreenContentPreview() {
     RocketappTheme {
         val rocket = previewRocketDetail()
         RocketDetailScreen(UiScreenState.Success(rocket), rocket.name)

@@ -1,6 +1,5 @@
 package cz.quanti.razym.rocketapp.system
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.icu.text.DateFormat
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
@@ -30,9 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign.Companion.Start
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -43,6 +43,8 @@ import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import cz.quanti.razym.rocketapp.presentation.UiScreenState
 import cz.quanti.razym.rocketapp.presentation.UiText
 import cz.quanti.razym.rocketapp.ui.ContentStatusText
+import cz.quanti.razym.rocketapp.ui.PreviewCommon.PREVIEW_WIDTH
+import cz.quanti.razym.rocketapp.ui.RocketAppPreview
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
@@ -264,49 +266,14 @@ private fun FirstFlightText(date: Date?) {
     )
 }
 
-@Preview(
-    showBackground = true,
-    widthDp = PREVIEW_WIDTH,
-    uiMode = UI_MODE_NIGHT_YES,
-    name = "Dark",
-    heightDp = 600,
-)
-@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 600)
+@RocketAppPreview
 @Composable
-private fun RocketListScreenLessItemsPreview() {
-    RocketListScreenPreview(previewRockets(4))
-}
-
-@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 600)
-@Composable
-private fun RocketListScreenMoreItemsPreview() {
-    RocketListScreenPreview(previewRockets(20))
-}
-
-@Composable
-private fun RocketListScreenPreview(rockets: List<Rocket>) {
+private fun RocketListScreenPreview(
+    @PreviewParameter(RocketsProvider::class) rockets: UiScreenState<List<Rocket>>,
+) {
     RocketappTheme {
         RocketListScreen(
-            uiState =
-                UiScreenState.Success(
-                    data = rockets,
-                    refreshing = false,
-                ),
-            onRefresh = { },
-            onItemClick = { },
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 600)
-@Composable
-private fun RocketListScreenLoadingPreview() {
-    RocketappTheme {
-        RocketListScreen(
-            uiState =
-                UiScreenState.Loading(
-                    message = UiText.StringResource(R.string.rockets_loading),
-                ),
+            uiState = rockets,
             onRefresh = { },
             onItemClick = { },
         )
@@ -340,6 +307,30 @@ private fun RocketListTitlePreview() {
     }
 }
 
+private class RocketsProvider : PreviewParameterProvider<UiScreenState<List<Rocket>>> {
+    override val values =
+        sequenceOf(
+            UiScreenState.Success(
+                data = previewRockets(4),
+                refreshing = false,
+            ),
+            UiScreenState.Success(
+                data = previewRockets(20),
+                refreshing = false,
+            ),
+            UiScreenState.Success(
+                data = previewRockets(4),
+                refreshing = true,
+            ),
+            UiScreenState.Loading(
+                message = UiText.StringResource(R.string.rockets_loading),
+            ),
+            UiScreenState.Error(
+                errorMessage = UiText.StringResource(R.string.getting_rocket_detail_failed),
+            ),
+        )
+}
+
 private fun previewRockets(num: Int = 9) = List(num) {
     previewRocket(it)
 }
@@ -349,5 +340,3 @@ private fun previewRocket(num: Int = 9) = Rocket(
     RocketData.firstFlightParser.parse("2010-06-04"),
     "falcon_$num",
 )
-
-const val PREVIEW_WIDTH = 375
