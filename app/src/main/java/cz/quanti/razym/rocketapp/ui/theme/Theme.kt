@@ -13,8 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 
 object RocketappTheme {
@@ -130,27 +132,44 @@ data class RocketappDimens(
 
 @Immutable
 data class RocketAppTypography(
-    // Copy from MaterialTheme (commented out not used in app now).
-//    val displayLarge: TextStyle = Typography.displayLarge,
-//    val displayMedium: TextStyle = Typography.displayMedium,
-//    val displaySmall: TextStyle = Typography.displaySmall,
-    val headlineLarge: TextStyle = Typography.headlineLarge,
-    val headlineMedium: TextStyle = Typography.headlineMedium,
-//    val headlineSmall: TextStyle = Typography.headlineSmall,
-    val titleLarge: TextStyle = Typography.titleLarge,
-    val titleMedium: TextStyle = Typography.titleMedium,
-//    val titleSmall: TextStyle = Typography.titleSmall,
-    val bodyLarge: TextStyle = Typography.bodyLarge,
-    val bodyMedium: TextStyle = Typography.bodyMedium,
-//    val bodySmall: TextStyle = Typography.bodySmall,
-//    val labelLarge: TextStyle = Typography.labelLarge,
-//    val labelMedium: TextStyle = Typography.labelMedium,
-//    val labelSmall: TextStyle = Typography.labelSmall,
+    // TODO set explicitely?
+    //        fontFamily = null, // FontFamily.SansSerif etc
+    //        lineHeight = TextUnit.Unspecified,
+    //        letterSpacing = TextUnit.Unspecified,
 
-    // Custom (maybe FFU).
-//    val title: TextStyle = TextStyle.Default,
-//    val body: TextStyle = TextStyle.Default,
-//    val label: TextStyle = TextStyle.Default,
+    // Sort by generic/specialized, then by size, then by weight.
+    val headline: TextStyle = TextStyle(
+        fontSize = 38.sp,
+        fontWeight = FontWeight.Bold,
+    ),
+    val titleLarge: TextStyle = TextStyle(
+        fontSize = 19.sp,
+        fontWeight = FontWeight.Bold,
+    ),
+    val bodyLarge: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Normal,
+    ),
+    val topBar: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.ExtraBold,
+    ),
+    val cardParameterValue: TextStyle = TextStyle(
+        fontSize = 28.sp,
+        fontWeight = FontWeight.Bold,
+    ),
+    val cardParameter: TextStyle = TextStyle(
+        fontSize = 19.sp,
+        fontWeight = FontWeight.Normal,
+    ),
+    val itemTitle: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Medium,
+    ),
+    val itemSubtitle: TextStyle = TextStyle(
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Normal,
+    ),
 )
 
 @Immutable

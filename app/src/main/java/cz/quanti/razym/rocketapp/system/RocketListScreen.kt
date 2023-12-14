@@ -130,9 +130,7 @@ private fun RocketListScreen(
 private fun RocketListTitle(@StringRes text: Int) {
     Text(
         text = stringResource(text),
-        style = RocketappTheme.typography.headlineLarge.copy(
-            fontWeight = FontWeight.Bold,
-        ),
+        style = RocketappTheme.typography.headline,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = RocketappTheme.dimens.extraLargePadding),
@@ -211,7 +209,9 @@ private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
         Icon(
             painter = painterResource(id = R.drawable.rocket),
             contentDescription = stringResource(R.string.rocket_icon_content_description),
-            modifier = Modifier.size(RocketappTheme.dimens.listItemIconSize),
+            modifier = Modifier
+                .size(RocketappTheme.dimens.listItemIconSize)
+                .padding(RocketappTheme.dimens.smallPadding),
             tint = RocketappTheme.colors.primary,
         )
 
@@ -220,9 +220,7 @@ private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = rocket.name,
-                style = RocketappTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                ),
+                style = RocketappTheme.typography.itemTitle,
                 color = RocketappTheme.colors.onPrimaryContainer,
             )
 
@@ -260,7 +258,7 @@ private fun FirstFlightText(date: Date?) {
 
     Text(
         text = str,
-        style = RocketappTheme.typography.bodyMedium.copy(
+        style = RocketappTheme.typography.itemSubtitle.copy(
             color = RocketappTheme.colors.secondary,
         ),
     )

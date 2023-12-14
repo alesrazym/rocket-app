@@ -41,7 +41,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -177,9 +176,7 @@ private fun TopBar(
         title = {
             Text(
                 text = title,
-                style = RocketappTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.ExtraBold,
-                ),
+                style = RocketappTheme.typography.topBar,
                 color = RocketappTheme.colors.onBackground,
             )
         },
@@ -201,8 +198,7 @@ private fun TopBar(
                     .clickable { onLaunchClick() }
                     .padding(RocketappTheme.dimens.defaultPadding)
                 ,
-                style = RocketappTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold,
+                style = RocketappTheme.typography.topBar.copy(
                     color = RocketappTheme.colors.actionItem,
                 ),
             )
@@ -312,9 +308,7 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
             ) {
                 Text(
                     text = valueUnit,
-                    style = RocketappTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
+                    style = RocketappTheme.typography.cardParameterValue,
                     color = RocketappTheme.colors.onPrimary,
                     textAlign = TextAlign.Center,
                 )
@@ -326,10 +320,9 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
             ) {
                 Text(
                     text = quantity,
-                    // TODO big step between medium 16sp and large 22sp.
-                    //  Also, for such a small area texts, here will be trouble with translations.
+                    // TODO For such a small area texts, here will be trouble with translations.
                     //  Can be solved by dynamic text size?
-                    style = RocketappTheme.typography.titleLarge,
+                    style = RocketappTheme.typography.cardParameter,
                     color = RocketappTheme.colors.onPrimary,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -465,9 +458,7 @@ private fun Title(text: String) {
             .fillMaxWidth()
             .padding(vertical = RocketappTheme.dimens.defaultPadding),
         text = text,
-        style = RocketappTheme.typography.titleLarge.copy(
-            fontWeight = FontWeight.Bold,
-        ),
+        style = RocketappTheme.typography.titleLarge,
         color = RocketappTheme.colors.onPrimaryContainer,
     )
 }

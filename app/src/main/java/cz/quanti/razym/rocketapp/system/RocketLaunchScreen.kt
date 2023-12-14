@@ -56,7 +56,7 @@ fun RocketLaunchScreen(
                 modifier = Modifier
                     .align(Alignment.Center),
                 text = "Rocket Launch",
-                style = RocketappTheme.typography.titleMedium,
+                style = RocketappTheme.typography.topBar,
             )
         }
     }
