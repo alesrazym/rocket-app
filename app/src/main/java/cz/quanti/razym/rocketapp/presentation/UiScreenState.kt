@@ -1,7 +1,12 @@
 package cz.quanti.razym.rocketapp.presentation
 
+import android.util.MalformedJsonException
+import com.squareup.moshi.JsonDataException
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.Result
+import retrofit2.HttpException
+import java.io.IOException
+import java.util.concurrent.TimeoutException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -52,7 +57,16 @@ suspend fun <T, S> Flow<Result<T>>.update(
 fun <T, S> UiScreenState<S>.update(
     result: Result<T>,
     transform: (T) -> S,
-    errorTransform: (Throwable?) -> UiText = { UiText.StringResource(R.string.unknown_error) },
+    errorTransform: (Throwable?) -> UiText = {
+        when (it) {
+            is JsonDataException -> UiText.StringResource(R.string.error_json)
+            is MalformedJsonException -> UiText.StringResource(R.string.error_json)
+            is TimeoutException -> UiText.StringResource(R.string.error_timeout)
+            is IOException -> UiText.StringResource(R.string.error_io)
+            is HttpException -> UiText.StringResource(R.string.error_server_response)
+            else -> UiText.StringResource(R.string.unknown_error)
+        }
+    },
     loadingMessage: UiText = UiText.StringResource(R.string.loading),
 ) : UiScreenState<S> {
     return when (result) {
