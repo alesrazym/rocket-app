@@ -39,7 +39,7 @@ class RocketDetailViewModel(
                 .update(
                     uiState = _uiState,
                     transform = { data -> data.asRocketDetail().asRocketDetailUiState() },
-                    loadingMessage = UiText.StringResource(R.string.getting_rocket_detail_in_progress)
+                    loadingMessage = UiText.StringResource(R.string.getting_rocket_detail_in_progress),
                 )
         }
     }

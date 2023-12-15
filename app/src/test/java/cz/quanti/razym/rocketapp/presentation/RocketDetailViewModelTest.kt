@@ -1,12 +1,12 @@
 package cz.quanti.razym.rocketapp.presentation
 
 import com.squareup.moshi.Types
+import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.data.RocketData
 import cz.quanti.razym.rocketapp.domain.RocketsRepository
 import cz.quanti.razym.rocketapp.model.asRocketDetail
 import cz.quanti.razym.rocketapp.utils.TestUtils
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldStartWith
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -79,15 +79,12 @@ class RocketDetailViewModelTest {
 
         // Loading state until we let the coroutine in model work with advanceUntilIdle()
         advanceTimeBy(1)
-        viewModel.uiState.value.let {
-            it.loading shouldBe true
-            it.rocket shouldBe null
-        }
+        viewModel.uiState.value is UiScreenState.Loading
 
         advanceUntilIdle()
-        viewModel.uiState.value.let {
-            it.loading shouldBe false
-        }
+        viewModel.uiState.value shouldBe UiScreenState.Data(
+            rocketsData[0].asRocketDetail().asRocketDetailUiState()
+        )
     }
 
     @Test
@@ -110,11 +107,7 @@ class RocketDetailViewModelTest {
         viewModel.fetchRocket(errorId)
 
         advanceUntilIdle()
-        viewModel.uiState.value.let {
-            it.loading shouldBe false
-            it.rocket shouldBe null
-            it.messages.size shouldBe 1
-        }
+        viewModel.uiState.value shouldBe UiScreenState.Error(UiText.StringResource(R.string.unknown_error))
     }
 
     @Test
@@ -145,10 +138,8 @@ class RocketDetailViewModelTest {
         viewModel: RocketDetailViewModel,
         id: String
     ) {
-        viewModel.uiState.value.let {
-            it.loading shouldBe false
-            it.rocket shouldNotBe null
-            it.rocket?.id shouldBe id
-        }
+        val value = viewModel.uiState.value as UiScreenState.Data<RocketDetailUiState>
+        value.refreshing shouldBe false
+        value.data.id shouldBe id
     }
 }

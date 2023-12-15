@@ -44,7 +44,7 @@ sealed interface UiScreenState<out T> {
 suspend fun <T, S> Flow<Result<T>>.update(
     uiState: MutableStateFlow<UiScreenState<S>>,
     transform: (T) -> S,
-    errorTransform: (Throwable?) -> UiText = { UiText.StringResource(R.string.unknown_error) },
+    errorTransform: (Throwable?) -> UiText = defaultErrorTransform(),
     loadingMessage: UiText = UiText.StringResource(R.string.loading),
 ) {
     this.collect {result ->
@@ -57,16 +57,7 @@ suspend fun <T, S> Flow<Result<T>>.update(
 fun <T, S> UiScreenState<S>.update(
     result: Result<T>,
     transform: (T) -> S,
-    errorTransform: (Throwable?) -> UiText = {
-        when (it) {
-            is JsonDataException -> UiText.StringResource(R.string.error_json)
-            is MalformedJsonException -> UiText.StringResource(R.string.error_json)
-            is TimeoutException -> UiText.StringResource(R.string.error_timeout)
-            is IOException -> UiText.StringResource(R.string.error_io)
-            is HttpException -> UiText.StringResource(R.string.error_server_response)
-            else -> UiText.StringResource(R.string.unknown_error)
-        }
-    },
+    errorTransform: (Throwable?) -> UiText = defaultErrorTransform(),
     loadingMessage: UiText = UiText.StringResource(R.string.loading),
 ) : UiScreenState<S> {
     return when (result) {
@@ -96,5 +87,16 @@ fun <T, S> UiScreenState<S>.update(
                     errorMessage = errorTransform(result.exception),
                 )
             }
+    }
+}
+
+private fun defaultErrorTransform(): (Throwable?) -> UiText = {
+    when (it) {
+        is JsonDataException -> UiText.StringResource(R.string.error_json)
+        is MalformedJsonException -> UiText.StringResource(R.string.error_json)
+        is TimeoutException -> UiText.StringResource(R.string.error_timeout)
+        is IOException -> UiText.StringResource(R.string.error_io)
+        is HttpException -> UiText.StringResource(R.string.error_server_response)
+        else -> UiText.StringResource(R.string.unknown_error)
     }
 }
