@@ -31,6 +31,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -58,7 +59,6 @@ import cz.quanti.razym.rocketapp.presentation.RocketDetailUiState
 import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
 import cz.quanti.razym.rocketapp.presentation.StageUiState
 import cz.quanti.razym.rocketapp.presentation.UiScreenState
-import cz.quanti.razym.rocketapp.presentation.UiText
 import cz.quanti.razym.rocketapp.presentation.asStageUiState
 import cz.quanti.razym.rocketapp.ui.RocketAppPreview
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
@@ -123,19 +123,8 @@ fun RocketDetailScreen(
     onLaunchClick: () -> Unit = { },
     onErrorClick: () -> Unit = { },
 ) {
-    val rocket = (uiState as? UiScreenState.Data)?.data
-
-    // TODO Is this the only way to show toasts here? Make local composition? Or scaffold adds it by default?
     val snackbarHostState = remember { SnackbarHostState() }
-    if (uiState is UiScreenState.Data) {
-        if (uiState.errorMessage != UiText.Empty) {
-            // Can get a string in @Composable only...
-            val string = uiState.errorMessage.asString()
-            LaunchedEffect(uiState) {
-                snackbarHostState.showSnackbar(string)
-            }
-        }
-    }
+    val rocket = (uiState as? UiScreenState.Data)?.data
 
     Scaffold(
         snackbarHost = {
@@ -152,16 +141,20 @@ fun RocketDetailScreen(
         },
         contentColor = RocketappTheme.colors.onBackground,
     ) { innerPadding ->
-        StateFullPullToRefresh(
-            uiState = uiState,
-            modifier =
+        CompositionLocalProvider(
+            LocalSnackbar provides snackbarHostState,
+        ) {
+            StateFullPullToRefresh(
+                uiState = uiState,
+                modifier =
                 Modifier
                     .fillMaxSize()
                     .background(RocketappTheme.colors.primaryContainer)
                     .padding(innerPadding),
-            onRefresh = onErrorClick,
-        ) {
-            RocketDetailContent(it)
+                onRefresh = onErrorClick,
+            ) {
+                RocketDetailContent(it)
+            }
         }
     }
 }

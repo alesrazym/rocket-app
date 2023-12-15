@@ -1,9 +1,12 @@
 package cz.quanti.razym.rocketapp.presentation
 
 import android.util.MalformedJsonException
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.squareup.moshi.JsonDataException
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.Result
+import cz.quanti.razym.rocketapp.system.LocalSnackbar
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.concurrent.TimeoutException
@@ -87,6 +90,41 @@ fun <T, S> UiScreenState<S>.update(
                     errorMessage = errorTransform(result.exception),
                 )
             }
+    }
+}
+
+/**
+ * Show message in snackbar.
+ * As per design rules, @Compose function should not result in "Nothing",
+ * so the caller is responsible for checking there is a message to show.
+ */
+@Composable
+fun UiScreenState.Data<*>.ShowMessageInSnackBar() {
+    val string = this.errorMessage.asString()
+    val provider = LocalSnackbar.current
+
+    LaunchedEffect(this) {
+        provider.showSnackbar(string)
+    }
+}
+
+@Composable
+fun UiScreenState.Loading.ShowMessageInSnackBar() {
+    val string = this.message.asString()
+    val provider = LocalSnackbar.current
+
+    LaunchedEffect(this) {
+        provider.showSnackbar(string)
+    }
+}
+
+@Composable
+fun UiScreenState.Error.ShowMessageInSnackBar() {
+    val string = this.errorMessage.asString()
+    val provider = LocalSnackbar.current
+
+    LaunchedEffect(this) {
+        provider.showSnackbar(string)
     }
 }
 

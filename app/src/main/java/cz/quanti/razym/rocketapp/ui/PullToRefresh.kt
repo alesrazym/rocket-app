@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import cz.quanti.razym.rocketapp.presentation.ShowMessageInSnackBar
 import cz.quanti.razym.rocketapp.presentation.UiScreenState
 import cz.quanti.razym.rocketapp.presentation.UiText
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
@@ -60,7 +61,7 @@ fun <T> StateFullPullToRefresh(
 
     PullToRefresh(refreshing = refreshing, onRefresh = onRefresh, modifier = modifier) {
         when (uiState) {
-            is UiScreenState.Error ->
+            is UiScreenState.Error -> {
                 ContentStatusText(
                     text = uiState.errorMessage,
                     onClick = onRefresh,
@@ -69,11 +70,16 @@ fun <T> StateFullPullToRefresh(
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState()),
                 )
-            is UiScreenState.Loading ->
+            }
+            is UiScreenState.Loading -> {
                 ContentStatusText(
                     text = uiState.message,
                 )
+            }
             is UiScreenState.Data -> {
+                if (uiState.errorMessage != UiText.Empty) {
+                    uiState.ShowMessageInSnackBar()
+                }
                 successContent(uiState.data)
             }
         }
