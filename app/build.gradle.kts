@@ -57,6 +57,8 @@ dependencies {
     val composeBom = "2023.10.01"
     val lifecycleVersion = "2.6.2"
 
+    implementation(project(":ui"))
+
     implementation("androidx.activity:activity-compose:1.8.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")

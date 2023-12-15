@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "rocket-app"
 include(":app")
+include(":ui")
