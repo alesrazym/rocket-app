@@ -23,6 +23,8 @@ buildscript {
         classpath(libs.androidx.navigationSafeargsPlugin)
     }
 
+    // TODO: It would be nice to be able to setup kotlinter within convention plugin.
+    //  Configuration with convention plugin is possible for ktlint gradle
     // kotlinter force rules version.
     configurations.classpath {
         resolutionStrategy {
