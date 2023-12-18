@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package cz.quanti.razym.rocketapp.system
 
 import androidx.annotation.DrawableRes
@@ -22,14 +20,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -62,6 +57,7 @@ import cz.quanti.razym.rocketapp.presentation.UiScreenState
 import cz.quanti.razym.rocketapp.presentation.asStageUiState
 import cz.quanti.razym.rocketapp.ui.RocketAppPreview
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
+import cz.quanti.razym.rocketapp.ui.TopBarWithBackIcon
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
 import org.koin.androidx.compose.getViewModel
 
@@ -131,7 +127,7 @@ fun RocketDetailScreen(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopBar(
+            DetailScreenTopBar(
                 // TODO, because we does not persist data, use a placeholder for title
                 //  when not loaded yet nor provided via argument.
                 title = rocket?.name ?: rocketName ?: stringResource(R.string.loading),
@@ -160,30 +156,14 @@ fun RocketDetailScreen(
 }
 
 @Composable
-private fun TopBar(
+private fun DetailScreenTopBar(
     title: String,
     onBackClick: () -> Unit = {},
     onLaunchClick: () -> Unit = {},
 ) {
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = title,
-                style = RocketappTheme.typography.topBar,
-                color = RocketappTheme.colors.onBackground,
-            )
-        },
-        navigationIcon = {
-            Icon(
-                modifier = Modifier
-                    .size(RocketappTheme.dimens.navigationIconSize)
-                    .clickable { onBackClick() }
-                    .padding(RocketappTheme.dimens.defaultPadding)
-                ,
-                painter = painterResource(id = R.drawable.ic_arrow_back),
-                contentDescription = stringResource(R.string.back_to_list_back_arrow),
-            )
-        },
+    TopBarWithBackIcon(
+        title = title,
+        onBackClick = onBackClick,
         actions = {
             Text(
                 text = stringResource(R.string.launch),
@@ -196,14 +176,6 @@ private fun TopBar(
                 ),
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = RocketappTheme.colors.background,
-                scrolledContainerColor = RocketappTheme.colors.background,
-                navigationIconContentColor = RocketappTheme.colors.onBackground,
-                // TODO why does navigation content color works and title and action does not?
-                titleContentColor = RocketappTheme.colors.onBackground,
-                actionIconContentColor = RocketappTheme.colors.actionItem,
-        ),
     )
 }
 
