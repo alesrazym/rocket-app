@@ -3,6 +3,7 @@ kotlinCompilerExtensionVersion = "1.5.5"
 
 coreKtx = "1.9.0"
 appcompat = "1.6.1"
+datetime = "0.4.1"
 material = "1.10.0"
 lifecycleKtx = "2.6.2"
 activityCompose = "1.8.1"
@@ -11,22 +12,28 @@ navigation = "2.7.5"
 
 koin = "3.5.0"
 coil = "2.5.0"
+ktor = "3.0.0-beta-1"
 
 junit = "4.13.2"
 mockk = "1.13.8"
 kotest = "5.7.2"
 coroutines = "1.7.3"
+mockative = "2.0.1"
+resources = "0.4.0"
 
 #// TODO there is more recent version https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android/1.9.21
 #//  and v2 will be soon. Now, need 1.9.20 as per latest compose 1.5.5 works with it
 androidGradlePlugin = "8.2.0"
-androidKotlin = "1.9.20"
+kotlin = "1.9.20"
+ksp = "1.9.20-1.0.14"
 
 dependencyAnalysis = "1.26.0"
 detekt = "1.23.4"
+# Keep ktlint version to match ktlint IDEA plugin's ktlint version
 ktlint = "1.0.1"
 # ktlintGradle = "12.0.2"
 kotlinterGradle = "4.1.0"
+# Keep compose rules version to match ktlint IDEA plugin's compes rules version
 composeRules = "0.3.8"
 
 [libraries]
@@ -44,18 +51,29 @@ androidx-composeMaterial = { module = "androidx.compose.material:material" }
 androidx-composeMaterial3 = { module = "androidx.compose.material3:material3" }
 
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 
+koinCore = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koinAndroid = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koinAndroidCompose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 # As we are not going to test UI, we use Coil default singleton.
 # If we need DI, use `io.coil-kt:coil-base` instead and configure loader(s) ourselves.
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
+test-mockative = { module = "io.mockative:mockative", version.ref = "mockative" }
+test-mockativeProcessor = { module = "io.mockative:mockative-processor", version.ref = "mockative" }
+test-resources = { module = "com.goncalossilva:resources", version.ref = "resources" }
 test-junit4 = { module = "junit:junit", version.ref = "junit" }
 test-koin-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
 test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+test-kotlin = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
 detekt-rules = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
 # detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
@@ -73,15 +91,19 @@ ktlint-ruleset-standard = { module = "com.pinterest.ktlint:ktlint-ruleset-standa
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "androidKotlin" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 ktlint-kotlinter = { group = "org.jmailen.gradle", name = "kotlinter-gradle", version.ref = "kotlinterGradle" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref="androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref="androidGradlePlugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref="androidKotlin" }
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref="androidKotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref= "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref= "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref= "kotlin" }
+
+ksp = { id = "com.google.devtools.ksp", version.ref="ksp" }
+
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 # ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
@@ -92,5 +114,6 @@ compose = ["androidx-activityCompose", "androidx-composeUi", "androidx-composeUi
     "androidx-composeUiToolingPreview", "androidx-composeMaterial3", "androidx-composeMaterial",
     "androidx-navigation-compose", "androidx-lifecycleCompose"]
 koin = ["koinAndroid", "koinAndroidCompose"]
+ktor-multiplatform = ["ktor-client-core", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json"]
 
 test = ["test-junit4", "test-koin-junit4", "test-mockk", "test-kotest", "test-coroutines"]
