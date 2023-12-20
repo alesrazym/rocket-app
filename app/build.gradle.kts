@@ -27,14 +27,14 @@ android {
 }
 
 dependencies {
-    // With TYPESAFE_PROJECT_ACCESSORS, we can access projects in dependencies using e.g.
+    // With TYPESAFE_PROJECT_ACCESSORS
+    // instead of `implementation(project(":ui"))`
+    // we can access projects in dependencies as follows:
     implementation(projects.ui)
-    // instead of
-    // implementation(project(":ui"))
     implementation(projects.rocketRepository)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
     implementation(libs.koinAndroidCompose)
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
+    implementation(libs.kotlinx.datetime)
 }
