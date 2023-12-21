@@ -132,8 +132,8 @@ private fun defaultErrorTransform(): (Throwable?) -> UiText = {
 //        is JsonDataException -> UiText.StringResource(R.string.error_json)
         is MalformedJsonException -> UiText.StringResource(R.string.error_json)
         is TimeoutException -> UiText.StringResource(R.string.error_timeout)
-        is IOException -> UiText.StringResource(R.string.error_io)
         is HttpException -> UiText.StringResource(R.string.error_server_response)
+        is IOException -> UiText.StringResource(R.string.error_io)
         else -> UiText.StringResource(R.string.unknown_error)
     }
 }

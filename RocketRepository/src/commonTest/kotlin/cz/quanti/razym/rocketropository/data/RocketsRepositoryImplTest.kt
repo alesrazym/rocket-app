@@ -18,7 +18,7 @@ class RocketsRepositoryImplTest {
     }
 
     private val rocketsData: List<RocketData> = json.decodeFromString(
-        Resource("src/commonTest/resources/rockets.json").readText()
+        Resource(path = "src/commonTest/resources/rockets.json").readText()
     )
 
     @Mock
