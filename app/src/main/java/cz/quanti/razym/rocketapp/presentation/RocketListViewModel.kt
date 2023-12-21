@@ -43,7 +43,7 @@ class RocketListViewModel(
                 .update(
                     uiState = _uiState,
                     transform = { data -> data.map { it.asRocket() } },
-                    loadingMessage = UiText.StringResource(R.string.rockets_loading)
+                    loadingMessage = UiText.StringResource(R.string.rockets_loading),
                 )
         }
     }
