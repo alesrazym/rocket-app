@@ -31,17 +31,9 @@ gradlePlugin {
             id = "quanti.android.library"
             implementationClass = "plugins.AndroidLibConventionPlugin"
         }
-        register("kmpLib") {
-            id = "quanti.kmp.library"
-            implementationClass = "plugins.KmpLibConventionPlugin"
-        }
-        register("androidAppBase") {
-            id = "quanti.android.application.base"
-            implementationClass = "plugins.AndroidAppBaseDependenciesConventionPlugin"
-        }
-        register("androidLibBase") {
-            id = "quanti.android.library.base"
-            implementationClass = "plugins.AndroidLibBaseDependenciesConventionPlugin"
+        register("androidBase") {
+            id = "quanti.android.base"
+            implementationClass = "plugins.AndroidBaseDependenciesConventionPlugin"
         }
         register("androidAppCompose") {
             id = "quanti.android.application.compose"
@@ -58,6 +50,10 @@ gradlePlugin {
         register("androidKtlint") {
             id = "quanti.android.ktlint"
             implementationClass = "plugins.KtlintConventionPlugin"
+        }
+        register("kmpLib") {
+            id = "quanti.kmp.library"
+            implementationClass = "plugins.KmpLibConventionPlugin"
         }
     }
 }

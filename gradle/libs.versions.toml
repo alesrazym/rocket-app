@@ -111,6 +111,16 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 # ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 kotlinterGradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinterGradle" }
 
+# Dependencies of the included build-logic
+quanti-android-application = { id = "quanti.android.application", version="unspecified" }
+quanti-android-library = { id = "quanti.android.library", version="unspecified" }
+quanti-android-base = { id = "quanti.android.base", version="unspecified" }
+quanti-android-application-compose = { id = "quanti.android.application.compose", version="unspecified" }
+quanti-android-library-compose = { id = "quanti.android.library.compose", version="unspecified" }
+quanti-android-detekt = { id = "quanti.android.detekt", version="unspecified" }
+quanti-android-ktlint = { id = "quanti.android.ktlint", version="unspecified" }
+quanti-kmp-library = { id = "quanti.kmp.library", version="unspecified" }
+
 [bundles]
 compose = ["androidx-activityCompose", "androidx-composeUi", "androidx-composeUiGraphics",
     "androidx-composeUiToolingPreview", "androidx-composeMaterial3", "androidx-composeMaterial",

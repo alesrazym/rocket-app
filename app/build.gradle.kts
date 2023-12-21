@@ -1,11 +1,11 @@
 import config.AppBuildType
 
 plugins {
-    id("quanti.android.application")
-    id("quanti.android.application.base")
-    id("quanti.android.application.compose")
-    id("quanti.android.detekt")
-    id("quanti.android.ktlint")
+    alias(libs.plugins.quanti.android.application)
+    alias(libs.plugins.quanti.android.base)
+    alias(libs.plugins.quanti.android.application.compose)
+    alias(libs.plugins.quanti.android.detekt)
+    alias(libs.plugins.quanti.android.ktlint)
 }
 
 android {

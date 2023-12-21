@@ -1,7 +1,7 @@
 plugins {
-    id("quanti.kmp.library")
-    id("quanti.android.detekt")
-    id("quanti.android.ktlint")
+    alias(libs.plugins.quanti.kmp.library)
+    alias(libs.plugins.quanti.android.detekt)
+    alias(libs.plugins.quanti.android.ktlint)
 }
 
 kotlin {
