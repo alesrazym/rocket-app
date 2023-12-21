@@ -4,19 +4,15 @@ plugins {
     alias(libs.plugins.kover)
 }
 
-kotlin {
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach {
-        it.binaries.framework {
-            baseName = "RocketRepository"
-            isStatic = true
-        }
-    }
-}
-
 android {
     namespace = "cz.quanti.razym.rocketrepository"
+}
+
+multiplatformSwiftPackage {
+    packageName("RocketRepository")
+    swiftToolsVersion("5.3")
+    targetPlatforms {
+        iOS { v("13") }
+    }
+    outputDirectory(File(rootDir, "/"))
 }

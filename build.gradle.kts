@@ -6,7 +6,8 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
-
+    alias(libs.plugins.swiftpackage) apply false
+    alias(libs.plugins.nativecoroutines) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.dependencyAnalysis)
     alias(libs.plugins.kover)

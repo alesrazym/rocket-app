@@ -23,6 +23,8 @@ class KmpLibConventionPlugin : Plugin<Project> {
                 apply(pluginId("kotlin-multiplatform"))
                 apply(pluginId("kotlin-serialization"))
                 apply(pluginId("ksp"))
+                apply(pluginId("swiftpackage"))
+                apply(pluginId("nativecoroutines"))
             }
 
             extensions.configure<LibraryExtension> {
@@ -52,6 +54,17 @@ class KmpLibConventionPlugin : Plugin<Project> {
                     publishLibraryVariants("release", "debug")
                 }
 
+                listOf(
+                    iosX64(),
+                    iosArm64(),
+                    iosSimulatorArm64(),
+                ).forEach {
+                    it.binaries.framework {
+                        baseName = "RocketRepository"
+                        isStatic = true
+                    }
+                }
+
                 // Alternate fix of https://youtrack.jetbrains.com/issue/KT-60734
                 // applyDefaultHierarchyTemplate is indeed necessary if you're calling dependsOn manually in your buildscript
                 //    applyDefaultHierarchyTemplate()
@@ -64,6 +77,11 @@ class KmpLibConventionPlugin : Plugin<Project> {
                     androidSourceSet(libs)
                     iosSourceSet(libs)
                     testSourceSet(libs)
+
+                    all {
+                        // Opt-in for com.rickclephas.kmp.nativecoroutines
+                        languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
+                    }
                 }
             }
         }
