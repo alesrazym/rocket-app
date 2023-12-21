@@ -36,6 +36,7 @@ ktlint = "1.0.1"
 kotlinterGradle = "4.1.0"
 # Keep compose rules version to match ktlint IDEA plugin's compes rules version
 composeRules = "0.3.8"
+kover = "0.7.5"
 
 [libraries]
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -110,6 +111,7 @@ dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.re
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 # ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 kotlinterGradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinterGradle" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 
 # Dependencies of the included build-logic
 quanti-android-application = { id = "quanti.android.application", version="unspecified" }

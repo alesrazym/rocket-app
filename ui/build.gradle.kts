@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.quanti.android.library.compose)
     alias(libs.plugins.quanti.android.detekt)
     alias(libs.plugins.quanti.android.ktlint)
+    alias(libs.plugins.kover)
 }
 
 android {

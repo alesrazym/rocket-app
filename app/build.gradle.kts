@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.quanti.android.application.compose)
     alias(libs.plugins.quanti.android.detekt)
     alias(libs.plugins.quanti.android.ktlint)
+    alias(libs.plugins.kover)
 }
 
 android {
@@ -38,4 +39,60 @@ dependencies {
     implementation(libs.android.material)
     implementation(libs.koinAndroidCompose)
     implementation(libs.kotlinx.datetime)
+}
+
+/*
+ * Kover configs
+ */
+
+dependencies {
+    /**
+     * Use artifacts from 'lib' project.
+     */
+    kover(projects.ui)
+    kover(projects.rocketRepository)
+}
+
+koverReport {
+    // filters for all report types of all build variants
+    filters {
+        excludes {
+            classes(
+                "*Fragment",
+                "*Fragment\$*",
+                "*Activity",
+                "*Activity\$*",
+                "*.databinding.*",
+                "*.BuildConfig",
+            )
+        }
+    }
+
+    defaults {
+        /**
+         * Tests, sources, classes, and compilation tasks of the 'debug' build variant will be included in the default reports.
+         * Thus, information from the 'debug' variant will be included in the default report for this project and any project that specifies this project as a dependency.
+         *
+         * Since the report already contains classes from the JVM target, they will be supplemented with classes from 'debug' build variant of Android target.
+         */
+        mergeWith("debug")
+    }
+
+    androidReports("release") {
+        // filters for all report types only of 'release' build type
+        filters {
+            excludes {
+                classes(
+                    "*Fragment",
+                    "*Fragment\$*",
+                    "*Activity",
+                    "*Activity\$*",
+                    "*.databinding.*",
+                    "*.BuildConfig",
+                    // excludes debug classes
+                    "*.DebugUtil",
+                )
+            }
+        }
+    }
 }
