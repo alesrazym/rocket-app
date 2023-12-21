@@ -10,10 +10,10 @@ import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+import kotlinx.serialization.json.Json
 
 val rocketRepositoryModule =
     module {
@@ -28,6 +28,10 @@ val rocketRepositoryModule =
 
 private fun provideJson(): Json {
     return Json {
+        // From mobile-assignment-kmm
+        prettyPrint = true
+        isLenient = true
+
         ignoreUnknownKeys = true
         useAlternativeNames = true
     }
