@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.asResult
+import cz.quanti.razym.rocketropository.domain.GetRocketsUseCase
+import cz.quanti.razym.rocketropository.domain.invoke
 import cz.quanti.razym.rocketapp.model.Rocket
 import cz.quanti.razym.rocketropository.data.RocketData
-import cz.quanti.razym.rocketropository.domain.RocketsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ import kotlinx.datetime.toLocalDate
 import java.util.Date
 
 class RocketListViewModel(
-    private val repo: RocketsRepository,
+    private val getRocketsUseCase: GetRocketsUseCase,
 ) : ViewModel() {
     private var initializeCalled = false
     private val _uiState: MutableStateFlow<UiScreenState<List<Rocket>>> =
@@ -37,7 +38,7 @@ class RocketListViewModel(
 
     fun fetchRockets() {
         viewModelScope.launch {
-            repo.getRockets()
+            getRocketsUseCase()
                 .asResult()
                 .update(
                     uiState = _uiState,
@@ -51,7 +52,7 @@ class RocketListViewModel(
 fun RocketData.asRocket(): Rocket {
     return Rocket(
         this.name,
-        // TODO temporary java Date, maybe incorrect zone convert...
+        // TODO: temporary java Date, maybe incorrect zone convert...
         Date(this.firstFlight.toLocalDate().atStartOfDayIn(
             TimeZone.UTC).toEpochMilliseconds()),
         this.id,

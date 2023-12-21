@@ -3,6 +3,8 @@ package cz.quanti.razym.rocketropository.di
 import cz.quanti.razym.rocketropository.data.RocketsRepositoryImpl
 import cz.quanti.razym.rocketropository.data.SpaceXApi
 import cz.quanti.razym.rocketropository.data.SpaceXApiImpl
+import cz.quanti.razym.rocketropository.domain.GetRocketUseCase
+import cz.quanti.razym.rocketropository.domain.GetRocketsUseCase
 import cz.quanti.razym.rocketropository.domain.RocketsRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -13,13 +15,16 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val rocketRepositoryModule = module {
-    single { provideJson() }
-    single { provideClientConfig(get()) }
-    single { provideClient(get()) }
-    singleOf(::SpaceXApiImpl) { bind<SpaceXApi>() }
-    singleOf(::RocketsRepositoryImpl) { bind<RocketsRepository>() }
-}
+val rocketRepositoryModule =
+    module {
+        single { provideJson() }
+        single { provideClientConfig(get()) }
+        single { provideClient(get()) }
+        singleOf(::SpaceXApiImpl) { bind<SpaceXApi>() }
+        singleOf(::RocketsRepositoryImpl) { bind<RocketsRepository>() }
+        factory { GetRocketsUseCase { get<RocketsRepository>().getRockets() } }
+        factory { GetRocketUseCase { get<RocketsRepository>().getRocket(it) } }
+    }
 
 private fun provideJson(): Json {
     return Json {
