@@ -47,7 +47,7 @@ import cz.quanti.razym.rocketapp.ui.PreviewCommon.PREVIEW_WIDTH
 import cz.quanti.razym.rocketapp.ui.RocketAppPreview
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import java.util.Date
 import java.util.Locale
 import kotlinx.datetime.TimeZone
@@ -65,7 +65,7 @@ fun NavGraphBuilder.rocketListScreen(
     onRocketItemClick: (rocket: Rocket) -> Unit = {},
 ) {
     composable(RocketListScreen.route) {
-        val viewModel: RocketListViewModel = getViewModel()
+        val viewModel: RocketListViewModel = koinViewModel()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
         LaunchedEffect(Unit) {

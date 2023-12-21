@@ -59,7 +59,7 @@ import cz.quanti.razym.rocketapp.ui.RocketAppPreview
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.TopBarWithBackIcon
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 private const val ROCKET_DETAIL = "rocketDetail"
 private const val ROCKET_ID = "rocketId"
@@ -84,7 +84,7 @@ fun NavGraphBuilder.rocketDetailScreen(
         route = RocketDetailScreen.route,
         arguments = RocketDetailScreen.navArguments,
     ) { backStackEntry ->
-        val viewModel: RocketDetailViewModel = getViewModel()
+        val viewModel: RocketDetailViewModel = koinViewModel()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
         val rocketId = backStackEntry.arguments!!.getString(ROCKET_ID)!!

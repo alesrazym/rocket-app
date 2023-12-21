@@ -1,16 +1,16 @@
 [versions]
-kotlinCompilerExtensionVersion = "1.5.5"
+kotlinCompilerExtensionVersion = "1.5.7"
 
-coreKtx = "1.9.0"
+coreKtx = "1.12.0"
 appcompat = "1.6.1"
 datetime = "0.4.1"
-material = "1.10.0"
+material = "1.11.0"
 lifecycleKtx = "2.6.2"
-activityCompose = "1.8.1"
+activityCompose = "1.8.2"
 composeBom = "2023.10.01"
-navigation = "2.7.5"
+navigation = "2.7.6"
 
-koin = "3.5.0"
+koin = "3.5.3"
 coil = "2.5.0"
 ktor = "3.0.0-beta-1"
 
@@ -24,8 +24,8 @@ resources = "0.4.0"
 #// TODO there is more recent version https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android/1.9.21
 #//  and v2 will be soon. Now, need 1.9.20 as per latest compose 1.5.5 works with it
 androidGradlePlugin = "8.2.0"
-kotlin = "1.9.20"
-ksp = "1.9.20-1.0.14"
+kotlin = "1.9.21"
+ksp = "1.9.21-1.0.16"
 
 dependencyAnalysis = "1.26.0"
 detekt = "1.23.4"
