@@ -1,20 +1,17 @@
 package cz.quanti.razym.rocketapp.presentation
 
+import android.net.http.HttpException
 import android.util.MalformedJsonException
-import com.squareup.moshi.JsonDataException
 import cz.quanti.razym.rocketapp.R
+import cz.quanti.razym.rocketapp.utils.rocketsData
 import cz.quanti.razym.rocketropository.data.RocketData
 import cz.quanti.razym.rocketropository.domain.RocketsRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
-import okhttp3.internal.http.RealResponseBody
-import okio.Buffer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
 import java.util.Date
 import java.util.concurrent.TimeoutException
@@ -32,11 +29,7 @@ import kotlinx.coroutines.test.setMain
 @OptIn(ExperimentalCoroutinesApi::class)
 class RocketListViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
-    private val rocketsData = listOf<RocketData>()
-/*
-        TestUtils.loadJsonResource<List<RocketData>>("rockets.json",
-            Types.newParameterizedType(List::class.java, RocketData::class.java))
-*/
+    private val rocketsData: List<RocketData> = rocketsData()
 
     @Before
     fun setup() {
@@ -56,7 +49,7 @@ class RocketListViewModelTest {
 
         model.id shouldBe "5e9d0d95eda69955f709d1eb"
         model.name shouldBe "Falcon 1"
-        model.firstFlight shouldBe Date(1143154800L * 1000)
+        model.firstFlight shouldBe Date(1143158400L * 1000)
     }
 
     @Test
@@ -103,17 +96,6 @@ class RocketListViewModelTest {
     }
 
     @Test
-    fun `uiState should be error on JsonDataException`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { throw JsonDataException() }
-        }
-        val viewModel = rocketListViewModel(repository)
-
-        advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Error(UiText.StringResource(R.string.error_json))
-    }
-
-    @Test
     fun `uiState should be error on MalformedJsonException`() = runTest(testDispatcher) {
         val repository = mockk<RocketsRepository> {
             coEvery { getRockets() } returns flow { throw MalformedJsonException("") }
@@ -149,8 +131,7 @@ class RocketListViewModelTest {
     @Test
     fun `uiState should be error on HttpException`() = runTest(testDispatcher) {
         val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { throw HttpException(Response.error<Nothing>(
-                400, RealResponseBody(null, 0L, Buffer()))) }
+            coEvery { getRockets() } returns flow { throw HttpException("400", null) }
         }
         val viewModel = rocketListViewModel(repository)
 

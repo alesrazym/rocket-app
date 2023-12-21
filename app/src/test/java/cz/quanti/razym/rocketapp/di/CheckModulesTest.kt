@@ -8,6 +8,11 @@ import org.koin.test.verify.verify
 class CheckModulesTest {
     @Test
     fun checkAllModules() {
-        rocketModule.verify()
+        rocketModule.verify(
+            extraTypes =
+                listOf(
+                    cz.quanti.razym.rocketropository.domain.RocketsRepository::class,
+                ),
+        )
     }
 }

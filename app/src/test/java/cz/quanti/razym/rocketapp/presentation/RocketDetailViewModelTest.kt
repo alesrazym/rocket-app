@@ -1,11 +1,9 @@
 package cz.quanti.razym.rocketapp.presentation
 
-import com.squareup.moshi.Types
 import cz.quanti.razym.rocketapp.R
-import cz.quanti.razym.rocketapp.data.RocketData
-import cz.quanti.razym.rocketapp.domain.RocketsRepository
 import cz.quanti.razym.rocketapp.model.asRocketDetail
-import cz.quanti.razym.rocketapp.utils.TestUtils
+import cz.quanti.razym.rocketapp.utils.rocketsData
+import cz.quanti.razym.rocketropository.domain.RocketsRepository
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import io.mockk.coEvery
@@ -27,15 +25,10 @@ import kotlinx.coroutines.test.setMain
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RocketDetailViewModelTest {
-
     private val testDispatcher = StandardTestDispatcher()
     private val validIds = listOf("5e9d0d95eda69955f709d1eb", "5e9d0d95eda69973a809d1ec")
     private val errorId = "non-existing-id"
-    private val rocketsData = listOf<RocketData>()
-/*
-        TestUtils.loadJsonResource<List<RocketData>>("rockets.json",
-            Types.newParameterizedType(List::class.java, RocketData::class.java))
-*/
+    private val rocketsData = rocketsData()
     private val repository = createRepository()
 
     @Before
