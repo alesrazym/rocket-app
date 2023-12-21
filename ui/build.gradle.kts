@@ -1,8 +1,8 @@
 plugins {
-    id("quanti.android.library")
-    id("quanti.android.library.base")
-    id("quanti.android.library.compose")
-    id("quanti.android.detekt")
+    alias(libs.plugins.quanti.android.library)
+    alias(libs.plugins.quanti.android.base)
+    alias(libs.plugins.quanti.android.library.compose)
+    alias(libs.plugins.quanti.android.detekt)
 }
 
 android {

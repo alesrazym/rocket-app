@@ -12,7 +12,7 @@ plugins {
 }
 
 dependencyAnalysis {
-    // TODO configuration goes here.
+    // TODO: configuration goes here.
     //  Also, configure when to run `buildHealth` task.
     //  Now, this plugin is here as a reminder it exists and may be worth of use.
 }
