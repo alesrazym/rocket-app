@@ -32,9 +32,9 @@ class RocketActivity : AppCompatActivity() {
     private fun RocketNavHost(navController: NavHostController) {
         NavHost(navController = navController, startDestination = RocketListScreen.route) {
             rocketListScreen(
-                onRocketItemClick = { rocket ->
-                    navController.navigateToRocketDetail(rocket.id, rocket.name, getKoin().get())
-                }
+                onRocketItemClick = { rocket, name ->
+                    navController.navigateToRocketDetail(rocket.id, name, getKoin().get())
+                },
             )
             rocketDetailScreen(
                 onBackClick = { navController.popBackStack() },

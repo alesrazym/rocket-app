@@ -64,13 +64,41 @@ sealed class UiText {
         }
     }
 
+    // TODO: This may be tested.
     @Composable
     fun asString(): String {
         return when (this) {
-            Empty -> ""
-            is DynamicString -> value
-            is StringResource -> stringResource(resId, *args)
-            is PluralResource -> pluralStringResource(resId, count, *args)
+            Empty -> {
+                ""
+            }
+            is DynamicString -> {
+                value
+            }
+            is StringResource -> {
+                stringResource(resId, *processArgs(args))
+            }
+            is PluralResource -> {
+                pluralStringResource(resId, count, *processArgs(args))
+            }
         }
+    }
+
+    @Composable
+    private fun processArgs(args: Array<out Any>): Array<out Any> {
+        if (args.any { it is UiText }) {
+            return args.map { arg ->
+                if (arg is UiText) arg.asString() else arg
+            }.toTypedArray()
+        }
+
+        return args
+    }
+}
+
+fun String?.asUiText(): UiText {
+    return if (this.isNullOrEmpty()) {
+        UiText.Empty
+    } else {
+        UiText.DynamicString(this)
     }
 }
