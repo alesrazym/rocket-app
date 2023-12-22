@@ -159,7 +159,7 @@ class RocketListViewModelTest {
     }
 
     private fun rocketListViewModel(repository: RocketsRepository): RocketListViewModel {
-        val viewModel = RocketListViewModel(repository)
+        val viewModel = RocketListViewModel { repository.getRockets() }
         viewModel.initialize()
         return viewModel
     }
