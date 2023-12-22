@@ -3,6 +3,7 @@ package cz.quanti.razym.rocketapp.presentation
 import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.model.asRocketDetail
 import cz.quanti.razym.rocketapp.utils.rocketsData
+import cz.quanti.razym.rocketropository.domain.GetRocketUseCase
 import cz.quanti.razym.rocketropository.domain.RocketsRepository
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
@@ -30,6 +31,7 @@ class RocketDetailViewModelTest {
     private val errorId = "non-existing-id"
     private val rocketsData = rocketsData()
     private val repository = createRepository()
+    private val useCase = GetRocketUseCase { id -> repository.getRocket(id) }
 
     @Before
     fun setup() {
@@ -69,7 +71,7 @@ class RocketDetailViewModelTest {
         // repository is mocked
         val id = validIds[0]
 
-        val viewModel = RocketDetailViewModel(repository)
+        val viewModel = RocketDetailViewModel(useCase)
         viewModel.fetchRocket(id)
 
         // Loading state until we let the coroutine in model work with advanceUntilIdle()
@@ -87,7 +89,7 @@ class RocketDetailViewModelTest {
         // repository is mocked
         val id = validIds[0]
 
-        val viewModel = RocketDetailViewModel(repository)
+        val viewModel = RocketDetailViewModel(useCase)
         viewModel.fetchRocket(id)
 
         advanceUntilIdle()
@@ -98,7 +100,7 @@ class RocketDetailViewModelTest {
     fun `uiState should be error`() = runTest(testDispatcher) {
         // repository is mocked
 
-        val viewModel = RocketDetailViewModel(repository)
+        val viewModel = RocketDetailViewModel(useCase)
         viewModel.fetchRocket(errorId)
 
         advanceUntilIdle()
@@ -109,7 +111,7 @@ class RocketDetailViewModelTest {
     fun `uiState should be updated after fetch`() = runTest(testDispatcher) {
         // repository is mocked
 
-        val viewModel = RocketDetailViewModel(repository)
+        val viewModel = RocketDetailViewModel(useCase)
 
         viewModel.fetchRocket(validIds[0])
         advanceUntilIdle()

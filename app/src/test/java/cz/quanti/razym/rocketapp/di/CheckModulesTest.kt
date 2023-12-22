@@ -12,6 +12,8 @@ class CheckModulesTest {
             extraTypes =
                 listOf(
                     cz.quanti.razym.rocketropository.domain.RocketsRepository::class,
+                    cz.quanti.razym.rocketropository.domain.GetRocketsUseCase::class,
+                    cz.quanti.razym.rocketropository.domain.GetRocketUseCase::class,
                 ),
         )
     }
