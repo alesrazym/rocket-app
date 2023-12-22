@@ -32,8 +32,8 @@ dependencies {
     // With TYPESAFE_PROJECT_ACCESSORS
     // instead of `implementation(project(":ui"))`
     // we can access projects in dependencies as follows:
-    implementation(projects.ui)
-    implementation(projects.rocketRepository)
+    implementation(projects.android.ui)
+    implementation(projects.shared.rocket)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
@@ -48,8 +48,8 @@ dependencies {
     /**
      * Use artifacts from 'lib' project.
      */
-    kover(projects.ui)
-    kover(projects.rocketRepository)
+    kover(projects.android.ui)
+    kover(projects.shared.rocket)
 }
 
 koverReport {

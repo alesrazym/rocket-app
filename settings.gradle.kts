@@ -23,9 +23,9 @@ rootProject.name = "rocket-app"
 //  `implementation(projects.ui)`
 // See https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:type-safe-project-accessors.
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":app")
-include(":RocketRepository")
-include(":ui")
+include("android:app")
+include("android:ui")
+include("shared:rocket")
 
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
     "Incompatible Java, need to run with Java 17, but found ${JavaVersion.current()}\n\n" +
