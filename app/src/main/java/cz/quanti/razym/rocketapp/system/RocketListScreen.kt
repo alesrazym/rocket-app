@@ -36,20 +36,20 @@ import cz.quanti.razym.rocketapp.model.Rocket
 import cz.quanti.razym.rocketapp.presentation.RocketListViewModel
 import cz.quanti.razym.rocketapp.presentation.UiScreenState
 import cz.quanti.razym.rocketapp.presentation.UiText
+import cz.quanti.razym.rocketapp.presentation.asFirstFlightUiText
+import cz.quanti.razym.rocketapp.presentation.asUiText
 import cz.quanti.razym.rocketapp.ui.ContentStatusText
 import cz.quanti.razym.rocketapp.ui.PreviewCommon.PREVIEW_WIDTH
 import cz.quanti.razym.rocketapp.ui.PreviewRocketApp
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.theme.RocketAppTheme
 import cz.quanti.razym.rocketapp.util.toDate
-import cz.quanti.razym.rocketapp.util.toLocalString
 import org.koin.androidx.compose.koinViewModel
-import java.util.Date
 
 data object RocketListScreen : Screen("rocketList")
 
 fun NavGraphBuilder.rocketListScreen(
-    onRocketItemClick: (rocket: Rocket) -> Unit = {},
+    onRocketItemClick: (rocket: Rocket, name: String) -> Unit = { _, _ -> },
 ) {
     composable(RocketListScreen.route) {
         val viewModel: RocketListViewModel = koinViewModel()
@@ -71,7 +71,7 @@ fun NavGraphBuilder.rocketListScreen(
 private fun RocketListScreen(
     uiState: UiScreenState<List<Rocket>>,
     onRefresh: () -> Unit,
-    onItemClick: (Rocket) -> Unit = {},
+    onItemClick: (rocket: Rocket, name: String) -> Unit = { _, _ -> },
 ) {
     Surface(
         modifier = Modifier
@@ -112,7 +112,7 @@ private fun RocketListTitle(@StringRes text: Int) {
 private fun RocketListBox(
     uiState: UiScreenState<List<Rocket>>,
     onRefresh: () -> Unit,
-    onItemClick: (Rocket) -> Unit = {},
+    onItemClick:  (rocket: Rocket, name: String) -> Unit = { _, _ -> },
 ) {
     StateFullPullToRefresh(
         uiState = uiState,
@@ -126,7 +126,10 @@ private fun RocketListBox(
 }
 
 @Composable
-private fun RocketList(rockets: List<Rocket>, onItemClick: (Rocket) -> Unit = {}) {
+private fun RocketList(
+    rockets: List<Rocket>,
+    onItemClick:  (rocket: Rocket, name: String) -> Unit = { _, _ -> },
+) {
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
@@ -161,13 +164,17 @@ private fun RocketList(rockets: List<Rocket>, onItemClick: (Rocket) -> Unit = {}
 }
 
 @Composable
-private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
+private fun RocketListItem(
+    rocket: Rocket,
+    onClick:  (rocket: Rocket, name: String) -> Unit = { _, _ -> },
+) {
+    val name = rocket.name.asString()
     Row(
         modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
             // Note that order matters, so apply click before padding.
-            .clickable { onClick(rocket) }
+            .clickable { onClick(rocket, name) }
             .padding(
                 horizontal = RocketAppTheme.dimens.extraLargePadding,
                 vertical = RocketAppTheme.dimens.defaultPadding,
@@ -188,14 +195,19 @@ private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = rocket.name,
+                text = rocket.name.asString(),
                 style = RocketAppTheme.typography.itemTitle,
                 color = RocketAppTheme.colors.onPrimaryContainer,
             )
 
 //            Spacer(modifier = Modifier.height(RocketAppTheme.dimens.smallSpacerSize))
 
-            FirstFlightText(date = rocket.firstFlight)
+            Text(
+                text = rocket.firstFlight.asString(),
+                style = RocketAppTheme.typography.itemSubtitle.copy(
+                    color = RocketAppTheme.colors.secondary,
+                ),
+            )
         }
 
         Spacer(modifier = Modifier.width(RocketAppTheme.dimens.defaultSpacerSize))
@@ -211,28 +223,6 @@ private fun RocketListItem(rocket: Rocket, onClick: (Rocket) -> Unit) {
     }
 }
 
-@Composable
-private fun FirstFlightText(date: Date?) {
-    val str = if (date == null) {
-        stringResource(
-            R.string.first_flight,
-            stringResource(R.string.first_flight_unknown)
-        )
-    } else {
-        stringResource(
-            R.string.first_flight,
-            date.toLocalString(),
-        )
-    }
-
-    Text(
-        text = str,
-        style = RocketAppTheme.typography.itemSubtitle.copy(
-            color = RocketAppTheme.colors.secondary,
-        ),
-    )
-}
-
 @PreviewRocketApp
 @Composable
 private fun RocketListScreenPreview(
@@ -242,7 +232,7 @@ private fun RocketListScreenPreview(
         RocketListScreen(
             uiState = rockets,
             onRefresh = { },
-            onItemClick = { },
+            onItemClick = { _, _ -> },
         )
     }
 }
@@ -253,7 +243,7 @@ private fun RocketListItemPreview() {
     RocketAppTheme {
         RocketListItem(
             rocket = previewRocket(),
-            onClick = {},
+            onClick = { _, _ -> },
         )
     }
 }
@@ -303,7 +293,7 @@ private fun previewRockets(num: Int = 9) = List(num) {
 }
 
 private fun previewRocket(num: Int = 9) = Rocket(
-    "Falcon $num",
-    "2010-06-04".toDate(),
+    "Falcon $num".asUiText(),
+    "2010-06-04".toDate().asFirstFlightUiText(),
     "falcon_$num",
 )

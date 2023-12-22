@@ -1,10 +1,10 @@
 package cz.quanti.razym.rocketapp.model
 
-import java.util.Date
+import cz.quanti.razym.rocketapp.presentation.UiText
 
 class Rocket(
-    val name: String,
-    val firstFlight: Date?,
+    val name: UiText,
+    val firstFlight: UiText,
     val id: String
 ) {
     override fun equals(other: Any?): Boolean {

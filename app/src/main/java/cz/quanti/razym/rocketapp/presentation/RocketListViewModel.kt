@@ -7,9 +7,11 @@ import cz.quanti.razym.rocketapp.R
 import cz.quanti.razym.rocketapp.asResult
 import cz.quanti.razym.rocketapp.model.Rocket
 import cz.quanti.razym.rocketapp.util.toDate
+import cz.quanti.razym.rocketapp.util.toLocalString
 import cz.quanti.razym.rocketropository.data.RocketData
 import cz.quanti.razym.rocketropository.domain.GetRocketsUseCase
 import cz.quanti.razym.rocketropository.domain.invoke
+import java.util.Date
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -48,8 +50,23 @@ class RocketListViewModel(
 
 fun RocketData.asRocket(): Rocket {
     return Rocket(
-        this.name,
-        this.firstFlight.toDate(),
-        this.id,
+        UiText.DynamicString(name),
+        firstFlight.toDate().asFirstFlightUiText(),
+        id,
     )
 }
+
+fun Date?.asFirstFlightUiText(): UiText {
+    return if (this == null) {
+        UiText.StringResource(
+            R.string.first_flight,
+            UiText.StringResource(R.string.first_flight_unknown),
+        )
+    } else {
+        UiText.StringResource(
+            R.string.first_flight,
+            this.toLocalString(),
+        )
+    }
+}
+
