@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="engines">
+        <item quantity="one">%d engine</item>
+        <item quantity="other">%d engines</item>
+    </plurals>
+</resources>

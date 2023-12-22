@@ -1,0 +1,319 @@
+package cz.quanti.rocketapp.system
+
+import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign.Companion.Start
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import cz.quanti.rocketapp.LocalSnackbar
+import cz.quanti.rocketapp.R
+import cz.quanti.rocketapp.presentation.RocketListViewModel
+import cz.quanti.rocketapp.presentation.RocketUiState
+import cz.quanti.rocketapp.presentation.UiScreenState
+import cz.quanti.rocketapp.presentation.UiText
+import cz.quanti.rocketapp.presentation.asFirstFlightUiText
+import cz.quanti.rocketapp.presentation.asUiText
+import cz.quanti.rocketapp.ui.ContentStatusText
+import cz.quanti.rocketapp.ui.PreviewCommon.PREVIEW_WIDTH
+import cz.quanti.rocketapp.ui.RocketAppPreview
+import cz.quanti.rocketapp.ui.StateFullPullToRefresh
+import cz.quanti.rocketapp.ui.theme.RocketappTheme
+import cz.quanti.rocketapp.util.toDate
+import org.koin.androidx.compose.koinViewModel
+
+data object RocketListScreen : Screen("rocketList")
+
+fun NavGraphBuilder.rocketListScreen(
+    onRocketItemClick: (rocket: RocketUiState, name: String) -> Unit = { _, _ -> },
+) {
+    composable(RocketListScreen.route) {
+        val viewModel: RocketListViewModel = koinViewModel()
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+        LaunchedEffect(Unit) {
+            viewModel.initialize()
+        }
+
+        RocketListScreen(
+            uiState = uiState,
+            onRefresh = viewModel::fetchRockets,
+            onItemClick = onRocketItemClick,
+        )
+    }
+}
+
+@Composable
+private fun RocketListScreen(
+    uiState: UiScreenState<List<RocketUiState>>,
+    onRefresh: () -> Unit,
+    onItemClick: (rocket: RocketUiState, name: String) -> Unit = { _, _ -> },
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+        contentColor = RocketappTheme.colors.onBackground,
+    ) { innerPadding ->
+        CompositionLocalProvider(
+            LocalSnackbar provides snackbarHostState,
+        ) {
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                color = RocketappTheme.colors.background,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(RocketappTheme.dimens.extraLargePadding),
+                ) {
+                    RocketListTitle(
+                        text = R.string.rockets_title,
+                    )
+                    RocketListBox(
+                        uiState = uiState,
+                        onRefresh = onRefresh,
+                        onItemClick = onItemClick,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RocketListTitle(@StringRes text: Int) {
+    Text(
+        text = stringResource(text),
+        style = RocketappTheme.typography.headline,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = RocketappTheme.dimens.extraLargePadding),
+        textAlign = Start,
+        color = RocketappTheme.colors.onBackground,
+    )
+}
+
+@Composable
+private fun RocketListBox(
+    uiState: UiScreenState<List<RocketUiState>>,
+    onRefresh: () -> Unit,
+    onItemClick:  (rocket: RocketUiState, name: String) -> Unit = { _, _ -> },
+) {
+    StateFullPullToRefresh(
+        uiState = uiState,
+        onRefresh = onRefresh,
+    ) {
+        RocketList(
+            rockets = it,
+            onItemClick = onItemClick,
+        )
+    }
+}
+
+@Composable
+private fun RocketList(
+    rockets: List<RocketUiState>,
+    onItemClick:  (rocket: RocketUiState, name: String) -> Unit = { _, _ -> },
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = RocketappTheme.shapes.medium,
+        color = RocketappTheme.colors.primaryContainer,
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth(),
+        ) {
+            itemsIndexed(
+                items = rockets,
+                key = { _, rocket -> rocket.id },
+            ) { index, rocket ->
+                RocketListItem(
+                    rocket = rocket,
+                    onClick = onItemClick,
+                )
+
+                if (index < rockets.lastIndex)
+                    // Will be HorizontalDivider when available
+                    Divider(
+                        color = RocketappTheme.colors.background,
+                        thickness = RocketappTheme.dimens.listItemDividerSize,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = RocketappTheme.dimens.extraLargePadding),
+                    )
+            }
+        }
+    }
+}
+
+@Composable
+private fun RocketListItem(
+    rocket: RocketUiState,
+    onClick:  (rocket: RocketUiState, name: String) -> Unit = { _, _ -> },
+) {
+    val name = rocket.name.asString()
+    Row(
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            // Note that order matters, so apply click before padding.
+            .clickable { onClick(rocket, name) }
+            .padding(
+                horizontal = RocketappTheme.dimens.extraLargePadding,
+                vertical = RocketappTheme.dimens.defaultPadding,
+            )
+        ,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.rocket),
+            contentDescription = stringResource(R.string.rocket_icon_content_description),
+            modifier = Modifier
+                .size(RocketappTheme.dimens.listItemIconSize)
+                .padding(RocketappTheme.dimens.smallPadding),
+            tint = RocketappTheme.colors.primary,
+        )
+
+        Spacer(modifier = Modifier.width(RocketappTheme.dimens.defaultSpacerSize))
+
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = rocket.name.asString(),
+                style = RocketappTheme.typography.itemTitle,
+                color = RocketappTheme.colors.onPrimaryContainer,
+            )
+
+//            Spacer(modifier = Modifier.height(RocketappTheme.dimens.smallSpacerSize))
+
+            Text(
+                text = rocket.firstFlight.asString(),
+                style = RocketappTheme.typography.itemSubtitle.copy(
+                    color = RocketappTheme.colors.secondary,
+                ),
+            )
+        }
+
+        Spacer(modifier = Modifier.width(RocketappTheme.dimens.defaultSpacerSize))
+
+        Icon(
+            painter = painterResource(
+                id = R.drawable.baseline_arrow_forward_ios_24,
+            ),
+            contentDescription = stringResource(R.string.arrow_icon_content_description),
+            modifier = Modifier.size(RocketappTheme.dimens.chevronItemIconSize),
+            tint = RocketappTheme.colors.outline,
+        )
+    }
+}
+
+@RocketAppPreview
+@Composable
+private fun RocketListScreenPreview(
+    @PreviewParameter(RocketsProvider::class) rockets: UiScreenState<List<RocketUiState>>,
+) {
+    RocketappTheme {
+        RocketListScreen(
+            uiState = rockets,
+            onRefresh = { },
+            onItemClick = { _, _ -> },
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 100)
+@Composable
+private fun RocketListItemPreview() {
+    RocketappTheme {
+        RocketListItem(
+            rocket = previewRocket(),
+            onClick = { _, _ -> },
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH, heightDp = 100)
+@Composable
+private fun RocketListTextPreview() {
+    RocketappTheme {
+        ContentStatusText(UiText.StringResource(R.string.rockets_loading))
+    }
+}
+
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH)
+@Composable
+private fun RocketListTitlePreview() {
+    RocketappTheme {
+        RocketListTitle(R.string.rockets_title)
+    }
+}
+
+private class RocketsProvider : PreviewParameterProvider<UiScreenState<List<RocketUiState>>> {
+    override val values =
+        sequenceOf(
+            UiScreenState.Data(
+                data = previewRockets(4),
+                refreshing = false,
+            ),
+            UiScreenState.Data(
+                data = previewRockets(20),
+                refreshing = false,
+            ),
+            UiScreenState.Data(
+                data = previewRockets(4),
+                refreshing = true,
+            ),
+            UiScreenState.Loading(
+                message = UiText.StringResource(R.string.rockets_loading),
+            ),
+            UiScreenState.Error(
+                errorMessage = UiText.StringResource(R.string.getting_rocket_detail_failed),
+            ),
+        )
+}
+
+private fun previewRockets(num: Int = 9) = List(num) {
+    previewRocket(it)
+}
+
+private fun previewRocket(num: Int = 9) = RocketUiState(
+    "Falcon $num".asUiText(),
+    "2010-06-04".toDate().asFirstFlightUiText(),
+    "falcon_$num",
+)
