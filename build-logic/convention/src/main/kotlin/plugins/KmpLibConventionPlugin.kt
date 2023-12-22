@@ -104,10 +104,6 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.commonSourceSet(libs: Ve
                     libs.findLibrary("kotlinx-coroutines")
                         .get(),
                 )
-                implementation(
-                    libs.findLibrary("kotlinx-datetime")
-                        .get(),
-                )
             }
         }
 }
