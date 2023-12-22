@@ -20,5 +20,5 @@ dependencyAnalysis {
 }
 
 dependencies {
-    kover(projects.app)
+    kover(projects.android.app)
 }
