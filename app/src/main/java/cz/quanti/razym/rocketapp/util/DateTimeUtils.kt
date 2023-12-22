@@ -1,19 +1,21 @@
 package cz.quanti.razym.rocketapp.util
 
+// TODO: Is there any advantage using android instead of java DateFormat and SimpleDateFormat?
+//  Using Android requires additional test setup (mock), see `RocketListViewModelTest` test.
 import android.icu.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-val firstFlightParser =
+val dateFormatParserIso8601 =
     SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
         timeZone = TimeZone.getTimeZone("UTC")
     }
 
 fun String.toDate(): Date? =
     runCatching {
-        firstFlightParser.parse(this)
+        dateFormatParserIso8601.parse(this)
     }.getOrNull()
 
 fun localeDateFormat(): DateFormat =

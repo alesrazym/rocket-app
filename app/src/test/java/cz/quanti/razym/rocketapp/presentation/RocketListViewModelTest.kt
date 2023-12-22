@@ -1,19 +1,25 @@
 package cz.quanti.razym.rocketapp.presentation
 
+import android.icu.text.DateFormat
 import android.net.http.HttpException
 import android.util.MalformedJsonException
 import cz.quanti.razym.rocketapp.R
+import cz.quanti.razym.rocketapp.util.toLocalString
 import cz.quanti.razym.rocketapp.utils.rocketsData
 import cz.quanti.razym.rocketropository.data.RocketData
 import cz.quanti.razym.rocketropository.domain.RocketsRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkAll
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 import java.util.Date
+import java.util.Locale
 import java.util.concurrent.TimeoutException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,11 +40,22 @@ class RocketListViewModelTest {
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
+
+        // TODO: Possible solution for mocking android methods -> replace by java equivalent
+        mockkStatic("cz.quanti.razym.rocketapp.util.DateTimeUtilsKt")
+        every { any<Date>().toLocalString() } answers {
+            val date = firstArg<Date>()
+            java.text.DateFormat.getDateInstance(
+                DateFormat.MEDIUM,
+                Locale.US,
+            ).format(date)
+        }
     }
 
     @After
-    fun cleanup() {
+    fun teardown() {
         Dispatchers.resetMain()
+        unmockkAll()
     }
 
     @Test
@@ -48,8 +65,11 @@ class RocketListViewModelTest {
         val model = data.asRocket()
 
         model.id shouldBe "5e9d0d95eda69955f709d1eb"
-        model.name shouldBe "Falcon 1"
-        model.firstFlight shouldBe Date(1143158400L * 1000)
+        model.name shouldBe UiText.DynamicString("Falcon 1")
+        model.firstFlight shouldBe UiText.StringResource(
+            R.string.first_flight,
+            "Mar 24, 2006",
+        )
     }
 
     @Test
