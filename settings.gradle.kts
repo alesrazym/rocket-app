@@ -24,6 +24,7 @@ rootProject.name = "rocket-app"
 // See https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:type-safe-project-accessors.
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include("android:app")
+include(":android:rocket")
 include("android:ui")
 include("shared:rocket")
 

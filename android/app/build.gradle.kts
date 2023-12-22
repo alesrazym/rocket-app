@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "cz.quanti.razym.rocketapp"
+    namespace = "cz.quanti.rocketapp"
 
     defaultConfig {
         applicationId = "cz.quanti.razym.rocketapp"
@@ -32,6 +32,7 @@ dependencies {
     // instead of `implementation(project(":ui"))`
     // we can access projects in dependencies as follows:
     implementation(projects.android.ui)
+    implementation(projects.android.rocket)
     implementation(projects.shared.rocket)
 
     implementation(libs.androidx.appcompat)
@@ -48,6 +49,7 @@ dependencies {
      * Use artifacts from 'lib' project.
      */
     kover(projects.android.ui)
+    kover(projects.android.rocket)
     kover(projects.shared.rocket)
 }
 

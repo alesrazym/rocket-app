@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "cz.quanti.razym.rocketrepository"
+    namespace = "cz.quanti.rocketrepository"
 }
 
 multiplatformSwiftPackage {
