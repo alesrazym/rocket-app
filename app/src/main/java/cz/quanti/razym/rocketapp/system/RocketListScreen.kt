@@ -1,6 +1,5 @@
 package cz.quanti.razym.rocketapp.system
 
-import android.icu.text.DateFormat
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -47,17 +46,10 @@ import cz.quanti.razym.rocketapp.ui.PreviewCommon.PREVIEW_WIDTH
 import cz.quanti.razym.rocketapp.ui.RocketAppPreview
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.theme.RocketappTheme
+import cz.quanti.razym.rocketapp.util.toDate
+import cz.quanti.razym.rocketapp.util.toLocalString
 import org.koin.androidx.compose.koinViewModel
 import java.util.Date
-import java.util.Locale
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
-import kotlinx.datetime.toLocalDate
-
-private fun getFirstFlightFormat() = DateFormat.getDateInstance(
-    DateFormat.MEDIUM,
-    Locale.getDefault()
-)
 
 data object RocketListScreen : Screen("rocketList")
 
@@ -248,7 +240,7 @@ private fun FirstFlightText(date: Date?) {
     } else {
         stringResource(
             R.string.first_flight,
-            getFirstFlightFormat().format(date)
+            date.toLocalString(),
         )
     }
 
@@ -331,7 +323,6 @@ private fun previewRockets(num: Int = 9) = List(num) {
 
 private fun previewRocket(num: Int = 9) = Rocket(
     "Falcon $num",
-    // TODO temporary java Date, maybe incorrect zone convert...
-    Date("2010-06-04".toLocalDate().atStartOfDayIn(TimeZone.UTC).toEpochMilliseconds()),
+    "2010-06-04".toDate(),
     "falcon_$num",
 )

@@ -3,7 +3,6 @@ kotlinCompilerExtensionVersion = "1.5.7"
 
 coreKtx = "1.12.0"
 appcompat = "1.6.1"
-datetime = "0.4.1"
 material = "1.11.0"
 lifecycleKtx = "2.6.2"
 activityCompose = "1.8.2"
@@ -55,7 +54,6 @@ androidx-composeMaterial = { module = "androidx.compose.material:material" }
 androidx-composeMaterial3 = { module = "androidx.compose.material3:material3" }
 
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
 
 koinCore = { module = "io.insert-koin:koin-core", version.ref = "koin" }
