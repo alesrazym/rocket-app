@@ -76,7 +76,8 @@ class KmpLibConventionPlugin : Plugin<Project> {
                     commonSourceSet(libs)
                     androidSourceSet(libs)
                     iosSourceSet(libs)
-                    testSourceSet(libs)
+                    commonTestSourceSet(libs)
+                    androidTestSourceSet(libs)
 
                     all {
                         // Opt-in for com.rickclephas.kmp.nativecoroutines
@@ -124,7 +125,7 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.iosSourceSet(libs: Versi
     }
 }
 
-private fun NamedDomainObjectContainer<KotlinSourceSet>.testSourceSet(libs: VersionCatalog) {
+private fun NamedDomainObjectContainer<KotlinSourceSet>.commonTestSourceSet(libs: VersionCatalog) {
     getByName("commonTest").apply {
         dependencies {
             implementation(libs.findLibrary("test-kotlin").get())
@@ -132,6 +133,17 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.testSourceSet(libs: Vers
             implementation(libs.findLibrary("test-kotest").get())
             implementation(libs.findLibrary("test-mockative").get())
             implementation(libs.findLibrary("test-coroutines").get())
+        }
+    }
+}
+
+private fun NamedDomainObjectContainer<KotlinSourceSet>.androidTestSourceSet(libs: VersionCatalog) {
+    getByName("androidUnitTest").apply {
+        dependencies {
+            implementation(libs.findLibrary("test-kotlin").get())
+            implementation(libs.findLibrary("test-resources").get())
+            implementation(libs.findLibrary("test-coroutines").get())
+            implementation(libs.findLibrary("test-koin-junit4").get())
         }
     }
 }
