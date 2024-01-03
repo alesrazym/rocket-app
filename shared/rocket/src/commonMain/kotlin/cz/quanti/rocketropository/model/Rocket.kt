@@ -1,7 +1,5 @@
 package cz.quanti.rocketropository.model
 
-import cz.quanti.rocketropository.data.RocketData
-
 class Rocket(
     val name: String,
     val firstFlight: String,
@@ -19,12 +17,4 @@ class Rocket(
     override fun hashCode(): Int {
         return id.hashCode()
     }
-}
-
-fun RocketData.asRocket(): Rocket {
-    return Rocket(
-        name,
-        firstFlight,
-        id,
-    )
 }

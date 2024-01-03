@@ -1,22 +1,21 @@
 package cz.quanti.rocketropository.di
 
-import cz.quanti.rocketropository.asResult
 import cz.quanti.rocketropository.data.RocketsRepositoryImpl
 import cz.quanti.rocketropository.data.SpaceXApi
 import cz.quanti.rocketropository.data.SpaceXApiImpl
 import cz.quanti.rocketropository.domain.GetRocketUseCase
+import cz.quanti.rocketropository.domain.GetRocketUseCaseImpl
 import cz.quanti.rocketropository.domain.GetRocketsUseCase
+import cz.quanti.rocketropository.domain.GetRocketsUseCaseImpl
 import cz.quanti.rocketropository.domain.RocketsRepository
-import cz.quanti.rocketropository.model.asRocket
-import cz.quanti.rocketropository.model.asRocketDetail
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 
 val rocketRepositoryModule =
@@ -27,21 +26,8 @@ val rocketRepositoryModule =
         singleOf(::SpaceXApiImpl) { bind<SpaceXApi>() }
         singleOf(::RocketsRepositoryImpl) { bind<RocketsRepository>() }
 
-        factory {
-            GetRocketsUseCase {
-                get<RocketsRepository>().getRockets().map { list ->
-                    list.map { it.asRocket() }
-                }.asResult()
-            }
-        }
-
-        factory {
-            GetRocketUseCase {
-                get<RocketsRepository>().getRocket(it).map { data ->
-                    data.asRocketDetail()
-                }.asResult()
-            }
-        }
+        factoryOf(::GetRocketsUseCaseImpl) { bind<GetRocketsUseCase>() }
+        factoryOf(::GetRocketUseCaseImpl) { bind<GetRocketUseCase>() }
     }
 
 private fun provideJson(): Json {

@@ -1,8 +1,5 @@
 package cz.quanti.rocketropository.model
 
-import cz.quanti.rocketropository.data.RocketData
-import cz.quanti.rocketropository.data.StageData
-
 data class RocketDetail(
     val name: String,
     val id: String,
@@ -21,21 +18,3 @@ data class Stage(
     val fuelAmountTons: Double,
     val reusable: Boolean,
 )
-
-fun RocketData.asRocketDetail(): RocketDetail {
-    return RocketDetail(
-        this.name,
-        this.id,
-        this.overview,
-        this.height[RocketData.METERS] ?: 0.0,
-        this.diameter[RocketData.METERS] ?: 0.0,
-        (this.mass[RocketData.KG] ?: 0.0) / 1000.0,
-        this.firstStage.asStage(),
-        this.secondStage.asStage(),
-        this.flickrImages,
-    )
-}
-
-fun StageData.asStage(): Stage {
-    return Stage(this.burnTimeSec, this.engines, this.fuelAmountTons, this.reusable)
-}
