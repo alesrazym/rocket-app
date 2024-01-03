@@ -3,12 +3,13 @@ package cz.quanti.rocketapp.presentation
 import android.icu.text.DateFormat
 import android.net.http.HttpException
 import android.util.MalformedJsonException
-import cz.quanti.rocketapp.R
+import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.util.toLocalString
 import cz.quanti.rocketapp.utils.rocketsData
 import cz.quanti.rocketropository.data.RocketData
+import cz.quanti.rocketropository.domain.GetRocketsUseCaseImpl
 import cz.quanti.rocketropository.domain.RocketsRepository
-import cz.quanti.rocketropository.model.asRocket
+import cz.quanti.rocketropository.domain.asRocket
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.every
@@ -43,7 +44,7 @@ class RocketListViewModelTest {
         Dispatchers.setMain(testDispatcher)
 
         // TODO: Possible solution for mocking android methods -> replace by java equivalent
-        mockkStatic("cz.quanti.razym.rocketapp.util.DateTimeUtilsKt")
+        mockkStatic("cz.quanti.rocketapp.util.DateTimeUtilsKt")
         every { any<Date>().toLocalString() } answers {
             val date = firstArg<Date>()
             java.text.DateFormat.getDateInstance(
@@ -63,7 +64,7 @@ class RocketListViewModelTest {
     fun `should convert data to model`() {
         val data = rocketsData.first { it.id == "5e9d0d95eda69955f709d1eb" }
 
-        val model = data.asRocket()
+        val model = data.asRocket().asRocketUiState()
 
         model.id shouldBe "5e9d0d95eda69955f709d1eb"
         model.name shouldBe UiText.DynamicString("Falcon 1")
@@ -101,7 +102,7 @@ class RocketListViewModelTest {
         val viewModel = rocketListViewModel(repository)
 
         advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Data(rocketsData.map { it.asRocket() })
+        viewModel.uiState.value shouldBe UiScreenState.Data(rocketsData.map { it.asRocket().asRocketUiState() })
     }
 
     // TODO can we use parametrized test case? How will we test in KMP?
@@ -157,7 +158,7 @@ class RocketListViewModelTest {
         val viewModel = rocketListViewModel(repository)
 
         advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Error(UiText.StringResource(R.string.error_server_response))
+        viewModel.uiState.value shouldBe UiScreenState.Error(UiText.StringResource(R.string.error_io))
     }
 
     @Test
@@ -176,11 +177,11 @@ class RocketListViewModelTest {
 
         viewModel.fetchRockets()
         advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Data(rocketsData.map { it.asRocket() })
+        viewModel.uiState.value shouldBe UiScreenState.Data(rocketsData.map { it.asRocket().asRocketUiState() })
     }
 
     private fun rocketListViewModel(repository: RocketsRepository): RocketListViewModel {
-        val viewModel = RocketListViewModel { repository.getRockets() }
+        val viewModel = RocketListViewModel(GetRocketsUseCaseImpl(repository))
         viewModel.initialize()
         return viewModel
     }

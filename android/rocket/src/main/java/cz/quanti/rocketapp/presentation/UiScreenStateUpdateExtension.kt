@@ -1,6 +1,5 @@
 package cz.quanti.rocketapp.presentation
 
-import android.net.http.HttpException
 import android.util.MalformedJsonException
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketropository.Result
@@ -62,10 +61,11 @@ fun <T, S> UiScreenState<S>.update(
 private fun defaultErrorTransform(): (Throwable?) -> UiText =
     {
         when (it) {
-//        is JsonDataException -> UiText.StringResource(R.string.error_json)
+            // TODO: What exceptions can ktor (and it's respective engines) throw?
+            // is JsonDataException -> UiText.StringResource(R.string.error_json)
             is MalformedJsonException -> UiText.StringResource(R.string.error_json)
             is TimeoutException -> UiText.StringResource(R.string.error_timeout)
-            is HttpException -> UiText.StringResource(R.string.error_server_response)
+            // is HttpException -> UiText.StringResource(R.string.error_server_response)
             is IOException -> UiText.StringResource(R.string.error_io)
             else -> UiText.StringResource(R.string.unknown_error)
         }

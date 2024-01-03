@@ -1,10 +1,10 @@
 package cz.quanti.rocketapp.presentation
 
-import cz.quanti.rocketapp.R
+import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.utils.rocketsData
-import cz.quanti.rocketropository.domain.GetRocketUseCase
+import cz.quanti.rocketropository.domain.GetRocketUseCaseImpl
 import cz.quanti.rocketropository.domain.RocketsRepository
-import cz.quanti.rocketropository.model.asRocketDetail
+import cz.quanti.rocketropository.domain.asRocketDetail
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import io.mockk.coEvery
@@ -31,7 +31,7 @@ class RocketDetailViewModelTest {
     private val errorId = "non-existing-id"
     private val rocketsData = rocketsData()
     private val repository = createRepository()
-    private val useCase = GetRocketUseCase { id -> repository.getRocket(id) }
+    private val useCase = GetRocketUseCaseImpl(repository)
 
     @Before
     fun setup() {
