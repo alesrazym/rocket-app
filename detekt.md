@@ -15,15 +15,23 @@ then [ktlint](https://github.com/jlleitschuh/ktlint-gradle) Gradle plugin._
 
 ### Android Studio / IDEA plugins
 In Android Studio, go to `Settings > Plugins > Marketplace` and install
-`detekt`.
+ * `detekt` and
+ * [ktlint](https://plugins.jetbrains.com/plugin/15057-ktlint) v0.20.0 or higher.
 
-As of 2023-12-07, go to [ktlint-intellij-plugin](https://github.com/nbadal/ktlint-intellij-plugin)
-and download [0.20 or higher, e.g. 0.20-beta-6](https://github.com/nbadal/ktlint-intellij-plugin/releases/tag/0.20.0-beta-6).
-Then go to `Settings > Plugins > Install plugin from disk...` and install the downloaded file.
+_NOTE: You may have to install plugins one by one, otherwise installation fails._
 
-TODO: Add compose rules to ktlint plugin.
+_NOTE: Keep `ktlint` version that matches ktlint idea plugin and additional rule-sets._
 
-_NOTE:You may have to install plugins one by one, otherwise installation fails._
+We use the 'manual' mode of `ktlint` plugin now, so ktlint format is never run automatically. 
+To format use `Refactor > Format With Ktlint`.
+
+#### Additional rule-sets
+##### [compose-rules](https://github.com/mrmans0n/compose-rules)  
+[Download rule-set](https://github.com/mrmans0n/compose-rules/releases) for ktlint that match
+the version specified in [.idea/ktlint-plugin.xml](.idea/ktlint-plugin.xml) file.
+Place it in the project root folder, keep git-ignored.
+
+_NOTE: Compose rules are not yet tested and set up._
 
 ### Gradle plugins
 `detekt` is added as per 
