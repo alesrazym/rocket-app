@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import cz.quanti.rocketapp.R
+import cz.quanti.rocketapp.android.ui.R
 import cz.quanti.rocketapp.ui.theme.RocketAppTheme
 
 @Composable
