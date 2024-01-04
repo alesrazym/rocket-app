@@ -21,9 +21,7 @@ coroutines = "1.7.3"
 mockative = "2.0.1"
 resources = "0.4.0"
 
-#// TODO there is more recent version https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android/1.9.21
-#//  and v2 will be soon. Now, need 1.9.20 as per latest compose 1.5.5 works with it
-androidGradlePlugin = "8.2.0"
+androidGradlePlugin = "8.2.1"
 kotlin = "1.9.21"
 ksp = "1.9.21-1.0.16"
 swiftpackage = "2.0.3"
