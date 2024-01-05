@@ -41,11 +41,13 @@ private fun provideJson(): Json {
     }
 }
 
-private fun provideClient(config: HttpClientConfig<*>.() -> Unit): HttpClient {
-    // Use default engine, as per https://ktor.io/docs/http-client-engines.html#default
-    return HttpClient {
-        config()
-        // TODO: Add timeouts and check cancellation support.
+expect fun provideClient(config: HttpClientConfig<*>.() -> Unit): HttpClient
+
+private fun provideClientConfig(json: Json): HttpClientConfig<*>.() -> Unit {
+    return {
+        installConfig(json)
+
+        // TODO: Add and check cancellation support.
 
         // TODO: Do we want base url, as we will have separate client for each source,
         //  or to use full url in requests?
@@ -58,12 +60,7 @@ private fun provideClient(config: HttpClientConfig<*>.() -> Unit): HttpClient {
                     }
                 }
          */
-    }
-}
 
-private fun provideClientConfig(json: Json): HttpClientConfig<*>.() -> Unit {
-    return {
-        installConfig(json)
     }
 }
 
