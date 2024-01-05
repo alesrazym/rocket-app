@@ -10,6 +10,7 @@ import cz.quanti.rocketropository.domain.GetRocketsUseCaseImpl
 import cz.quanti.rocketropository.domain.RocketsRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import org.koin.core.module.dsl.bind
@@ -67,5 +68,11 @@ private fun provideClientConfig(json: Json): HttpClientConfig<*>.() -> Unit {
 private fun HttpClientConfig<*>.installConfig(json: Json) {
     install(ContentNegotiation) {
         json(json)
+    }
+    install(HttpTimeout) {
+        requestTimeoutMillis = 5_000
+        // As of 01/2024 Darwin engine does not support connect timeout.
+        // See https://ktor.io/docs/timeout.html#limitations
+        connectTimeoutMillis = 1_000
     }
 }
