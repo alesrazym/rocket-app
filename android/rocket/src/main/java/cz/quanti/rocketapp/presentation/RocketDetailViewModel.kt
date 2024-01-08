@@ -31,9 +31,9 @@ class RocketDetailViewModel(
 
     fun fetchRocket(id: String) {
         viewModelScope.launch {
-            getRocketUseCase(id)
+            _uiState
                 .update(
-                    uiState = _uiState,
+                    resultFlow = getRocketUseCase(id),
                     transform = { data -> data.asRocketDetailUiState() },
                     loadingMessage = UiText.StringResource(R.string.getting_rocket_detail_in_progress),
                 )

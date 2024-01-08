@@ -31,9 +31,9 @@ class RocketListViewModel(
 
     fun fetchRockets() {
         viewModelScope.launch {
-            getRocketsUseCase()
+            _uiState
                 .update(
-                    uiState = _uiState,
+                    resultFlow = getRocketsUseCase(),
                     transform = { data -> data.map { it.asRocketUiState() } },
                     loadingMessage = UiText.StringResource(R.string.rockets_loading),
                 )

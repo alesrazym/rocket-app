@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
-suspend fun <T, S> Flow<Result<T>>.update(
-    uiState: MutableStateFlow<UiScreenState<S>>,
+suspend fun <T, S> MutableStateFlow<UiScreenState<S>>.update(
+    resultFlow: Flow<Result<T>>,
     transform: (T) -> S,
     errorTransform: (Throwable?) -> UiText = defaultErrorTransform(),
     loadingMessage: UiText = UiText.StringResource(R.string.loading),
 ) {
-    this.collect { result ->
-        uiState.update {
+    resultFlow.collect { result ->
+        this.update {
             it.update(result, transform, errorTransform, loadingMessage)
         }
     }
