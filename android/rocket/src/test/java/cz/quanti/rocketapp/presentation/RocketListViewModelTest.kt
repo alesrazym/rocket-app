@@ -1,12 +1,13 @@
 package cz.quanti.rocketapp.presentation
 
 import android.icu.text.DateFormat
-import android.net.http.HttpException
-import android.util.MalformedJsonException
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.util.toLocalString
 import cz.quanti.rocketapp.utils.rocketsData
+import cz.quanti.rocketropository.Result
+import cz.quanti.rocketropository.RocketException
 import cz.quanti.rocketropository.data.RocketData
+import cz.quanti.rocketropository.domain.GetRocketsUseCase
 import cz.quanti.rocketropository.domain.GetRocketsUseCaseImpl
 import cz.quanti.rocketropository.domain.RocketsRepository
 import cz.quanti.rocketropository.domain.asRocket
@@ -19,10 +20,8 @@ import io.mockk.unmockkAll
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import java.io.IOException
 import java.util.Date
 import java.util.Locale
-import java.util.concurrent.TimeoutException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -107,58 +106,27 @@ class RocketListViewModelTest {
 
     // TODO can we use parametrized test case? How will we test in KMP?
     @Test
-    fun `uiState should be error on Exception`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { throw Exception() }
-        }
-        val viewModel = rocketListViewModel(repository)
-
-        advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Error(UiText.StringResource(R.string.unknown_error))
+    fun `uiState should be error on Exception`() {
+        RocketException.Exception("error", null) shouldResult
+            UiScreenState.Error(UiText.StringResource(R.string.unknown_error))
     }
 
     @Test
-    fun `uiState should be error on MalformedJsonException`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { throw MalformedJsonException("") }
-        }
-        val viewModel = rocketListViewModel(repository)
-
-        advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Error(UiText.StringResource(R.string.error_json))
+    fun `uiState should be error on ContentException`() {
+        RocketException.ContentException("error", null) shouldResult
+            UiScreenState.Error(UiText.StringResource(R.string.error_json))
     }
 
     @Test
-    fun `uiState should be error on TimeoutException`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { throw TimeoutException() }
-        }
-        val viewModel = rocketListViewModel(repository)
-
-        advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Error(UiText.StringResource(R.string.error_timeout))
+    fun `uiState should be error on NetworkException`() {
+        RocketException.NetworkException("error", null) shouldResult
+            UiScreenState.Error(UiText.StringResource(R.string.error_io))
     }
 
     @Test
-    fun `uiState should be error on IOException`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { throw IOException() }
-        }
-        val viewModel = rocketListViewModel(repository)
-
-        advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Error(UiText.StringResource(R.string.error_io))
-    }
-
-    @Test
-    fun `uiState should be error on HttpException`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { throw HttpException("400", null) }
-        }
-        val viewModel = rocketListViewModel(repository)
-
-        advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Error(UiText.StringResource(R.string.error_io))
+    fun `uiState should be error on HttpException`() {
+        mockk<RocketException.HttpException>() shouldResult
+            UiScreenState.Error(UiText.StringResource(R.string.error_server_response))
     }
 
     @Test
@@ -185,4 +153,21 @@ class RocketListViewModelTest {
         viewModel.initialize()
         return viewModel
     }
+
+    private fun rocketListViewModel(useCase: GetRocketsUseCase): RocketListViewModel {
+        val viewModel = RocketListViewModel(useCase)
+        viewModel.initialize()
+        return viewModel
+    }
+
+    private infix fun RocketException.shouldResult(expectedException: UiScreenState<*>) =
+        runTest(testDispatcher) {
+            val viewModel =
+                rocketListViewModel {
+                    flow { emit(Result.Error(this@shouldResult)) }
+                }
+
+            advanceUntilIdle()
+            viewModel.uiState.value shouldBe expectedException
+        }
 }
