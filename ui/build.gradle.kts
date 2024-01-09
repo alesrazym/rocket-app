@@ -3,7 +3,6 @@ plugins {
     id("quanti.android.library.base")
     id("quanti.android.library.compose")
     id("quanti.android.detekt")
-    id("quanti.android.ktlint")
 }
 
 android {

@@ -5,7 +5,6 @@ plugins {
     id("quanti.android.application.base")
     id("quanti.android.application.compose")
     id("quanti.android.detekt")
-    id("quanti.android.ktlint")
 }
 
 android {

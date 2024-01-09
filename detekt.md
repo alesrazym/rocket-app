@@ -3,13 +3,9 @@
 [detekt](https://detekt.dev/) is a static code analysis tool for the Kotlin programming language.  
 [ktlint](https://pinterest.github.io/ktlint) is an anti-bikeshedding Kotlin linter with built-in
 formatter.
-[kotlinter](https://github.com/jeremymailen/kotlinter-gradle) is a fast Gradle integration
-of `ktlint`.
 
-In general, `detekt` is used to find code smells, while `ktlint` is used to enforce formatting.
-
-_Note: [kotlinter](https://github.com/jeremymailen/kotlinter-gradle) is faster
-then [ktlint](https://github.com/jlleitschuh/ktlint-gradle) Gradle plugin._
+In general, preferred is to use `detekt` to find code smells and formatting issues,
+as well as formatting itself. `ktlint` is used to enforce formatting where `detekt` fails.
 
 ## Setup
 
@@ -25,20 +21,9 @@ _NOTE: Keep `ktlint` version that matches ktlint idea plugin and additional rule
 We use the 'manual' mode of `ktlint` plugin now, so ktlint format is never run automatically. 
 To format use `Refactor > Format With Ktlint`.
 
-#### Additional rule-sets
-##### [compose-rules](https://github.com/mrmans0n/compose-rules)  
-[Download rule-set](https://github.com/mrmans0n/compose-rules/releases) for ktlint that match
-the version specified in [.idea/ktlint-plugin.xml](.idea/ktlint-plugin.xml) file.
-Place it in the project root folder, keep git-ignored.
-
-_NOTE: Compose rules are not yet tested and set up._
-
 ### Gradle plugins
 `detekt` is added as per 
 [doc](https://detekt.dev/docs/gettingstarted/gradle#configuration-for-android-projects).
-
-`kotlinter` is added as per [doc](https://github.com/jeremymailen/kotlinter-gradle#readme) with 
-custom rule-set (force rules version, add compose rules).
 
 ## Configuration
 
@@ -46,7 +31,7 @@ We use [detekt.yml](./detekt.yml) and [.editorconfig](./.editorconfig) files to 
 plugins and gradle tasks.
 
 Some rules must be disabled or handled with care, as they overlap each other, e.g.:
-`MaxLineLength` and `MaximumLineLength`.
+`MaxLineLength` and `MaximumLineLength`. Also, see [Known issues](#known-issues).
 
 ### Rules
 
@@ -72,23 +57,104 @@ When updating to new version, re-generate config file, e.g. like this:
 
 _TODO: We may want to set git hooks._
 
-`kotlinter` is configured in top level build.gradle.kts with custom and specific rule-set
-and reporter versions (reporters are subject to remove if we don't use).
-
 ## Usage
 
 ### Formatting
-Use the `Code > Reformat Code` action to run formatting based on
+1. Use the `Refactor > Autocorrect by detect Rules` action to fix issues using detekt.yml settings.  
+   Alternatively, use `./gradlew detekt --auto-correct` command.
+2. Where `detect` fails, use the `Refactor > Format With Ktlint` action to run formatting based on
 `.editorconfig` and IDEA / Android Studio settings.
-
-You can use also Gradle tasks from `kotlinter` plugin (to be used in CI or git hooks):
-1. `./gradlew lintKotlin`: report Kotlin lint errors and by default fail the build.
-2. `./gradlew formatKotlin`: format Kotlin source code according to ktlint rules or 
-warn when auto-format not possible.
-3. `./gradlew check`: becomes dependent on `lintKotlin`.
 
 ### Static code analysis (Code smells)
 Use `./gradlew detekt` to run `detekt` plugin. Thanks to IDE plugin, it should also be available
 right in editor checks.
 
 To automatically fix issues, where possible, use `./gradlew detekt --auto-correct`.
+
+## Known issues
+### Parameter List Wrapping & Function signature
+ * https://detekt.dev/docs/rules/formatting/#functionsignature
+ * https://detekt.dev/docs/rules/formatting/#parameterlistwrapping
+ * https://pinterest.github.io/ktlint/latest/rules/standard/#function-signature
+ * https://pinterest.github.io/ktlint/latest/rules/standard/#parameter-list-wrapping
+Code:
+```kotlin
+    @GET("v4/rockets/{id}")
+    suspend fun getRocket(@Path("id") id: String): RocketData
+```
+is ok for detekt, but ktlint wants it to be:
+```kotlin
+    @GET("v4/rockets/{id}")
+    suspend fun getRocket(
+        @Path("id") id: String
+    ): RocketData
+```
+It can be suppressed using
+```kotlin
+    @Suppress("ktlint:standard:function-signature", "ktlint:standard:parameter-list-wrapping")
+```
+
+### Multiline expression wrapping & Function signature
+NOTE: Since `ktlint_function_signature_body_expression_wrapping = multiline` in ktlint official,
+this problem should not happen anymore.
+
+* https://detekt.dev/docs/rules/formatting/#multilineexpressionwrapping
+* https://detekt.dev/docs/rules/formatting#functionsignature
+* https://pinterest.github.io/ktlint/latest/rules/experimental/#multiline-expression-wrapping
+* https://pinterest.github.io/ktlint/latest/rules/standard/#function-signature
+ 
+When set `ktlint_function_signature_body_expression_wrapping = default`,
+by function signature wrapping rules this code is ok:
+```kotlin
+private fun previewRockets(num: Int = 9) = List(num) {
+    previewRocket(it)
+}
+```
+ktlint complains about it and wants it to be:
+```kotlin
+private fun previewRockets(num: Int = 9) =
+    List(num) {
+        previewRocket(it)
+    }
+```
+But then, it complains about function signature.
+
+### Indentation
+Rule `standard_indent` disabled in detekt (as `formatting:Indentation`).
+* https://detekt.dev/docs/rules/formatting/#indentation
+* https://pinterest.github.io/ktlint/latest/rules/standard/#indentation
+
+Code formatted with `ktlint` as follows:
+```kotlin
+return RocketDetailUiState(
+    id = "1",
+    name = "Falcon 1",
+    firstStage =
+        Stage(
+            reusable = false,
+            engines = 1,
+            fuelAmountTons = 44.3,
+            burnTimeSec = 169,
+        ).asStageUiState(),
+    // ...
+    )
+```
+is reported by `detekt` and formatted as follows:
+```kotlin
+return RocketDetailUiState(
+    id = "1",
+    name = "Falcon 1",
+    firstStage =
+    Stage(
+        reusable = false,
+        engines = 1,
+        fuelAmountTons = 44.3,
+        burnTimeSec = 169,
+    ).asStageUiState(),
+    // ...
+)
+```
+
+### detekt cannot do what ktlint does
+* standard:chain-method-continuation - not yet released as of 1.23.4, 
+  but [already implemented](https://github.com/detekt/detekt/blob/main/detekt-formatting/src/main/kotlin/io/gitlab/arturbosch/detekt/formatting/wrappers/ChainMethodContinuation.kt).

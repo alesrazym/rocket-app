@@ -23,11 +23,14 @@ androidGradlePlugin = "8.2.0"
 androidKotlin = "1.9.20"
 
 dependencyAnalysis = "1.26.0"
-detekt = "1.23.4"
-ktlint = "1.1.0"
-# ktlintGradle = "12.0.2"
-kotlinterGradle = "4.1.1"
-composeRules = "0.3.8"
+
+# Try keep all ktlint match the same version,
+# as well as with https://github.com/nbadal/ktlint-intellij-plugin
+# As of detekt 1.23.4 uses ktlint 0.50, we're waiting for next release to see
+# 1.1.0 from https://github.com/detekt/detekt/pull/6739 or higher.
+detekt = "1.23.4" # ktlint 0.50
+composeRules = "0.3.8" # ktlint 1.0.1
+# Ktlint IDEA plugin 0.20 -> ktlint 1.1.0
 
 [libraries]
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -59,24 +62,13 @@ test-kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kote
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
 
 detekt-rules = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
-# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
-# detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "composeRules" }
-ktlint-rule-compose = { module = "io.nlopez.compose.rules:ktlint", version.ref = "composeRules" }
-ktlint-rule-engine = { module = "com.pinterest.ktlint:ktlint-rule-engine", version.ref = "ktlint" }
-ktlint-rule-engine-core = { module = "com.pinterest.ktlint:ktlint-rule-engine-core", version.ref = "ktlint" }
-ktlint-cli-reporter-core = { module = "com.pinterest.ktlint:ktlint-cli-reporter-core", version.ref = "ktlint" }
-ktlint-cli-reporter-checkstyle = { module = "com.pinterest.ktlint:ktlint-cli-reporter-checkstyle", version.ref = "ktlint" }
-ktlint-cli-reporter-json = { module = "com.pinterest.ktlint:ktlint-cli-reporter-json", version.ref = "ktlint" }
-ktlint-cli-reporter-html = { module = "com.pinterest.ktlint:ktlint-cli-reporter-html", version.ref = "ktlint" }
-ktlint-cli-reporter-plain = { module = "com.pinterest.ktlint:ktlint-cli-reporter-plain", version.ref = "ktlint" }
-ktlint-cli-reporter-sarif = { module = "com.pinterest.ktlint:ktlint-cli-reporter-sarif", version.ref = "ktlint" }
-ktlint-ruleset-standard = { module = "com.pinterest.ktlint:ktlint-ruleset-standard", version.ref = "ktlint" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "composeRules" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "androidKotlin" }
 detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
-ktlint-kotlinter = { group = "org.jmailen.gradle", name = "kotlinter-gradle", version.ref = "kotlinterGradle" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref="androidGradlePlugin" }
@@ -84,8 +76,6 @@ android-library = { id = "com.android.library", version.ref="androidGradlePlugin
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref="androidKotlin" }
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-# ktlintGradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
-kotlinterGradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinterGradle" }
 
 [bundles]
 compose = ["androidx-activityCompose", "androidx-composeUi", "androidx-composeUiGraphics",

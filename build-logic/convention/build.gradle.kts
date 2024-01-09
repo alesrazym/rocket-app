@@ -18,7 +18,6 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.detekt.gradlePlugin)
-    compileOnly(libs.ktlint.kotlinter)
 }
 
 gradlePlugin {
@@ -50,10 +49,6 @@ gradlePlugin {
         register("androidDetekt") {
             id = "quanti.android.detekt"
             implementationClass = "plugins.DetektConventionPlugin"
-        }
-        register("androidKtlint") {
-            id = "quanti.android.ktlint"
-            implementationClass = "plugins.KtlintConventionPlugin"
         }
     }
 }
