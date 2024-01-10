@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.quanti.android.detekt)
     alias(libs.plugins.quanti.android.ktlint)
     alias(libs.plugins.kover)
-    alias(libs.plugins.kotlin.multiplatform)
 }
 
 android {
@@ -14,15 +13,6 @@ android {
 
 val libName = "Shared"
 val iosLibFolder = "XCFrameworks/lib"
-
-multiplatformSwiftPackage {
-    packageName("Shared")
-    swiftToolsVersion("5.3")
-    targetPlatforms {
-        iOS { v("13") }
-    }
-    outputDirectory(File(rootDir, "/"))
-}
 
 kotlin {
 
