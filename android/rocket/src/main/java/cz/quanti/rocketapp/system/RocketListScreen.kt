@@ -33,6 +33,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import cz.quanti.rocketapp.LocalSnackbar
 import cz.quanti.rocketapp.android.rocket.R
+import cz.quanti.rocketapp.presentation.RocketListSuspendViewModel
 import cz.quanti.rocketapp.presentation.RocketListViewModel
 import cz.quanti.rocketapp.presentation.RocketUiState
 import cz.quanti.rocketapp.presentation.UiScreenState
@@ -53,7 +54,8 @@ fun NavGraphBuilder.rocketListScreen(
     onRocketItemClick: (rocket: RocketUiState, name: String) -> Unit = { _, _ -> },
 ) {
     composable(RocketListScreen.route) {
-        val viewModel: RocketListViewModel = koinViewModel()
+//        val viewModel: RocketListViewModel = koinViewModel()
+        val viewModel: RocketListSuspendViewModel = koinViewModel()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
         LaunchedEffect(Unit) {

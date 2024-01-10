@@ -5,6 +5,8 @@ import cz.quanti.rocketropository.data.SpaceXApi
 import cz.quanti.rocketropository.data.SpaceXApiImpl
 import cz.quanti.rocketropository.domain.GetRocketUseCase
 import cz.quanti.rocketropository.domain.GetRocketUseCaseImpl
+import cz.quanti.rocketropository.domain.GetRocketsSuspendUseCase
+import cz.quanti.rocketropository.domain.GetRocketsSuspendUseCaseImpl
 import cz.quanti.rocketropository.domain.GetRocketsUseCase
 import cz.quanti.rocketropository.domain.GetRocketsUseCaseImpl
 import cz.quanti.rocketropository.domain.RocketsRepository
@@ -19,5 +21,6 @@ val rocketRepositoryModule =
         singleOf(::RocketsRepositoryImpl) { bind<RocketsRepository>() }
 
         factoryOf(::GetRocketsUseCaseImpl) { bind<GetRocketsUseCase>() }
+        factoryOf(::GetRocketsSuspendUseCaseImpl) { bind<GetRocketsSuspendUseCase>() }
         factoryOf(::GetRocketUseCaseImpl) { bind<GetRocketUseCase>() }
     }

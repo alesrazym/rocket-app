@@ -14,9 +14,24 @@ suspend fun <T, S> MutableStateFlow<UiScreenState<S>>.update(
     loadingMessage: UiText = UiText.StringResource(R.string.loading),
 ) {
     resultFlow.collect { result ->
-        this.update {
-            it.update(result, transform, errorTransform, loadingMessage)
-        }
+        this.update(result, transform, errorTransform, loadingMessage)
+    }
+}
+
+fun <T, S> MutableStateFlow<UiScreenState<S>>.update(
+    result: Result<T>,
+    transform: (T) -> S,
+    errorTransform: (Throwable?) -> UiText = defaultErrorTransform(),
+    loadingMessage: UiText = UiText.StringResource(R.string.loading),
+) {
+    this.update {
+        it.update(result, transform, errorTransform, loadingMessage)
+    }
+}
+
+fun <S> MutableStateFlow<UiScreenState<S>>.loading(loadingMessage: UiText = UiText.StringResource(R.string.loading)) {
+    this.update {
+        it.loading(loadingMessage)
     }
 }
 
@@ -27,14 +42,7 @@ fun <T, S> UiScreenState<S>.update(
     loadingMessage: UiText = UiText.StringResource(R.string.loading),
 ): UiScreenState<S> {
     return when (result) {
-        is Result.Loading ->
-            if (this is UiScreenState.Data) {
-                this.copy(
-                    refreshing = true,
-                )
-            } else {
-                UiScreenState.Loading(message = loadingMessage)
-            }
+        is Result.Loading -> loading(loadingMessage)
 
         is Result.Success<T> ->
             // Clear all messages now.
@@ -53,6 +61,16 @@ fun <T, S> UiScreenState<S>.update(
                     errorMessage = errorTransform(result.exception),
                 )
             }
+    }
+}
+
+fun <S> UiScreenState<S>.loading(loadingMessage: UiText = UiText.StringResource(R.string.loading)): UiScreenState<S> {
+    return if (this is UiScreenState.Data) {
+        this.copy(
+            refreshing = true,
+        )
+    } else {
+        UiScreenState.Loading(message = loadingMessage)
     }
 }
 

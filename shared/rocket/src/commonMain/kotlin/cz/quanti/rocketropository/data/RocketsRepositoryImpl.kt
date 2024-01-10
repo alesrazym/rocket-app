@@ -12,6 +12,10 @@ internal class RocketsRepositoryImpl(
             emit(api.listRockets())
         }
 
+    override suspend fun getRocketsSuspend(): List<RocketData> {
+        return api.listRockets()
+    }
+
     override fun getRocket(id: String): Flow<RocketData> =
         flow {
             emit(api.getRocket(id))

@@ -21,6 +21,15 @@ sealed interface Result<out T> {
     data object Loading : Result<Nothing>
 }
 
+@Suppress("detekt.TooGenericExceptionCaught")
+suspend fun <T> asResult(block: suspend () -> T): Result<T> {
+    return try {
+        Result.Success(block())
+    } catch (e: Exception) {
+        e.asResult()
+    }
+}
+
 // TODO: flow on ios?
 fun <T> Flow<T>.asResult(): Flow<Result<T>> {
     return this
@@ -29,24 +38,32 @@ fun <T> Flow<T>.asResult(): Flow<Result<T>> {
         }
         .onStart { emit(Result.Loading) }
         .catch {
-            when (it) {
-                is HttpRequestTimeoutException, is ConnectTimeoutException, is SocketTimeoutException ->
-                    emit(Result.Error(ResultException.NetworkException(it.message ?: "Network timeout", it)))
-                is IOException ->
-                    emit(Result.Error(ResultException.NetworkException(it.message ?: "Network error", it)))
-                is ResponseException ->
-                    emit(Result.Error(ResultException.HttpException(it.response.status, it)))
-                is SendCountExceedException ->
-                    emit(
-                        Result.Error(
-                            ResultException.NetworkException(it.message ?: "Infinite or too long redirect", it),
-                        ),
-                    )
-                is ClientEngineClosedException ->
-                    emit(Result.Error(ResultException.Exception(it.message ?: "Client engine closed", it)))
-                is ContentConverterException ->
-                    emit(Result.Error(ResultException.ContentException(it.message ?: "Content conversion error", it)))
-                else -> emit(Result.Error(ResultException.Exception(it.message ?: "Unknown error", it)))
-            }
+            emit(it.asResult())
         }
+}
+
+private fun Throwable.asResult(): Result.Error {
+    return Result.Error(
+        when (this) {
+            is HttpRequestTimeoutException, is ConnectTimeoutException, is SocketTimeoutException ->
+                RocketException.NetworkException(message ?: "Network timeout", this)
+
+            is IOException ->
+                RocketException.NetworkException(message ?: "Network error", this)
+
+            is ResponseException ->
+                RocketException.HttpException(response.status, this)
+
+            is SendCountExceedException ->
+                RocketException.NetworkException(message ?: "Infinite or too long redirect", this)
+
+            is ClientEngineClosedException ->
+                RocketException.Exception(message ?: "Client engine closed", this)
+
+            is ContentConverterException ->
+                RocketException.ContentException(message ?: "Content conversion error", this)
+
+            else -> RocketException.Exception(message ?: "Unknown error", this)
+        }
+    )
 }
