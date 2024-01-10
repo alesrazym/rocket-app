@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "Domain",
-  platforms: [.iOS(.v15), .macOS(.v12)],
+  platforms: [.iOS(.v16), .macOS(.v12)],
 
   products: [
     .library(
@@ -16,6 +16,7 @@ let package = Package(
 
   dependencies: [
     .package(path: "../Infrastructure"),
+    .package(path: "../SDK"),
     .package(url: "https://github.com/Qase/swift-core", branch: "develop"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.1.4"),
     .package(url: "https://github.com/rickclephas/KMP-NativeCoroutines.git", branch: "master"),
@@ -36,7 +37,8 @@ let package = Package(
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "fetchRockets", package: "mobile-assignment-kmm"),
         .product(name: "KMPNativeCoroutinesCore", package: "KMP-NativeCoroutines"),
-        .product(name: "KMPNativeCoroutinesAsync", package: "KMP-NativeCoroutines")
+        .product(name: "KMPNativeCoroutinesAsync", package: "KMP-NativeCoroutines"),
+        .product(name: "Shared", package: "SDK")
       ]
     ),
     .testTarget(

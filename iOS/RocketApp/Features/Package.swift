@@ -29,6 +29,7 @@ let package = Package(
   dependencies: [
     .package(path: "../Domain"),
     .package(path: "../Infrastructure"),
+    .package(path: "../SDK"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", .upToNextMajor(from: "0.1.0")),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.5.0"),
     .package(url: "https://github.com/pointfreeco/composable-core-motion", from: "0.1.0")

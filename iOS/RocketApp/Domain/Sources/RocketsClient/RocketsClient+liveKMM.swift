@@ -25,6 +25,7 @@ public extension RocketsClient {
           //MARK: Even though warning is saying "always fails" it in fact does not fail at all. Swift is confused about KMM. - Ignore this warrning
           switch rocket {
           case let success as RocketResultSuccess<AnyObject>:
+              // swiftlint:disable:next force_cast
             guard let result = rocketKMMConverter.domainModel(fromExternal: success.data as! RocketKMM) else {
               throw RocketsClientAsyncError.modelConversionError
             }
@@ -50,6 +51,7 @@ public extension RocketsClient {
           //MARK: Even though warning is saying "always fails" it in fact does not fail at all. Swift is confused about KMM. - Ignore this warrning
           switch rockets {
           case let success as RocketResultSuccess<AnyObject>:
+              // swiftlint:disable:next force_cast
             guard let result = rocketsKMMConverter.domainModel(fromExternal: success.data as! [RocketKMM]) else {
               throw RocketsClientAsyncError.modelConversionError
             }
