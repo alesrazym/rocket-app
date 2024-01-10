@@ -106,6 +106,12 @@ class RocketListViewModelTest {
     }
 
     @Test
+    fun `uiState should be error on CanceledByUserException`() {
+        mockk<RocketException.CanceledByUserException>() shouldResult
+            UiScreenState.Error(UiText.StringResource(R.string.error_canceled_by_user))
+    }
+
+    @Test
     fun `uiState should be updated after fetch`() = runTest(testDispatcher) {
         val useCase = mockk<GetRocketsUseCase>()
         var callCount = 0

@@ -15,6 +15,7 @@
     <string name="error_server_response">Server returned error, maybe bad request.</string>
     <string name="error_io">Error connecting to server. Please, check your internet connection.</string>
     <string name="error_json">Received corrupted data. Please, check your application is up-to-date.</string>
+    <string name="error_canceled_by_user">Canceled by user.</string>
     <string name="error_timeout">Connection to server has timed out. Please, try again.</string>
     <string name="rocket_icon_content_description">Rocket icon</string>
     <string name="arrow_icon_content_description">Arrow icon</string>

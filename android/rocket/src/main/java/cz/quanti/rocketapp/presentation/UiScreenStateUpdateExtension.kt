@@ -35,6 +35,15 @@ fun <S> MutableStateFlow<UiScreenState<S>>.loading(loadingMessage: UiText = UiTe
     }
 }
 
+fun <S> MutableStateFlow<UiScreenState<S>>.error(
+    exception: RocketException? = null,
+    errorTransform: (Throwable?) -> UiText = defaultErrorTransform(),
+) {
+    this.update {
+        it.error(exception, errorTransform)
+    }
+}
+
 fun <T, S> UiScreenState<S>.update(
     result: Result<T>,
     transform: (T) -> S,
@@ -43,24 +52,8 @@ fun <T, S> UiScreenState<S>.update(
 ): UiScreenState<S> {
     return when (result) {
         is Result.Loading -> loading(loadingMessage)
-
-        is Result.Success<T> ->
-            // Clear all messages now.
-            UiScreenState.Data(
-                data = transform(result.data),
-            )
-
-        is Result.Error ->
-            if (this is UiScreenState.Data) {
-                this.copy(
-                    refreshing = false,
-                    errorMessage = errorTransform(result.exception),
-                )
-            } else {
-                UiScreenState.Error(
-                    errorMessage = errorTransform(result.exception),
-                )
-            }
+        is Result.Success<T> -> success(result.data, transform)
+        is Result.Error -> error(result.exception, errorTransform)
     }
 }
 
@@ -74,12 +67,37 @@ fun <S> UiScreenState<S>.loading(loadingMessage: UiText = UiText.StringResource(
     }
 }
 
+fun <T, S> UiScreenState<S>.success(result: T, transform: (T) -> S): UiScreenState<S> {
+    // Clear all messages now.
+    return UiScreenState.Data(
+        data = transform(result),
+    )
+
+}
+
+fun <S> UiScreenState<S>.error(
+    exception: RocketException? = null,
+    errorTransform: (Throwable?) -> UiText = defaultErrorTransform(),
+): UiScreenState<S> {
+    return if (this is UiScreenState.Data) {
+        this.copy(
+            refreshing = false,
+            errorMessage = errorTransform(exception),
+        )
+    } else {
+        UiScreenState.Error(
+            errorMessage = errorTransform(exception),
+        )
+    }
+}
+
 private fun defaultErrorTransform(): (Throwable?) -> UiText =
     {
         when (it) {
             is ResultException.NetworkException -> UiText.StringResource(R.string.error_io)
             is ResultException.HttpException -> UiText.StringResource(R.string.error_server_response)
             is ResultException.ContentException -> UiText.StringResource(R.string.error_json)
+            is ResultException.CanceledByUserException -> UiText.StringResource(R.string.error_canceled_by_user)
             is ResultException.Exception -> UiText.StringResource(R.string.unknown_error)
             else -> UiText.StringResource(R.string.unknown_error)
         }

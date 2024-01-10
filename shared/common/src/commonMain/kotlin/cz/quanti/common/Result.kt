@@ -8,6 +8,7 @@ import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.SendCountExceedException
 import io.ktor.client.plugins.contentnegotiation.ContentConverterException
 import io.ktor.utils.io.errors.IOException
+import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -62,6 +63,9 @@ private fun Throwable.asResult(): Result.Error {
 
             is ContentConverterException ->
                 RocketException.ContentException(message ?: "Content conversion error", this)
+
+            is CancellationException ->
+                RocketException.CanceledByUserException(message ?: "Canceled by user")
 
             else -> RocketException.Exception(message ?: "Unknown error", this)
         }

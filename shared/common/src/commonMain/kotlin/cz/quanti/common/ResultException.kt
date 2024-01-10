@@ -12,6 +12,8 @@ sealed class ResultException(message: String, cause: Throwable?) : Throwable(mes
 
     class ContentException(errorMessage: String, cause: Throwable?) : ResultException(errorMessage, cause)
 
+    class CanceledByUserException(errorMessage: String) : ResultException(errorMessage, null)
+
     class Exception(errorMessage: String, cause: Throwable?) : ResultException(errorMessage, cause)
 
     override fun equals(other: Any?): Boolean {

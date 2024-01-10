@@ -12,6 +12,7 @@ import io.ktor.utils.io.errors.IOException
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
+import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.take
@@ -91,6 +92,14 @@ class ResultKtTest {
             val exception = ContentConverterException("Bad content")
             exception asResultShouldBe
                 ResultException.ContentException(exception.message!!, exception)
+        }
+
+    @Test
+    fun `asResult emits Error on CancellationException`() =
+        runTest {
+            val exception = CancellationException("Canceled")
+            exception shouldResult
+                RocketException.CanceledByUserException(exception.message!!)
         }
 
     @Test
