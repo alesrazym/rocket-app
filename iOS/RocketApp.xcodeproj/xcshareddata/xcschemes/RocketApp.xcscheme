@@ -9,6 +9,22 @@
          <ExecutionAction
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
+               title = "BuildKMM"
+               scriptText = "cd &quot;$PROJECT_DIR&quot;&#10;./scripts/build_xcframework_script.sh DEBUG&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "160CA40C28A506E4004A274A"
+                     BuildableName = "RocketApp.app"
+                     BlueprintName = "RocketApp"
+                     ReferencedContainer = "container:RocketApp.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
                title = "Run Script"
                scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;cd &quot;$SRCROOT/swiftgen&quot;&#10;/opt/homebrew/bin/swiftgen&#10;">
                <EnvironmentBuildable>
@@ -58,6 +74,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
+      customWorkingDirectory = "/Users/martinficek/GitKraken/rocket-app/iOS"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

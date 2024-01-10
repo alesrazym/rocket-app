@@ -24,6 +24,8 @@
 		165B20522999449B0047F70A /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
 		165B20532999449B0047F70A /* Infrastructure */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Infrastructure; sourceTree = "<group>"; };
 		16BC7FFB29CC9AE5002AAE15 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F02B4DD02B4D9D6B004AAA2A /* SDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SDK; sourceTree = "<group>"; };
+		F02B4DD22B4E1554004AAA2A /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scripts; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +52,7 @@
 		160CA40428A506E4004A274A = {
 			isa = PBXGroup;
 			children = (
+				F02B4DD22B4E1554004AAA2A /* scripts */,
 				1607AECD28D21D040030F1DF /* README.md */,
 				163E0EBC28C7988100CECFD8 /* RocketApp */,
 				160CA40E28A506E4004A274A /* Products */,
@@ -68,6 +71,7 @@
 		163E0EBC28C7988100CECFD8 /* RocketApp */ = {
 			isa = PBXGroup;
 			children = (
+				F02B4DD02B4D9D6B004AAA2A /* SDK */,
 				165B20522999449B0047F70A /* Features */,
 				165B20532999449B0047F70A /* Infrastructure */,
 				165B2050299944900047F70A /* Domain */,

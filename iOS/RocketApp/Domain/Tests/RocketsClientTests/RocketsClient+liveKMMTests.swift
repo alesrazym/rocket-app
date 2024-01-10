@@ -59,6 +59,7 @@ final class RocketsClientLiveKMMTests: XCTestCase {
       do {
         let _: RocketDetail? = try await RocketsClient.liveKMM.getRocket("")
       } catch let error {
+          // swiftlint:disable:next force_cast
         XCTAssertEqual(error as! RocketsClientAsyncError, RocketsClientAsyncError.networkError(.serverError(statusCode: 404)))
         count += 1
       }
