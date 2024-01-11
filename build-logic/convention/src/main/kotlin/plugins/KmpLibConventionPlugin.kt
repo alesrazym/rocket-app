@@ -23,7 +23,6 @@ class KmpLibConventionPlugin : Plugin<Project> {
                 apply(pluginId("kotlin-multiplatform"))
                 apply(pluginId("kotlin-serialization"))
                 apply(pluginId("ksp"))
-                apply(pluginId("swiftpackage"))
                 apply(pluginId("nativecoroutines"))
             }
 
