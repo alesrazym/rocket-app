@@ -27,6 +27,9 @@ suspend fun <T> asResult(block: suspend () -> T): Result<T> {
     return try {
         Result.Success(block())
     } catch (e: Exception) {
+        // Not re-throw cancellation exception will result in behaviour,
+        // that caller coroutine will not be cancelled!
+        // See cancelExceptionThrowingFlow() for more info.
         e.asResult()
     }
 }

@@ -54,6 +54,7 @@ fun NavGraphBuilder.rocketListScreen(
     onRocketItemClick: (rocket: RocketUiState, name: String) -> Unit = { _, _ -> },
 ) {
     composable(RocketListScreen.route) {
+        // TODO: remove before merge
 //        val viewModel: RocketListViewModel = koinViewModel()
         val viewModel: RocketListSuspendViewModel = koinViewModel()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
