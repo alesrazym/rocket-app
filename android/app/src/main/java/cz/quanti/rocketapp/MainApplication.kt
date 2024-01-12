@@ -1,13 +1,11 @@
 package cz.quanti.rocketapp
 
 import android.app.Application
-import android.util.Log
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import cz.quanti.rocketapp.di.rocketModule
-import cz.quanti.rocketropository.Greeting
 import cz.quanti.rocketropository.di.rocketRepositoryModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -17,8 +15,6 @@ import org.koin.core.logger.Level
 class MainApplication : Application(), ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
-
-        Log.w("MainApplication", Greeting().greet())
 
         startKoin {
             // Reference Android context
