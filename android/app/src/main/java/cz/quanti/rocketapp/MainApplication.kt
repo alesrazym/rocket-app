@@ -6,6 +6,7 @@ import coil.ImageLoaderFactory
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import cz.quanti.rocketapp.di.rocketModule
+import cz.quanti.common.di.commonModule
 import cz.quanti.rocketropository.di.rocketRepositoryModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -25,7 +26,7 @@ class MainApplication : Application(), ImageLoaderFactory {
 
             androidLogger(Level.DEBUG)
 
-            modules(rocketRepositoryModule, rocketModule)
+            modules(commonModule, rocketRepositoryModule, rocketModule)
         }
     }
 

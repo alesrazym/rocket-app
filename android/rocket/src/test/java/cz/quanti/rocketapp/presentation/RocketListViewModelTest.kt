@@ -4,8 +4,8 @@ import android.icu.text.DateFormat
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.util.toLocalString
 import cz.quanti.rocketapp.utils.rocketsData
-import cz.quanti.rocketropository.Result
-import cz.quanti.rocketropository.RocketException
+import cz.quanti.common.Result
+import cz.quanti.common.RocketException
 import cz.quanti.rocketropository.data.RocketData
 import cz.quanti.rocketropository.domain.GetRocketsUseCase
 import cz.quanti.rocketropository.domain.GetRocketsUseCaseImpl

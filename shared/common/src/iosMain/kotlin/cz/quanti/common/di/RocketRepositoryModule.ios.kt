@@ -1,4 +1,4 @@
-package cz.quanti.rocketropository.di
+package cz.quanti.common.di
 
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig

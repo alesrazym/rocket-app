@@ -1,4 +1,4 @@
-package cz.quanti.rocketropository
+package cz.quanti.common
 
 import io.ktor.http.HttpStatusCode
 

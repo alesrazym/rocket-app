@@ -27,6 +27,14 @@ kotlin {
             xcframework.add(this)
         }
     }
+
+    sourceSets {
+        getByName("commonMain").apply {
+            dependencies {
+                api(projects.shared.rocket)
+            }
+        }
+    }
 }
 
 val syncIosLibDebug by tasks.creating(Copy::class) {
@@ -41,7 +49,11 @@ val syncIosLibRelease by tasks.creating(Copy::class) {
     into(layout.buildDirectory.dir(iosLibFolder))
 }
 
+// TODO is it correct?
 dependencies {
-    api(projects.shared.rocket)
+    // TODO as there is no code in this module, it's probably ok to have
+    // dependencies here, not in kotlin block
+//    api(projects.shared.rocket)
+
     kover(projects.shared.rocket)
 }
