@@ -9,8 +9,8 @@ internal fun Project.configureAndroidBaseLibs(
 ) {
     commonExtension.apply {
         dependencies {
-            add("implementation", libs.findLibrary("koinAndroid").get())
-            add("implementation", libs.findLibrary("coil").get())
+            add("implementation", libs.library("koinAndroid"))
+            add("implementation", libs.library("coil"))
         }
     }
 }

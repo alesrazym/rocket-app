@@ -16,9 +16,9 @@ internal fun Project.configureDetekt(extension: DetektExtension) {
         baseline = File("$rootDir/detekt-baseline.xml")
 
         dependencies {
-            "detektPlugins"(libs.findLibrary("detekt-rules").get())
-            "detektPlugins"(libs.findLibrary("detekt-formatting").get())
-            "detektPlugins"(libs.findLibrary("detekt-compose").get())
+            "detektPlugins"(libs.library("detekt-rules"))
+            "detektPlugins"(libs.library("detekt-formatting"))
+            "detektPlugins"(libs.library("detekt-compose"))
         }
     }
 }

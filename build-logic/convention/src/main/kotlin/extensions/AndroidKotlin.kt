@@ -38,17 +38,8 @@ internal fun Project.configureAndroidKotlin(extension: CommonExtension<*, *, *, 
         configureKotlin()
 
         dependencies {
-            add(
-                "implementation",
-                libs.findLibrary("androidx-coreKtx")
-                    .get(),
-            )
-
-            add(
-                "testImplementation",
-                libs.findBundle("test")
-                    .get(),
-            )
+            add("implementation", libs.library("androidx-coreKtx"))
+            add("implementation", libs.bundle("test"))
         }
     }
 }
