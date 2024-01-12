@@ -33,6 +33,7 @@ internal fun Project.configureAndroidKotlin(extension: CommonExtension<*, *, *, 
            - [.gradle]\caches\modules-2\files-2.1\org.jetbrains.kotlinx\atomicfu-jvm\0.22.0\c6a128a44ba52a18265e5ec816130cd341d80792\atomicfu-jvm-0.22.0.jar
          */
         packaging.resources.excludes += "/META-INF/versions/**"
+        packaging.resources.excludes += "/META-INF/LICENSE*.md"
         // End of fix
 
         configureKotlin()
