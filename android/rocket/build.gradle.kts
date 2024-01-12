@@ -12,7 +12,7 @@ android {
 
 dependencies {
     implementation(projects.android.ui)
-    implementation(projects.shared.rocket)
+    implementation(projects.shared.shared)
 
     implementation(libs.koinAndroidCompose)
 }

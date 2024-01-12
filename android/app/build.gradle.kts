@@ -33,7 +33,7 @@ dependencies {
     // we can access projects in dependencies as follows:
     implementation(projects.android.ui)
     implementation(projects.android.rocket)
-    implementation(projects.shared.rocket)
+    implementation(projects.shared.shared)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
@@ -43,14 +43,10 @@ dependencies {
 /*
  * Kover configs
  */
-
 dependencies {
-    /**
-     * Use artifacts from 'lib' project.
-     */
     kover(projects.android.ui)
     kover(projects.android.rocket)
-    kover(projects.shared.rocket)
+    kover(projects.shared.shared)
 }
 
 koverReport {
