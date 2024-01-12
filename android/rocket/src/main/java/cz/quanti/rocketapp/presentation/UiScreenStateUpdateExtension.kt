@@ -1,8 +1,8 @@
 package cz.quanti.rocketapp.presentation
 
 import cz.quanti.rocketapp.android.rocket.R
-import cz.quanti.rocketropository.Result
-import cz.quanti.rocketropository.RocketException
+import cz.quanti.common.Result
+import cz.quanti.common.RocketException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

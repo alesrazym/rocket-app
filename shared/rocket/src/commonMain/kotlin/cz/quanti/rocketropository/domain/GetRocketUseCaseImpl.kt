@@ -1,7 +1,7 @@
 package cz.quanti.rocketropository.domain
 
-import cz.quanti.rocketropository.Result
-import cz.quanti.rocketropository.asResult
+import cz.quanti.common.Result
+import cz.quanti.common.asResult
 import cz.quanti.rocketropository.data.RocketData
 import cz.quanti.rocketropository.data.StageData
 import cz.quanti.rocketropository.model.RocketDetail

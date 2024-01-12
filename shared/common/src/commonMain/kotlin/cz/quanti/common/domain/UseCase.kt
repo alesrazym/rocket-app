@@ -1,4 +1,4 @@
-package cz.quanti.rocketropository.domain
+package cz.quanti.common.domain
 
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow

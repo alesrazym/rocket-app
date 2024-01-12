@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketropository.domain.GetRocketsUseCase
-import cz.quanti.rocketropository.domain.invoke
+import cz.quanti.common.domain.invoke
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
