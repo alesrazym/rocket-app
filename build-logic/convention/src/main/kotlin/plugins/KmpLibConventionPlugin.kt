@@ -2,8 +2,10 @@ package plugins
 
 import com.android.build.api.dsl.LibraryExtension
 import config.Config
+import extensions.bundle
 import extensions.configureAndroidKotlin
 import extensions.configureBuildTypes
+import extensions.library
 import extensions.libs
 import extensions.pluginId
 import org.gradle.api.NamedDomainObjectContainer
@@ -37,7 +39,7 @@ class KmpLibConventionPlugin : Plugin<Project> {
                     configurations
                         .filter { it.name.startsWith("ksp") && it.name.contains("Test") }
                         .forEach {
-                            add(it.name, libs.findLibrary("test-mockativeProcessor").get())
+                            add(it.name, libs.library("test-mockativeProcessor"))
                         }
                 }
             }
@@ -92,18 +94,9 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.commonSourceSet(libs: Ve
     getByName("commonMain")
         .apply {
             dependencies {
-                implementation(
-                    libs.findLibrary("koinCore")
-                        .get(),
-                )
-                implementation(
-                    libs.findBundle("ktor-multiplatform")
-                        .get(),
-                )
-                implementation(
-                    libs.findLibrary("kotlinx-coroutines")
-                        .get(),
-                )
+                implementation(libs.library("koinCore"))
+                implementation(libs.bundle("ktor-multiplatform"))
+                implementation(libs.library("kotlinx-coroutines"))
             }
         }
 }
@@ -111,7 +104,7 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.commonSourceSet(libs: Ve
 private fun NamedDomainObjectContainer<KotlinSourceSet>.androidSourceSet(libs: VersionCatalog) {
     getByName("androidMain").apply {
         dependencies {
-            implementation(libs.findLibrary("ktor-client-android").get())
+            implementation(libs.library("ktor-client-android"))
         }
     }
 }
@@ -119,7 +112,7 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.androidSourceSet(libs: V
 private fun NamedDomainObjectContainer<KotlinSourceSet>.iosSourceSet(libs: VersionCatalog) {
     getByName("iosMain").apply {
         dependencies {
-            implementation(libs.findLibrary("ktor-client-darwin").get())
+            implementation(libs.library("ktor-client-darwin"))
         }
     }
 }
@@ -127,11 +120,11 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.iosSourceSet(libs: Versi
 private fun NamedDomainObjectContainer<KotlinSourceSet>.commonTestSourceSet(libs: VersionCatalog) {
     getByName("commonTest").apply {
         dependencies {
-            implementation(libs.findLibrary("test-kotlin").get())
-            implementation(libs.findLibrary("test-resources").get())
-            implementation(libs.findLibrary("test-kotest").get())
-            implementation(libs.findLibrary("test-mockative").get())
-            implementation(libs.findLibrary("test-coroutines").get())
+            implementation(libs.library("test-kotlin"))
+            implementation(libs.library("test-resources"))
+            implementation(libs.library("test-kotest"))
+            implementation(libs.library("test-mockative"))
+            implementation(libs.library("test-coroutines"))
         }
     }
 }
@@ -139,10 +132,10 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.commonTestSourceSet(libs
 private fun NamedDomainObjectContainer<KotlinSourceSet>.androidTestSourceSet(libs: VersionCatalog) {
     getByName("androidUnitTest").apply {
         dependencies {
-            implementation(libs.findLibrary("test-kotlin").get())
-            implementation(libs.findLibrary("test-resources").get())
-            implementation(libs.findLibrary("test-coroutines").get())
-            implementation(libs.findLibrary("test-koin-junit4").get())
+            implementation(libs.library("test-kotlin"))
+            implementation(libs.library("test-resources"))
+            implementation(libs.library("test-coroutines"))
+            implementation(libs.library("test-koin-junit4"))
         }
     }
 }

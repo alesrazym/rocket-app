@@ -16,10 +16,7 @@ internal fun Project.configureDetekt(extension: DetektExtension) {
         baseline = File("$rootDir/detekt-baseline.xml")
 
         dependencies {
-            "detektPlugins"(
-                libs.findLibrary("detekt-rules")
-                    .get(),
-            )
+            "detektPlugins"(libs.library("detekt-rules"))
 
             // In case we want to add rules from ktlint to detekt as well:
             // detektPlugins(libs.detekt.formatting)
