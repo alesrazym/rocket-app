@@ -104,7 +104,7 @@ class ResultKtTest {
         }
 
     private suspend infix fun Throwable.shouldResult(expectedException: RocketException) {
-        val flow = flow<String> { emit(throw this@shouldResult) }
+        val flow = flow<String> { throw this@shouldResult }
         val resultFlow = flow.asResult()
 
         resultFlow.drop(1)
