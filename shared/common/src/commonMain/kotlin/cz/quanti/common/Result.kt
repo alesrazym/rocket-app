@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.onStart
 sealed interface Result<out T> {
     data class Success<T>(val data: T) : Result<T>
 
-    data class Error(val exception: Throwable? = null) : Result<Nothing>
+    data class Error(val exception: ResultException? = null) : Result<Nothing>
 
     data object Loading : Result<Nothing>
 }
@@ -31,22 +31,22 @@ fun <T> Flow<T>.asResult(): Flow<Result<T>> {
         .catch {
             when (it) {
                 is HttpRequestTimeoutException, is ConnectTimeoutException, is SocketTimeoutException ->
-                    emit(Result.Error(RocketException.NetworkException(it.message ?: "Network timeout", it)))
+                    emit(Result.Error(ResultException.NetworkException(it.message ?: "Network timeout", it)))
                 is IOException ->
-                    emit(Result.Error(RocketException.NetworkException(it.message ?: "Network error", it)))
+                    emit(Result.Error(ResultException.NetworkException(it.message ?: "Network error", it)))
                 is ResponseException ->
-                    emit(Result.Error(RocketException.HttpException(it.response.status, it)))
+                    emit(Result.Error(ResultException.HttpException(it.response.status, it)))
                 is SendCountExceedException ->
                     emit(
                         Result.Error(
-                            RocketException.NetworkException(it.message ?: "Infinite or too long redirect", it),
+                            ResultException.NetworkException(it.message ?: "Infinite or too long redirect", it),
                         ),
                     )
                 is ClientEngineClosedException ->
-                    emit(Result.Error(RocketException.Exception(it.message ?: "Client engine closed", it)))
+                    emit(Result.Error(ResultException.Exception(it.message ?: "Client engine closed", it)))
                 is ContentConverterException ->
-                    emit(Result.Error(RocketException.ContentException(it.message ?: "Content conversion error", it)))
-                else -> emit(Result.Error(RocketException.Exception(it.message ?: "Unknown error", it)))
+                    emit(Result.Error(ResultException.ContentException(it.message ?: "Content conversion error", it)))
+                else -> emit(Result.Error(ResultException.Exception(it.message ?: "Unknown error", it)))
             }
         }
 }

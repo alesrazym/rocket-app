@@ -2,7 +2,7 @@ package cz.quanti.rocketapp.presentation
 
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.common.Result
-import cz.quanti.common.RocketException
+import cz.quanti.common.ResultException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -59,10 +59,10 @@ fun <T, S> UiScreenState<S>.update(
 private fun defaultErrorTransform(): (Throwable?) -> UiText =
     {
         when (it) {
-            is RocketException.NetworkException -> UiText.StringResource(R.string.error_io)
-            is RocketException.HttpException -> UiText.StringResource(R.string.error_server_response)
-            is RocketException.ContentException -> UiText.StringResource(R.string.error_json)
-            is RocketException.Exception -> UiText.StringResource(R.string.unknown_error)
+            is ResultException.NetworkException -> UiText.StringResource(R.string.error_io)
+            is ResultException.HttpException -> UiText.StringResource(R.string.error_server_response)
+            is ResultException.ContentException -> UiText.StringResource(R.string.error_json)
+            is ResultException.Exception -> UiText.StringResource(R.string.unknown_error)
             else -> UiText.StringResource(R.string.unknown_error)
         }
     }

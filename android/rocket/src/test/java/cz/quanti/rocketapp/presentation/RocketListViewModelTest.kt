@@ -5,7 +5,7 @@ import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.util.toLocalString
 import cz.quanti.rocketapp.utils.rocketsData
 import cz.quanti.common.Result
-import cz.quanti.common.RocketException
+import cz.quanti.common.ResultException
 import cz.quanti.rocketropository.data.RocketData
 import cz.quanti.rocketropository.domain.GetRocketsUseCase
 import cz.quanti.rocketropository.domain.GetRocketsUseCaseImpl
@@ -107,25 +107,25 @@ class RocketListViewModelTest {
     // TODO can we use parametrized test case? How will we test in KMP?
     @Test
     fun `uiState should be error on Exception`() {
-        RocketException.Exception("error", null) shouldResult
+        ResultException.Exception("error", null) shouldResult
             UiScreenState.Error(UiText.StringResource(R.string.unknown_error))
     }
 
     @Test
     fun `uiState should be error on ContentException`() {
-        RocketException.ContentException("error", null) shouldResult
+        ResultException.ContentException("error", null) shouldResult
             UiScreenState.Error(UiText.StringResource(R.string.error_json))
     }
 
     @Test
     fun `uiState should be error on NetworkException`() {
-        RocketException.NetworkException("error", null) shouldResult
+        ResultException.NetworkException("error", null) shouldResult
             UiScreenState.Error(UiText.StringResource(R.string.error_io))
     }
 
     @Test
     fun `uiState should be error on HttpException`() {
-        mockk<RocketException.HttpException>() shouldResult
+        mockk<ResultException.HttpException>() shouldResult
             UiScreenState.Error(UiText.StringResource(R.string.error_server_response))
     }
 
@@ -160,7 +160,7 @@ class RocketListViewModelTest {
         return viewModel
     }
 
-    private infix fun RocketException.shouldResult(expectedException: UiScreenState<*>) =
+    private infix fun ResultException.shouldResult(expectedException: UiScreenState<*>) =
         runTest(testDispatcher) {
             val viewModel =
                 rocketListViewModel {

@@ -1,8 +1,5 @@
-package cz.quanti.rocketropository
+package cz.quanti.common
 
-import cz.quanti.common.Result
-import cz.quanti.common.RocketException
-import cz.quanti.common.asResult
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.ClientEngineClosedException
 import io.ktor.client.plugins.HttpRequestTimeoutException
@@ -50,7 +47,7 @@ class ResultKtTest {
         runTest {
             val exception = HttpRequestTimeoutException("url", 1000L)
             exception shouldResult
-                RocketException.NetworkException(exception.message!!, exception)
+                ResultException.NetworkException(exception.message!!, exception)
         }
 
     @Test
@@ -58,7 +55,7 @@ class ResultKtTest {
         runTest {
             val exception = IOException("message")
             exception shouldResult
-                RocketException.NetworkException(exception.message!!, exception)
+                ResultException.NetworkException(exception.message!!, exception)
         }
 
     @Test
@@ -68,7 +65,7 @@ class ResultKtTest {
             every { httpResponse.status } returns HttpStatusCode.NotFound
             val exception = ResponseException(httpResponse, "cache")
             exception shouldResult
-                RocketException.HttpException(HttpStatusCode.NotFound, exception)
+                ResultException.HttpException(HttpStatusCode.NotFound, exception)
         }
 
     @Test
@@ -76,7 +73,7 @@ class ResultKtTest {
         runTest {
             val exception = SendCountExceedException("message")
             exception shouldResult
-                RocketException.NetworkException(exception.message!!, exception)
+                ResultException.NetworkException(exception.message!!, exception)
         }
 
     @Test
@@ -84,7 +81,7 @@ class ResultKtTest {
         runTest {
             val exception = ClientEngineClosedException(null)
             exception shouldResult
-                RocketException.Exception(exception.message!!, exception)
+                ResultException.Exception(exception.message!!, exception)
         }
 
     @Test
@@ -92,7 +89,7 @@ class ResultKtTest {
         runTest {
             val exception = ContentConverterException("Bad content")
             exception shouldResult
-                RocketException.ContentException(exception.message!!, exception)
+                ResultException.ContentException(exception.message!!, exception)
         }
 
     @Test
@@ -100,10 +97,10 @@ class ResultKtTest {
         runTest {
             val exception = IllegalArgumentException("Bad content")
             exception shouldResult
-                RocketException.Exception(exception.message!!, exception)
+                ResultException.Exception(exception.message!!, exception)
         }
 
-    private suspend infix fun Throwable.shouldResult(expectedException: RocketException) {
+    private suspend infix fun Throwable.shouldResult(expectedException: ResultException) {
         val flow = flow<String> { throw this@shouldResult }
         val resultFlow = flow.asResult()
 
