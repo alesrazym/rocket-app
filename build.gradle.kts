@@ -49,3 +49,27 @@ dependencyAnalysis {
 dependencies {
     kover(projects.android.app)
 }
+
+// Hack to the fact, that Android Studio's `Build -> Make Project`
+// invokes task `testClasses` that does not exist, e.g.
+// ```
+// Executing tasks: [:shared:rocket:assemble, :shared:rocket:testClasses,
+// :shared:common:assemble, :shared:common:testClasses, ...
+// ```
+afterEvaluate {
+    allprojects {
+        if (!project.path.startsWith(":shared"))
+            return@allprojects
+
+        if (tasks.any { task -> task.name == "testClasses" }) {
+            println("Project \"${project.path}:${project.name}\" contains \"testClasses\" task.")
+        } else {
+            println("Project \"${project.path}:${project.name}\" does not contain \"testClasses\" task, creating dummy.")
+            tasks.register("testClasses") {
+                doLast {
+                    println("This is a dummy testClasses task")
+                }
+            }
+        }
+    }
+}
