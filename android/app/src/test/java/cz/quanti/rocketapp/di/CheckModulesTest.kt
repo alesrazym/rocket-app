@@ -2,7 +2,6 @@ package cz.quanti.rocketapp.di
 
 import cz.quanti.rocketropository.domain.GetRocketUseCase
 import cz.quanti.rocketropository.domain.GetRocketsUseCase
-import cz.quanti.rocketropository.domain.RocketsRepository
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.verify
@@ -14,7 +13,6 @@ class CheckModulesTest {
         rocketModule.verify(
             extraTypes =
                 listOf(
-                    RocketsRepository::class,
                     GetRocketsUseCase::class,
                     GetRocketUseCase::class,
                 ),

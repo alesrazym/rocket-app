@@ -1,7 +1,8 @@
 package cz.quanti.rocketapp.utils
 
 import com.goncalossilva.resources.Resource
-import cz.quanti.rocketropository.data.RocketData
+import cz.quanti.rocketropository.model.Rocket
+import cz.quanti.rocketropository.model.RocketDetail
 import kotlinx.serialization.json.Json
 
 private val json =
@@ -9,7 +10,12 @@ private val json =
         ignoreUnknownKeys = true
     }
 
-fun rocketsData(): List<RocketData> =
+fun rocketsData(): List<Rocket> =
     json.decodeFromString(
-        Resource(path = "src/test/resources/rockets.json").readText(),
+        Resource(path = "src/test/resources/rocket.json").readText(),
+    )
+
+fun rocketsDetailData(): List<RocketDetail> =
+    json.decodeFromString(
+        Resource(path = "src/test/resources/rocketDetail.json").readText(),
     )

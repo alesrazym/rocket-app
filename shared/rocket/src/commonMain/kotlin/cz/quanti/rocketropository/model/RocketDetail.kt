@@ -1,5 +1,8 @@
 package cz.quanti.rocketropository.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class RocketDetail(
     val name: String,
     val id: String,
@@ -12,6 +15,7 @@ data class RocketDetail(
     val flickrImages: List<String>,
 )
 
+@Serializable
 data class Stage(
     val burnTimeSec: Int?,
     val engines: Int,
