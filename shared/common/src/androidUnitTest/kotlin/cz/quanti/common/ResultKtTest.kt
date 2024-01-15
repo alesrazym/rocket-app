@@ -46,7 +46,7 @@ class ResultKtTest {
     fun `asResult emits Error on HttpRequestTimeoutException`() =
         runTest {
             val exception = HttpRequestTimeoutException("url", 1000L)
-            exception shouldResult
+            exception asResultShouldBe
                 ResultException.NetworkException(exception.message!!, exception)
         }
 
@@ -54,17 +54,18 @@ class ResultKtTest {
     fun `asResult emits Error on IOException`() =
         runTest {
             val exception = IOException("message")
-            exception shouldResult
+            exception asResultShouldBe
                 ResultException.NetworkException(exception.message!!, exception)
         }
 
     @Test
     fun `asResult emits Error on ResponseException`() =
         runTest {
-            val httpResponse = mockk<HttpResponse>()
-            every { httpResponse.status } returns HttpStatusCode.NotFound
+            val httpResponse = mockk<HttpResponse> {
+                every { status } returns HttpStatusCode.NotFound
+            }
             val exception = ResponseException(httpResponse, "cache")
-            exception shouldResult
+            exception asResultShouldBe
                 ResultException.HttpException(HttpStatusCode.NotFound, exception)
         }
 
@@ -72,7 +73,7 @@ class ResultKtTest {
     fun `asResult emits Error on SendCountExceedException`() =
         runTest {
             val exception = SendCountExceedException("message")
-            exception shouldResult
+            exception asResultShouldBe
                 ResultException.NetworkException(exception.message!!, exception)
         }
 
@@ -80,7 +81,7 @@ class ResultKtTest {
     fun `asResult emits Error on ClientEngineClosedException`() =
         runTest {
             val exception = ClientEngineClosedException(null)
-            exception shouldResult
+            exception asResultShouldBe
                 ResultException.Exception(exception.message!!, exception)
         }
 
@@ -88,7 +89,7 @@ class ResultKtTest {
     fun `asResult emits Error on ContentConverterException`() =
         runTest {
             val exception = ContentConverterException("Bad content")
-            exception shouldResult
+            exception asResultShouldBe
                 ResultException.ContentException(exception.message!!, exception)
         }
 
@@ -96,12 +97,12 @@ class ResultKtTest {
     fun `asResult emits Error on other Exception`() =
         runTest {
             val exception = IllegalArgumentException("Bad content")
-            exception shouldResult
+            exception asResultShouldBe
                 ResultException.Exception(exception.message!!, exception)
         }
 
-    private suspend infix fun Throwable.shouldResult(expectedException: ResultException) {
-        val flow = flow<String> { throw this@shouldResult }
+    private suspend infix fun Throwable.asResultShouldBe(expectedException: ResultException) {
+        val flow = flow<String> { throw this@asResultShouldBe }
         val resultFlow = flow.asResult()
 
         resultFlow.drop(1)
