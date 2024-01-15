@@ -29,6 +29,11 @@ kotlin {
     }
 
     sourceSets {
+        getByName("androidUnitTest").apply {
+            dependencies {
+                implementation(project.libs.test.konsist)
+            }
+        }
         getByName("commonMain").apply {
             dependencies {
                 api(projects.shared.rocket)

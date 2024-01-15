@@ -28,6 +28,7 @@ nativecoroutines = "1.0.0-ALPHA-23"
 
 dependencyAnalysis = "1.26.0"
 kover = "0.7.5"
+konsist = "0.13.0"
 
 # Try keep all ktlint match the same version,
 # as well as with https://github.com/nbadal/ktlint-intellij-plugin
@@ -75,6 +76,7 @@ test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 test-kotlin = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+test-konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 
 detekt-rules = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
