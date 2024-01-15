@@ -1,6 +1,6 @@
 package cz.quanti.rocketropository.data
 
-import com.goncalossilva.resources.Resource
+import cz.quanti.rocketropository.utils.rocketsData
 import io.kotest.matchers.shouldBe
 import io.mockative.Mock
 import io.mockative.classOf
@@ -10,19 +10,8 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.json.Json
 
 class RocketsRepositoryImplTest {
-    private val json =
-        Json {
-            ignoreUnknownKeys = true
-        }
-
-    private val rocketsData: List<RocketData> =
-        json.decodeFromString(
-            Resource(path = "src/commonTest/resources/rockets.json").readText(),
-        )
-
     @Mock
     private lateinit var api: SpaceXApi
 

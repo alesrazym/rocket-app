@@ -1,5 +1,8 @@
 package cz.quanti.rocketropository.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class Rocket(
     val name: String,
     val firstFlight: String,

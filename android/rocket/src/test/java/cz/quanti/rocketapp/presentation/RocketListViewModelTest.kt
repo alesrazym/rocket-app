@@ -1,16 +1,14 @@
 package cz.quanti.rocketapp.presentation
 
 import android.icu.text.DateFormat
+import cz.quanti.common.Result
+import cz.quanti.common.ResultException
+import cz.quanti.common.asResult
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.util.toLocalString
 import cz.quanti.rocketapp.utils.rocketsData
-import cz.quanti.common.Result
-import cz.quanti.common.ResultException
-import cz.quanti.rocketropository.data.RocketData
 import cz.quanti.rocketropository.domain.GetRocketsUseCase
-import cz.quanti.rocketropository.domain.GetRocketsUseCaseImpl
-import cz.quanti.rocketropository.domain.RocketsRepository
-import cz.quanti.rocketropository.domain.asRocket
+import cz.quanti.rocketropository.model.Rocket
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.every
@@ -36,7 +34,7 @@ import kotlinx.coroutines.test.setMain
 @OptIn(ExperimentalCoroutinesApi::class)
 class RocketListViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
-    private val rocketsData: List<RocketData> = rocketsData()
+    private val rocketsData: List<Rocket> = rocketsData()
 
     @Before
     fun setup() {
@@ -60,10 +58,10 @@ class RocketListViewModelTest {
     }
 
     @Test
-    fun `should convert data to model`() {
+    fun `should convert model to uiState`() {
         val data = rocketsData.first { it.id == "5e9d0d95eda69955f709d1eb" }
 
-        val model = data.asRocket().asRocketUiState()
+        val model = data.asRocketUiState()
 
         model.id shouldBe "5e9d0d95eda69955f709d1eb"
         model.name shouldBe UiText.DynamicString("Falcon 1")
@@ -75,14 +73,14 @@ class RocketListViewModelTest {
 
     @Test
     fun `uiState should be loading first`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow {
+        val useCase = GetRocketsUseCase {
+            flow {
                 delay(1000)
-                emit(emptyList())
-            }
+                emit(emptyList<Rocket>())
+            }.asResult()
         }
 
-        val viewModel = rocketListViewModel(repository)
+        val viewModel = rocketListViewModel(useCase)
 
         // Loading state until we let the coroutine in model work with advanceUntilIdle()
         advanceTimeBy(1)
@@ -94,14 +92,43 @@ class RocketListViewModelTest {
 
     @Test
     fun `uiState should be success`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returns flow { emit(rocketsData) }
+        val useCase = GetRocketsUseCase {
+            flow {
+                emit(rocketsData)
+            }.asResult()
         }
 
-        val viewModel = rocketListViewModel(repository)
+        val viewModel = rocketListViewModel(useCase)
 
         advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Data(rocketsData.map { it.asRocket().asRocketUiState() })
+        viewModel.uiState.value shouldBe UiScreenState.Data(
+            rocketsData.map { it.asRocketUiState() })
+    }
+
+    @Test
+    fun `uiState should be updated after fetch`() = runTest(testDispatcher) {
+        val useCase = mockk<GetRocketsUseCase>()
+        var callCount = 0
+
+        coEvery { useCase(Unit) } answers {
+            callCount++
+            when (callCount) {
+                1 -> flow { emit(emptyList<Rocket>()) }.asResult()
+                else -> flow { emit(rocketsData) }.asResult()
+            }
+        }
+
+        val viewModel = rocketListViewModel(useCase)
+
+        viewModel.uiState.value shouldBe UiScreenState.Loading(UiText.StringResource(R.string.rockets_loading))
+
+        advanceUntilIdle()
+        viewModel.uiState.value shouldBe UiScreenState.Data(emptyList())
+
+        viewModel.fetchRockets()
+        advanceUntilIdle()
+        viewModel.uiState.value shouldBe
+            UiScreenState.Data(rocketsData.map { it.asRocketUiState() })
     }
 
     // TODO can we use parametrized test case? How will we test in KMP?
@@ -127,31 +154,6 @@ class RocketListViewModelTest {
     fun `uiState should be error on HttpException`() {
         mockk<ResultException.HttpException>() shouldResult
             UiScreenState.Error(UiText.StringResource(R.string.error_server_response))
-    }
-
-    @Test
-    fun `uiState should be updated after fetch`() = runTest(testDispatcher) {
-        val repository = mockk<RocketsRepository> {
-            coEvery { getRockets() } returnsMany listOf(
-                flow { emit(emptyList()) },
-                flow { emit(rocketsData) }
-            )
-        }
-
-        val viewModel = rocketListViewModel(repository)
-
-        advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Data(emptyList())
-
-        viewModel.fetchRockets()
-        advanceUntilIdle()
-        viewModel.uiState.value shouldBe UiScreenState.Data(rocketsData.map { it.asRocket().asRocketUiState() })
-    }
-
-    private fun rocketListViewModel(repository: RocketsRepository): RocketListViewModel {
-        val viewModel = RocketListViewModel(GetRocketsUseCaseImpl(repository))
-        viewModel.initialize()
-        return viewModel
     }
 
     private fun rocketListViewModel(useCase: GetRocketsUseCase): RocketListViewModel {

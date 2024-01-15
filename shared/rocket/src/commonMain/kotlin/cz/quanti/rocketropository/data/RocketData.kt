@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RocketData(
+internal data class RocketData(
     @SerialName("id") val id: String,
     @SerialName("description") val overview: String,
     @SerialName("diameter") val diameter: Map<String, Double>,
@@ -25,7 +25,7 @@ data class RocketData(
 }
 
 @Serializable
-data class StageData(
+internal data class StageData(
     @SerialName("burn_time_sec") val burnTimeSec: Int?,
     @SerialName("engines") val engines: Int,
     @SerialName("fuel_amount_tons") val fuelAmountTons: Double,

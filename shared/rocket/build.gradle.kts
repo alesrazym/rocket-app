@@ -9,6 +9,13 @@ android {
 }
 
 kotlin {
+    // TODO: Looking forward there will be kind of shared test code and resources,
+    //  similar to `textFixtures` in Java and Android.
+    //  see https://docs.gradle.org/current/userguide/java_testing.html#sec:java_test_fixtures
+//    testFixtures {
+//        enable = true
+//    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
