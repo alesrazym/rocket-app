@@ -26,7 +26,7 @@ private fun provideJson(): Json {
     }
 }
 
-expect fun provideClient(config: HttpClientConfig<*>.() -> Unit): HttpClient
+internal expect fun provideClient(config: HttpClientConfig<*>.() -> Unit): HttpClient
 
 private fun provideClientConfig(json: Json): HttpClientConfig<*>.() -> Unit {
     return {

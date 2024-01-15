@@ -4,7 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-class SpaceXApiImpl(
+internal class SpaceXApiImpl(
     private val client: HttpClient,
 ) : SpaceXApi {
     override suspend fun listRockets(): List<RocketData> {
