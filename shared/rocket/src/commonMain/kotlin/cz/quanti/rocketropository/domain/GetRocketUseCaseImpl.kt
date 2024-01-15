@@ -9,7 +9,7 @@ import cz.quanti.rocketropository.model.Stage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetRocketUseCaseImpl(
+internal class GetRocketUseCaseImpl(
     private val repo: RocketsRepository
 ) : GetRocketUseCase {
     override fun invoke(input: String): Flow<Result<RocketDetail>> {
@@ -19,7 +19,7 @@ class GetRocketUseCaseImpl(
     }
 }
 
-fun RocketData.asRocketDetail(): RocketDetail {
+internal fun RocketData.asRocketDetail(): RocketDetail {
     return RocketDetail(
         this.name,
         this.id,
@@ -33,7 +33,7 @@ fun RocketData.asRocketDetail(): RocketDetail {
     )
 }
 
-fun StageData.asStage(): Stage {
+internal fun StageData.asStage(): Stage {
     return Stage(this.burnTimeSec, this.engines, this.fuelAmountTons, this.reusable)
 }
 
