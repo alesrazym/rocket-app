@@ -2,8 +2,8 @@ import config.AppBuildType
 
 plugins {
     alias(libs.plugins.quanti.android.application)
-    alias(libs.plugins.quanti.android.base)
     alias(libs.plugins.quanti.android.application.compose)
+    alias(libs.plugins.quanti.android.base)
     alias(libs.plugins.quanti.android.detekt)
     alias(libs.plugins.quanti.android.ktlint)
     alias(libs.plugins.kover)
