@@ -40,7 +40,7 @@ import cz.quanti.razym.rocketapp.presentation.UiScreenState
 import cz.quanti.razym.rocketapp.presentation.UiText
 import cz.quanti.razym.rocketapp.ui.ContentStatusText
 import cz.quanti.razym.rocketapp.ui.PreviewCommon.PREVIEW_WIDTH
-import cz.quanti.razym.rocketapp.ui.RocketAppPreview
+import cz.quanti.razym.rocketapp.ui.PreviewRocketApp
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.theme.RocketAppTheme
 import org.koin.androidx.compose.getViewModel
@@ -239,7 +239,7 @@ private fun FirstFlightText(date: Date?) {
     )
 }
 
-@RocketAppPreview
+@PreviewRocketApp
 @Composable
 private fun RocketListScreenPreview(
     @PreviewParameter(RocketsProvider::class) rockets: UiScreenState<List<Rocket>>,

@@ -51,7 +51,7 @@ import cz.quanti.razym.rocketapp.presentation.RocketDetailViewModel
 import cz.quanti.razym.rocketapp.presentation.StageUiState
 import cz.quanti.razym.rocketapp.presentation.UiScreenState
 import cz.quanti.razym.rocketapp.presentation.asStageUiState
-import cz.quanti.razym.rocketapp.ui.RocketAppPreview
+import cz.quanti.razym.rocketapp.ui.PreviewRocketApp
 import cz.quanti.razym.rocketapp.ui.StateFullPullToRefresh
 import cz.quanti.razym.rocketapp.ui.TopBarWithBackIcon
 import cz.quanti.razym.rocketapp.ui.theme.RocketAppTheme
@@ -415,7 +415,7 @@ private fun Title(text: String) {
     )
 }
 
-@RocketAppPreview
+@PreviewRocketApp
 @Composable
 private fun RocketDetailScreenContentPreview() {
     RocketAppTheme {

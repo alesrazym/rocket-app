@@ -86,7 +86,7 @@ fun <T> StateFullPullToRefresh(
     }
 }
 
-@RocketAppPreview
+@PreviewRocketApp
 @Composable
 private fun PullToRefreshPreview() {
     RocketAppTheme {
@@ -101,7 +101,7 @@ private fun PullToRefreshPreview() {
     }
 }
 
-@RocketAppPreview
+@PreviewRocketApp
 @Composable
 private fun StateFullPullToRefreshPreview(
     @PreviewParameter(StateProvider::class) uiState: UiScreenState<String>,

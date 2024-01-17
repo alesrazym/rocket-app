@@ -19,7 +19,7 @@ object PreviewCommon {
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     name = "Light",
 )
-annotation class RocketAppPreviewLight
+annotation class PreviewRocketAppLight
 
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.ANNOTATION_CLASS)
@@ -30,10 +30,10 @@ annotation class RocketAppPreviewLight
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     name = "Dark",
 )
-annotation class RocketAppPreviewDark
+annotation class PreviewRocketAppDark
 
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.FUNCTION)
-@RocketAppPreviewLight
-@RocketAppPreviewDark
-annotation class RocketAppPreview
+@PreviewRocketAppLight
+@PreviewRocketAppDark
+annotation class PreviewRocketApp
