@@ -8,15 +8,6 @@ plugins {
 
 android {
     namespace = "cz.quanti.rocketapp.android.rocket"
-
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-        }
-    }
 }
 
 dependencies {
