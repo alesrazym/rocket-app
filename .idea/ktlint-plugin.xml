@@ -4,8 +4,7 @@
     <ktlintMode>MANUAL</ktlintMode>
     <externalJarPaths>
       <list>
-        <!-- TODO add rules to git? -->
-        <option value="$USER_HOME$/Downloads/ktlint-compose-0.3.8-all.jar" />
+        <option value="$PROJECT_DIR$/ktlint-compose-0.3.8-all.jar" />
       </list>
     </externalJarPaths>
   </component>
