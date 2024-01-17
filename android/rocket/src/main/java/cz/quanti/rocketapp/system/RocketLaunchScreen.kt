@@ -12,11 +12,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import cz.quanti.rocketapp.R
+import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.ui.TopBarWithBackIcon
 import cz.quanti.rocketapp.ui.theme.RocketappTheme
 
-data object RocketLaunchScreen : Screen("rocketLaunch")
+data object RocketLaunchScreen : RocketAppScreen("rocketLaunch")
 
 fun NavGraphBuilder.rocketLaunchScreen(
     onBackClick: () -> Unit = {},

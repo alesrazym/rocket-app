@@ -17,6 +17,7 @@ data class RocketDetailUiState(
 )
 
 data class StageUiState(
+    val title: UiText,
     val burnTimeSec: UiText,
     val engines: UiText,
     val fuelAmount: UiText,
@@ -31,14 +32,15 @@ fun RocketDetail.asRocketDetailUiState(): RocketDetailUiState {
         this.heightMeters,
         this.diameterMeters,
         this.massTons,
-        this.firstStage.asStageUiState(),
-        this.secondStage.asStageUiState(),
-        this.flickrImages.take(10),
+        this.firstStage.asStageUiState(UiText.StringResource(R.string.rocket_detail_first_stage)),
+        this.secondStage.asStageUiState(UiText.StringResource(R.string.rocket_detail_second_stage)),
+        this.flickrImages.take(n = 10),
     )
 }
 
-fun Stage.asStageUiState(): StageUiState {
+fun Stage.asStageUiState(title: UiText): StageUiState {
     return StageUiState(
+        title,
         this.burnTimeSec.asBurnUiText(),
         this.engines.asEnginesUiText(),
         this.fuelAmountTons.asFuelUiText(),

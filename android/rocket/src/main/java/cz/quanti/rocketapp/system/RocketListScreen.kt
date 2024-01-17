@@ -37,7 +37,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import cz.quanti.rocketapp.LocalSnackbar
-import cz.quanti.rocketapp.R
+import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.presentation.RocketListViewModel
 import cz.quanti.rocketapp.presentation.RocketUiState
 import cz.quanti.rocketapp.presentation.UiScreenState
@@ -52,7 +52,7 @@ import cz.quanti.rocketapp.ui.theme.RocketappTheme
 import cz.quanti.rocketapp.util.toDate
 import org.koin.androidx.compose.koinViewModel
 
-data object RocketListScreen : Screen("rocketList")
+data object RocketListScreen : RocketAppScreen("rocketList")
 
 fun NavGraphBuilder.rocketListScreen(
     onRocketItemClick: (rocket: RocketUiState, name: String) -> Unit = { _, _ -> },

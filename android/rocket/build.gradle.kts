@@ -23,4 +23,6 @@ android {
 dependencies {
     implementation(projects.android.ui)
     implementation(projects.shared.rocket)
+
+    implementation(libs.koinAndroidCompose)
 }

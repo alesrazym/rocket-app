@@ -49,11 +49,12 @@ import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.quanti.rocketapp.LocalSnackbar
-import cz.quanti.rocketapp.R
+import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.presentation.RocketDetailUiState
 import cz.quanti.rocketapp.presentation.RocketDetailViewModel
 import cz.quanti.rocketapp.presentation.StageUiState
 import cz.quanti.rocketapp.presentation.UiScreenState
+import cz.quanti.rocketapp.presentation.UiText
 import cz.quanti.rocketapp.presentation.asStageUiState
 import cz.quanti.rocketapp.ui.RocketAppPreview
 import cz.quanti.rocketapp.ui.StateFullPullToRefresh
@@ -66,7 +67,7 @@ private const val ROCKET_DETAIL = "rocketDetail"
 private const val ROCKET_ID = "rocketId"
 private const val ROCKET_NAME = "rocketName"
 
-data object RocketDetailScreen : Screen(
+data object RocketDetailScreen : RocketAppScreen(
     route = "$ROCKET_DETAIL/{$ROCKET_ID}?rocketName={$ROCKET_NAME}",
     navArguments = listOf(
         navArgument(ROCKET_ID) { type = NavType.StringType },
@@ -194,17 +195,11 @@ private fun RocketDetailContent(rocket: RocketDetailUiState) {
 
         ContentSpaceVertical()
 
-        StageCard(
-            stage = rocket.firstStage,
-            title = stringResource(R.string.rocket_detail_first_stage),
-        )
+        StageCard(stage = rocket.firstStage)
 
         ContentSpaceVertical()
 
-        StageCard(
-            stage = rocket.secondStage,
-            title = stringResource(R.string.rocket_detail_second_stage),
-        )
+        StageCard(stage = rocket.secondStage)
 
         ContentSpaceVertical()
 
@@ -298,9 +293,9 @@ private fun ParameterCard(valueUnit: String, quantity: String) {
 }
 
 @Composable
-private fun StageCard(stage: StageUiState, title: String = "") {
+private fun StageCard(stage: StageUiState) {
     StageCard(
-        title = title,
+        title = stage.title.asString(),
         reusable = stage.reusable.asString(),
         engines = stage.engines.asString(),
         fuel = stage.fuelAmount.asString(),
@@ -451,13 +446,13 @@ private fun previewRocketDetail(): RocketDetailUiState {
             engines = 1,
             fuelAmountTons = 44.3,
             burnTimeSec = 169
-        ).asStageUiState(),
+        ).asStageUiState(UiText.StringResource(R.string.rocket_detail_first_stage)),
         secondStage = Stage(
             reusable = false,
             engines = 1,
             fuelAmountTons = 3.38,
             burnTimeSec = 378
-        ).asStageUiState(),
+        ).asStageUiState(UiText.StringResource(R.string.rocket_detail_second_stage)),
         flickrImages = listOf(
             "https://farm1.staticflickr.com/929/28787338307_3453a11a77_b.jpg",
             "https://farm4.staticflickr.com/3955/32915197674_eee74d81bb_b.jpg",
