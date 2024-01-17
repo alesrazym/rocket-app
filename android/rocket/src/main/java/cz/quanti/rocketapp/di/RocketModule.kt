@@ -1,7 +1,7 @@
 package cz.quanti.rocketapp.di
 
 import androidx.navigation.navOptions
-import cz.quanti.rocketapp.R
+import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.presentation.RocketDetailViewModel
 import cz.quanti.rocketapp.presentation.RocketListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
