@@ -1,6 +1,5 @@
 package cz.quanti.rocketropository.di
 
-import cz.quanti.common.di.commonModule
 import cz.quanti.rocketropository.data.RocketsRepositoryImpl
 import cz.quanti.rocketropository.data.SpaceXApi
 import cz.quanti.rocketropository.data.SpaceXApiImpl
@@ -16,8 +15,6 @@ import org.koin.dsl.module
 
 val rocketRepositoryModule =
     module {
-        includes(commonModule)
-
         singleOf(::SpaceXApiImpl) { bind<SpaceXApi>() }
         singleOf(::RocketsRepositoryImpl) { bind<RocketsRepository>() }
 
