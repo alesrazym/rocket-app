@@ -9,13 +9,13 @@ import org.koin.test.verify.verify
 class CheckModulesTest {
     @Test
     fun verifyModules() {
-        rocketModule.verify()
+        appModule.verify()
     }
 
     @Test
     fun checkModules() {
         checkModules {
-            modules(rocketModule)
+            modules(appModule)
         }
     }
 }
