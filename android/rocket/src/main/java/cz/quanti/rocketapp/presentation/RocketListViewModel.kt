@@ -4,7 +4,6 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.quanti.rocketapp.android.rocket.R
-import cz.quanti.rocketropository.RocketException
 import cz.quanti.rocketropository.domain.GetRocketsUseCase
 import cz.quanti.common.domain.invoke
 import kotlinx.coroutines.Job

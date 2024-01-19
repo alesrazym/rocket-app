@@ -36,7 +36,7 @@ fun <S> MutableStateFlow<UiScreenState<S>>.loading(loadingMessage: UiText = UiTe
 }
 
 fun <S> MutableStateFlow<UiScreenState<S>>.error(
-    exception: RocketException? = null,
+    exception: ResultException? = null,
     errorTransform: (Throwable?) -> UiText = defaultErrorTransform(),
 ) {
     this.update {
@@ -76,7 +76,7 @@ fun <T, S> UiScreenState<S>.success(result: T, transform: (T) -> S): UiScreenSta
 }
 
 fun <S> UiScreenState<S>.error(
-    exception: RocketException? = null,
+    exception: ResultException? = null,
     errorTransform: (Throwable?) -> UiText = defaultErrorTransform(),
 ): UiScreenState<S> {
     return if (this is UiScreenState.Data) {

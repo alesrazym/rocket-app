@@ -50,27 +50,27 @@ private fun Throwable.asResult(): Result.Error {
     return Result.Error(
         when (this) {
             is HttpRequestTimeoutException, is ConnectTimeoutException, is SocketTimeoutException ->
-                RocketException.NetworkException(message ?: "Network timeout", this)
+                ResultException.NetworkException(message ?: "Network timeout", this)
 
             is IOException ->
-                RocketException.NetworkException(message ?: "Network error", this)
+                ResultException.NetworkException(message ?: "Network error", this)
 
             is ResponseException ->
-                RocketException.HttpException(response.status, this)
+                ResultException.HttpException(response.status, this)
 
             is SendCountExceedException ->
-                RocketException.NetworkException(message ?: "Infinite or too long redirect", this)
+                ResultException.NetworkException(message ?: "Infinite or too long redirect", this)
 
             is ClientEngineClosedException ->
-                RocketException.Exception(message ?: "Client engine closed", this)
+                ResultException.Exception(message ?: "Client engine closed", this)
 
             is ContentConverterException ->
-                RocketException.ContentException(message ?: "Content conversion error", this)
+                ResultException.ContentException(message ?: "Content conversion error", this)
 
             is CancellationException ->
-                RocketException.CanceledByUserException(message ?: "Canceled by user")
+                ResultException.CanceledByUserException(message ?: "Canceled by user")
 
-            else -> RocketException.Exception(message ?: "Unknown error", this)
+            else -> ResultException.Exception(message ?: "Unknown error", this)
         }
     )
 }
