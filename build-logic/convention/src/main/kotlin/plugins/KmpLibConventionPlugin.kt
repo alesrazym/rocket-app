@@ -86,6 +86,9 @@ class KmpLibConventionPlugin : Plugin<Project> {
                     }
                 }
             }
+
+            // Dummy testClasses, currently needed for multiplatform builds
+            tasks.register("testClasses")
         }
     }
 }
