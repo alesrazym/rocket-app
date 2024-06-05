@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.multiplatform.shared
+package cz.quanti.rocketapp.android.library.architecturetest
 
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
