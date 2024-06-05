@@ -1,6 +1,7 @@
-package rocketropository
+package cz.quanti.rocketapp.multiplatform.shared
 
 import com.lemonappdev.konsist.api.Konsist
+import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
 import com.lemonappdev.konsist.api.ext.list.withoutNameEndingWith
 import com.lemonappdev.konsist.api.verify.assertTrue
@@ -11,9 +12,6 @@ import kotlin.test.Test
 class KonsistTest {
     @Test
     fun `UseCase test`() {
-        // TODO: This tests complete project, so, where it should belong?
-        //  * shared:shared
-        //  * android:app
         Konsist.scopeFromProject().apply {
             withClue("UseCase should reside in domain package") {
                 classes()
@@ -30,6 +28,7 @@ class KonsistTest {
                         it.resideInPackage("..domain..")
                     }
             }
+
             withClue("UseCase should be only suffixed with UseCase / UseCaseImpl") {
                 classes()
                     .withoutNameEndingWith("UseCaseImpl")
@@ -43,12 +42,22 @@ class KonsistTest {
                     }
             }
 
-            // TODO: classes with 'UseCase' suffix should have single
-            //  'public operator' method named 'invoke'
-
+            withClue("UseCase should have single 'invoke' method") {
+                classes()
+                    .withNameEndingWith("UseCase")
+                    .forEach(::checkInvokeFunction)
+            }
         }
     }
 
-    // TODO: setup more arch unit tests
-
+    private fun checkInvokeFunction(classDeclaration: KoClassDeclaration) {
+        with(classDeclaration) {
+            numFunctions() shouldBe 1
+            countFunctions { it.name == "invoke" } shouldBe 1
+            functions().single().run {
+                hasPublicModifier shouldBe true
+                hasOperatorModifier shouldBe true
+            }
+        }
+    }
 }
