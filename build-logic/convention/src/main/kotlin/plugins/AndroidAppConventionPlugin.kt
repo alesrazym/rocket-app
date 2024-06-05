@@ -15,6 +15,7 @@ class AndroidAppConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply(pluginId("android-application"))
                 apply(pluginId("kotlin-android"))
+                apply(pluginId("kotlin-serialization"))
             }
             extensions.configure<ApplicationExtension> {
                 defaultConfig.apply {

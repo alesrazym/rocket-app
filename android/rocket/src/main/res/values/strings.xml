@@ -1,0 +1,34 @@
+<resources>
+    <string name="rockets_title">Rockets</string>
+    <string name="rockets_loading">Loading rockets…</string>
+    <string name="first_flight">First flight: %1$s</string>
+    <string name="first_flight_unknown">unknown</string>
+    <string name="getting_rocket_detail_in_progress">Getting rocket detail…</string>
+    <string name="getting_rocket_detail_failed">Getting rocket detail failed</string>
+    <string name="seconds_burn_time">%d seconds burn time</string>
+    <string name="reusable">reusable</string>
+    <string name="not_reusable">not reusable</string>
+    <string name="tons_of_fuel">%.0f tons of fuel</string>
+    <string name="unknown">unknown</string>
+    <string name="loading">Loading</string>
+    <string name="unknown_error">Unknown error.</string>
+    <string name="error_server_response">Server returned error, maybe bad request.</string>
+    <string name="error_io">Error connecting to server. Please, check your internet connection.</string>
+    <string name="error_json">Received corrupted data. Please, check your application is up-to-date.</string>
+    <string name="error_timeout">Connection to server has timed out. Please, try again.</string>
+    <string name="rocket_icon_content_description">Rocket icon</string>
+    <string name="arrow_icon_content_description">Arrow icon</string>
+    <string name="launch">Launch</string>
+    <string name="rocket_detail_first_stage">First Stage</string>
+    <string name="rocket_detail_second_stage">Second Stage</string>
+    <string name="rocket_detail_overview">Overview</string>
+    <string name="rocket_detail_parameters">Parameters</string>
+    <string name="rocket_detail_card_height">height</string>
+    <string name="rocket_detail_card_diameter">diameter</string>
+    <string name="rocket_detail_card_mass">mass</string>
+    <string name="rocket_detail_photos">Photos</string>
+    <string name="reusable_icon_content_description">Reusable icon</string>
+    <string name="engine_icon_content_description">Engine icon</string>
+    <string name="fuel_icon_content_description">Fuel icon</string>
+    <string name="burn_icon_content_description">Burn icon</string>
+</resources>

@@ -25,21 +25,22 @@ internal fun Project.configureAndroidKotlin(extension: CommonExtension<*, *, *, 
         }
 
         packaging.resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        /*
+         Fix to the error:
+         > A failure occurred while executing com.android.build.gradle.internal.tasks.MergeJavaResWorkAction
+         > 2 files found with path 'META-INF/versions/9/previous-compilation-data.bin' from inputs:
+           - [.gradle]\caches\modules-2\files-2.1\org.jetbrains.kotlinx\kotlinx-datetime-jvm\0.4.1\684eec210b21e2da7382a4aa85e56fb7b71f39b3\kotlinx-datetime-jvm-0.4.1.jar
+           - [.gradle]\caches\modules-2\files-2.1\org.jetbrains.kotlinx\atomicfu-jvm\0.22.0\c6a128a44ba52a18265e5ec816130cd341d80792\atomicfu-jvm-0.22.0.jar
+         */
+        packaging.resources.excludes += "/META-INF/versions/**"
+        packaging.resources.excludes += "/META-INF/LICENSE*.md"
+        // End of fix
 
         configureKotlin()
 
         dependencies {
-            add(
-                "implementation",
-                libs.findLibrary("androidx-coreKtx")
-                    .get(),
-            )
-
-            add(
-                "testImplementation",
-                libs.findBundle("test")
-                    .get(),
-            )
+            add("implementation", libs.library("androidx-coreKtx"))
+            add("implementation", libs.bundle("test"))
         }
     }
 }

@@ -14,6 +14,7 @@ class AndroidLibConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply(pluginId("android-library"))
                 apply(pluginId("kotlin-android"))
+                apply(pluginId("kotlin-serialization"))
             }
             extensions.configure<LibraryExtension> {
                 configureAndroidKotlin(this)

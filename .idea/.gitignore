@@ -13,6 +13,12 @@
 /modules/
 /assetWizardSettings.xml
 /deploymentTargetDropDown.xml
+/deploymentTargetSelector.xml
 /jarRepositories.xml
 /misc.xml
 /navEditor.xml
+
+# Ignore some more from .idea folder
+/appInsightsSettings.xml
+/other.xml
+/inspectionProfiles/
