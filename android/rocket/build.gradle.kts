@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.android.ui)
+    implementation(projects.android.uiSystem)
     implementation(projects.shared.shared)
 
     implementation(libs.koinAndroidCompose)

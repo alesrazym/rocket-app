@@ -44,7 +44,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import cz.quanti.rocketapp.LocalSnackbar
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.presentation.RocketDetailUiState
 import cz.quanti.rocketapp.presentation.RocketDetailViewModel
@@ -52,10 +51,7 @@ import cz.quanti.rocketapp.presentation.StageUiState
 import cz.quanti.rocketapp.presentation.UiScreenState
 import cz.quanti.rocketapp.presentation.UiText
 import cz.quanti.rocketapp.presentation.asStageUiState
-import cz.quanti.rocketapp.ui.PreviewRocketApp
-import cz.quanti.rocketapp.ui.StateFullPullToRefresh
-import cz.quanti.rocketapp.ui.TopBarWithBackIcon
-import cz.quanti.rocketapp.ui.theme.RocketAppTheme
+import cz.quanti.rocketapp.system.theme.RocketAppTheme
 import cz.quanti.rocketropository.model.Stage
 import org.koin.androidx.compose.koinViewModel
 

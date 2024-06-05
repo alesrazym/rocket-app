@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package cz.quanti.rocketapp.ui
+package cz.quanti.rocketapp.system
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.RowScope
@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import cz.quanti.rocketapp.android.ui.R
-import cz.quanti.rocketapp.ui.theme.RocketAppTheme
+import cz.quanti.rocketapp.system.theme.RocketAppTheme
 
 @Composable
 fun TopBar(

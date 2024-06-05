@@ -13,12 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import cz.quanti.rocketapp.LocalSnackbar
-import cz.quanti.rocketapp.ui.theme.RocketAppTheme
+import cz.quanti.rocketapp.system.theme.RocketAppTheme
 import org.koin.android.ext.android.getKoin
 
 class RocketActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

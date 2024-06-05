@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.ui
+package cz.quanti.rocketapp.system
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import cz.quanti.rocketapp.presentation.UiText
-import cz.quanti.rocketapp.ui.theme.RocketAppTheme
+import cz.quanti.rocketapp.system.theme.RocketAppTheme
 
 @Composable
 fun ContentStatusText(

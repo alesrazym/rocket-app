@@ -13,8 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import cz.quanti.rocketapp.android.rocket.R
-import cz.quanti.rocketapp.ui.TopBarWithBackIcon
-import cz.quanti.rocketapp.ui.theme.RocketAppTheme
+import cz.quanti.rocketapp.system.theme.RocketAppTheme
 
 data object RocketLaunchScreen : RocketAppScreen("rocketLaunch")
 

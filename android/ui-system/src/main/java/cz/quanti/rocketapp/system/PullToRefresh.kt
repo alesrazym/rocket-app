@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterialApi::class)
 
-package cz.quanti.rocketapp.ui
+package cz.quanti.rocketapp.system
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import cz.quanti.rocketapp.presentation.ShowMessageInSnackBar
 import cz.quanti.rocketapp.presentation.UiScreenState
 import cz.quanti.rocketapp.presentation.UiText
-import cz.quanti.rocketapp.ui.theme.RocketAppTheme
+import cz.quanti.rocketapp.system.theme.RocketAppTheme
 
 @Composable
 fun PullToRefresh(

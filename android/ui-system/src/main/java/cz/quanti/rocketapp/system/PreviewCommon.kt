@@ -1,9 +1,9 @@
-package cz.quanti.rocketapp.ui
+package cz.quanti.rocketapp.system
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview
-import cz.quanti.rocketapp.ui.PreviewCommon.PREVIEW_HEIGHT
-import cz.quanti.rocketapp.ui.PreviewCommon.PREVIEW_WIDTH
+import cz.quanti.rocketapp.system.PreviewCommon.PREVIEW_HEIGHT
+import cz.quanti.rocketapp.system.PreviewCommon.PREVIEW_WIDTH
 
 object PreviewCommon {
     const val PREVIEW_WIDTH = 375

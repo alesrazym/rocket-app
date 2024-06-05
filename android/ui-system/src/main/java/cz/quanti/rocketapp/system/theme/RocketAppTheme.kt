@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.ui.theme
+package cz.quanti.rocketapp.system.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme

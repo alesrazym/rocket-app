@@ -2,7 +2,7 @@ package cz.quanti.rocketapp.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import cz.quanti.rocketapp.LocalSnackbar
+import cz.quanti.rocketapp.system.LocalSnackbar
 
 /**
  * Base class for handling with UI Screen state in cases,\

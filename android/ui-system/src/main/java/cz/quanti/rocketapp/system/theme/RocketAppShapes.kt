@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.ui.theme
+package cz.quanti.rocketapp.system.theme
 
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
