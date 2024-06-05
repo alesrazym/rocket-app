@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.utils
+package cz.quanti.rocketapp.util
 
 import com.goncalossilva.resources.Resource
 import cz.quanti.rocketropository.model.Rocket

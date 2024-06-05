@@ -2,7 +2,7 @@ package cz.quanti.rocketapp.presentation
 
 import cz.quanti.common.asResult
 import cz.quanti.rocketapp.android.rocket.R
-import cz.quanti.rocketapp.utils.rocketsDetailData
+import cz.quanti.rocketapp.util.rocketsDetailData
 import cz.quanti.rocketropository.domain.GetRocketUseCase
 import io.kotest.matchers.shouldBe
 import org.junit.After

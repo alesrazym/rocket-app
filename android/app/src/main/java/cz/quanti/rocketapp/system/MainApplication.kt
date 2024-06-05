@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp
+package cz.quanti.rocketapp.system
 
 import android.app.Application
 import coil.ImageLoader

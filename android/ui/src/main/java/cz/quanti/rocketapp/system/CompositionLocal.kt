@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp
+package cz.quanti.rocketapp.system
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.compositionLocalOf

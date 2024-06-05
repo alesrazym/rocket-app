@@ -6,7 +6,7 @@ import cz.quanti.common.ResultException
 import cz.quanti.common.asResult
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.util.toLocalString
-import cz.quanti.rocketapp.utils.rocketsData
+import cz.quanti.rocketapp.util.rocketsData
 import cz.quanti.rocketropository.domain.GetRocketsUseCase
 import cz.quanti.rocketropository.model.Rocket
 import io.kotest.matchers.shouldBe
