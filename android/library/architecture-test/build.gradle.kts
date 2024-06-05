@@ -1,3 +1,7 @@
+import config.ANDROID_MODULE_ID
+import config.MULTIPLATFORM_MODULE_ID
+import config.NAMESPACE_ID
+
 plugins {
     alias(libs.plugins.quanti.android.library)
     alias(libs.plugins.quanti.android.base)
@@ -6,11 +10,15 @@ plugins {
 }
 
 android {
-    namespace = "cz.quanti.rocketapp.android.library.architecturetest"
+    buildFeatures.buildConfig = true
+
+    defaultConfig {
+        buildConfigField("String", "ROOT_PACKAGE", "\"$NAMESPACE_ID\"")
+        buildConfigField("String", "ANDROID_ID", "\"$ANDROID_MODULE_ID\"")
+        buildConfigField("String", "MULTIPLATFORM_ID", "\"$MULTIPLATFORM_MODULE_ID\"")
+    }
 }
 
-
 dependencies {
-    testImplementation(libs.test.junit4)
     testImplementation(libs.test.konsist)
 }

@@ -6,10 +6,6 @@ plugins {
     alias(libs.plugins.kover)
 }
 
-android {
-    namespace = "cz.quanti.rocketapp.android.rocket"
-}
-
 dependencies {
     implementation(projects.android.ui)
     implementation(projects.shared.shared)

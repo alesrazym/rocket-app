@@ -9,8 +9,6 @@ plugins {
 }
 
 android {
-    namespace = "cz.quanti.rocketapp"
-
     defaultConfig {
         applicationId = "cz.quanti.razym.rocketapp"
         versionCode = 1

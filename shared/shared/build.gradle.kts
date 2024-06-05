@@ -6,10 +6,6 @@ plugins {
     alias(libs.plugins.kover)
 }
 
-android {
-    namespace = "cz.quanti.rocketrepository.shared"
-}
-
 val libName = "Shared"
 val iosLibFolder = "XCFrameworks/lib"
 

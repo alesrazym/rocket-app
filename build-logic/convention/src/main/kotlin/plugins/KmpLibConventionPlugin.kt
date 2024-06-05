@@ -2,11 +2,14 @@ package plugins
 
 import com.android.build.api.dsl.LibraryExtension
 import config.Config
+import config.MULTIPLATFORM_MODULE_ID
+import config.NAMESPACE_ID
 import extensions.bundle
 import extensions.configureAndroidKotlin
 import extensions.configureBuildTypes
 import extensions.library
 import extensions.libs
+import extensions.nameNormalized
 import extensions.pluginId
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
@@ -29,6 +32,8 @@ class KmpLibConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<LibraryExtension> {
+                namespace = "$NAMESPACE_ID.$MULTIPLATFORM_MODULE_ID.$nameNormalized"
+
                 configureAndroidKotlin(this)
                 configureBuildTypes(this)
             }

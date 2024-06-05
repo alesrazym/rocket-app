@@ -4,10 +4,6 @@ plugins {
     alias(libs.plugins.kover)
 }
 
-android {
-    namespace = "cz.quanti.rocketrepository.rocket"
-}
-
 kotlin {
     // TODO: Looking forward there will be kind of shared test code and resources,
     //  similar to `textFixtures` in Java and Android.
