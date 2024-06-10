@@ -34,7 +34,7 @@ import androidx.navigation.compose.composable
 import cz.quanti.rocketapp.android.feature.rocket.presentation.RocketListViewModel
 import cz.quanti.rocketapp.android.feature.rocket.presentation.RocketUiState
 import cz.quanti.rocketapp.android.feature.rocket.presentation.asFirstFlightUiText
-import cz.quanti.rocketapp.android.feature.rocket.util.toDate
+import cz.quanti.rocketapp.android.feature.rocket.infrastructure.toDate
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiScreenState
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiText
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.asUiText

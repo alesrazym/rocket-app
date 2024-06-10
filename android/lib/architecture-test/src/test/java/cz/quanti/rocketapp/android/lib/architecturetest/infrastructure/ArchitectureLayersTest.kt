@@ -1,19 +1,18 @@
 @file:Suppress("IllegalIdentifier", "FunctionNaming")
 
-package cz.quanti.rocketapp.android.lib.architecturetest.util
+package cz.quanti.rocketapp.android.lib.architecturetest.infrastructure
 
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.architecture.KoArchitectureCreator.assertArchitecture
 import com.lemonappdev.konsist.api.container.KoScope
 import com.lemonappdev.konsist.api.verify.assertTrue
-import cz.quanti.rocketapp.android.lib.architecturetest.util.model.ArchitectureLayer
-import cz.quanti.rocketapp.android.lib.architecturetest.util.model.appScope
-import cz.quanti.rocketapp.android.lib.architecturetest.util.model.dependencies
-import cz.quanti.rocketapp.android.lib.architecturetest.util.model.toKonsistLayer
+import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.ArchitectureLayer
+import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.appScope
+import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.dependencies
+import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.toKonsistLayer
 import kotlin.test.Test
 
 class ArchitectureLayersTest {
-    @Suppress("LongMethod", "CyclomaticComplexMethod")
     @Test
     fun `clean architecture layers have correct dependencies`() {
         Konsist.appScope()

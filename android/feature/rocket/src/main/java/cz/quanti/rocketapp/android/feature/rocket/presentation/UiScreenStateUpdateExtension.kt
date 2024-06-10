@@ -3,8 +3,8 @@ package cz.quanti.rocketapp.android.feature.rocket.presentation
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiScreenState
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiText
 import cz.quanti.rocketapp.android.rocket.R
-import cz.quanti.rocketapp.multiplatform.lib.common.Result
-import cz.quanti.rocketapp.multiplatform.lib.common.ResultException
+import cz.quanti.rocketapp.multiplatform.lib.common.model.Result
+import cz.quanti.rocketapp.multiplatform.lib.common.model.ResultException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

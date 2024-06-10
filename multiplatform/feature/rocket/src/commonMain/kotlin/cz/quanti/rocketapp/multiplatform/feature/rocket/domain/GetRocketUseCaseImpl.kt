@@ -4,8 +4,8 @@ import cz.quanti.rocketapp.multiplatform.feature.rocket.data.RocketData
 import cz.quanti.rocketapp.multiplatform.feature.rocket.data.StageData
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.RocketDetail
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.Stage
-import cz.quanti.rocketapp.multiplatform.lib.common.Result
-import cz.quanti.rocketapp.multiplatform.lib.common.asResult
+import cz.quanti.rocketapp.multiplatform.lib.common.infrastructure.asResult
+import cz.quanti.rocketapp.multiplatform.lib.common.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -13,9 +13,11 @@ internal class GetRocketUseCaseImpl(
     private val repo: RocketsRepository
 ) : GetRocketUseCase {
     override fun invoke(input: String): Flow<Result<RocketDetail>> {
-        return repo.getRocket(input).map { data ->
-            data.asRocketDetail()
-        }.asResult()
+        return repo.getRocket(input)
+            .map { data ->
+                data.asRocketDetail()
+            }
+            .asResult()
     }
 }
 

@@ -1,15 +1,16 @@
 package cz.quanti.rocketapp.android.feature.rocket.presentation
 
 import android.icu.text.DateFormat
-import cz.quanti.rocketapp.android.feature.rocket.util.rocketsData
-import cz.quanti.rocketapp.android.feature.rocket.util.toLocalString
+import cz.quanti.rocketapp.android.feature.rocket.infrastructure.rocketsData
+import cz.quanti.rocketapp.android.feature.rocket.infrastructure.toLocalString
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiScreenState
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiText
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.multiplatform.feature.rocket.domain.GetRocketsUseCase
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.Rocket
-import cz.quanti.rocketapp.multiplatform.lib.common.ResultException
-import cz.quanti.rocketapp.multiplatform.lib.common.asResult
+import cz.quanti.rocketapp.multiplatform.lib.common.infrastructure.asResult
+import cz.quanti.rocketapp.multiplatform.lib.common.model.Result
+import cz.quanti.rocketapp.multiplatform.lib.common.model.ResultException
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.every
@@ -42,13 +43,14 @@ class RocketListViewModelTest {
         Dispatchers.setMain(testDispatcher)
 
         // TODO: Possible solution for mocking android methods -> replace by java equivalent
-        mockkStatic("cz.quanti.rocketapp.util.DateTimeUtilsKt")
+        mockkStatic("cz.quanti.rocketapp.android.feature.rocket.infrastructure.DateTimeUtilsKt")
         every { any<Date>().toLocalString() } answers {
             val date = firstArg<Date>()
             java.text.DateFormat.getDateInstance(
                 DateFormat.MEDIUM,
                 Locale.US,
-            ).format(date)
+            )
+                .format(date)
         }
     }
 
@@ -168,7 +170,7 @@ class RocketListViewModelTest {
         runTest(testDispatcher) {
             val viewModel =
                 rocketListViewModel {
-                    flow { emit(cz.quanti.rocketapp.multiplatform.lib.common.Result.Error(this@shouldResult)) }
+                    flow { emit(Result.Error(this@shouldResult)) }
                 }
 
             advanceUntilIdle()

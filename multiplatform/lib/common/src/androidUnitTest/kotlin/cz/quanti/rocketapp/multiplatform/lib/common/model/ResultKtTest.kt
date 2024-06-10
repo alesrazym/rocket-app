@@ -1,5 +1,6 @@
-package cz.quanti.rocketapp.multiplatform.lib.common
+package cz.quanti.rocketapp.multiplatform.lib.common.model
 
+import cz.quanti.rocketapp.multiplatform.lib.common.infrastructure.asResult
 import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.ClientEngineClosedException
 import io.ktor.client.plugins.HttpRequestTimeoutException

@@ -1,7 +1,7 @@
 package cz.quanti.rocketapp.android.feature.rocket.presentation
 
-import cz.quanti.rocketapp.android.feature.rocket.util.toDate
-import cz.quanti.rocketapp.android.feature.rocket.util.toLocalString
+import cz.quanti.rocketapp.android.feature.rocket.infrastructure.toDate
+import cz.quanti.rocketapp.android.feature.rocket.infrastructure.toLocalString
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiText
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.Rocket

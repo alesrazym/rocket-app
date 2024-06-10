@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.android.lib.architecturetest.util.model
+package cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model
 
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.container.KoScope

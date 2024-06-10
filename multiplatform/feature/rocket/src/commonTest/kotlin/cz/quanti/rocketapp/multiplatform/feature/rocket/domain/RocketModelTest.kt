@@ -1,7 +1,6 @@
 package cz.quanti.rocketapp.multiplatform.feature.rocket.domain
 
-import cz.quanti.rocketapp.multiplatform.feature.rocket.domain.asRocketDetail
-import cz.quanti.rocketapp.multiplatform.feature.rocket.utils.rocketsData
+import cz.quanti.rocketapp.multiplatform.feature.rocket.infrastructure.rocketsData
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import kotlin.test.Test

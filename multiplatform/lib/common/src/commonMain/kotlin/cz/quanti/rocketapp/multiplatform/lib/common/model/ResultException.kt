@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.multiplatform.lib.common
+package cz.quanti.rocketapp.multiplatform.lib.common.model
 
 import io.ktor.http.HttpStatusCode
 

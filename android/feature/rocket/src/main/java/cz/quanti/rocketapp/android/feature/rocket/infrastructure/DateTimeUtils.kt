@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.android.feature.rocket.util
+package cz.quanti.rocketapp.android.feature.rocket.infrastructure
 
 // TODO: Is there any advantage using android instead of java DateFormat and SimpleDateFormat?
 //  Using Android requires additional test setup (mock), see `RocketListViewModelTest` test.

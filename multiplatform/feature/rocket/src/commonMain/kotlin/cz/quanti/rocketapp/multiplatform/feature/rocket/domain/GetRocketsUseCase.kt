@@ -2,8 +2,8 @@ package cz.quanti.rocketapp.multiplatform.feature.rocket.domain
 
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.Rocket
-import cz.quanti.rocketapp.multiplatform.lib.common.Result
 import cz.quanti.rocketapp.multiplatform.lib.common.domain.FlowUseCase
+import cz.quanti.rocketapp.multiplatform.lib.common.model.Result
 import kotlinx.coroutines.flow.Flow
 
 // TODO: separate classes for Unit param UseCases, or extensions?
