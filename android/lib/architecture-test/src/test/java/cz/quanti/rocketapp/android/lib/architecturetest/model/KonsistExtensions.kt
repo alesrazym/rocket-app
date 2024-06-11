@@ -52,6 +52,14 @@ fun KoScope.isLayerEmpty(module: Module): Boolean {
     }
 }
 
+fun DependencyRules.checkDependencies(layer: ArchitectureLayer) {
+    checkDependencies(
+        layer.toKonsistLayer(),
+        layer.dependencies()
+            .map { it.toKonsistLayer() },
+    )
+}
+
 fun DependencyRules.checkDependencies(module: Module) {
     checkDependencies(
         module.toKonsistLayer(),
