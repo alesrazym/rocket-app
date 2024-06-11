@@ -3,12 +3,12 @@ package cz.quanti.rocketapp.android.lib.architecturetest.domain
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.architecture.KoArchitectureCreator.assertArchitecture
 import com.lemonappdev.konsist.api.verify.assertTrue
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.isLayerEmpty
+import cz.quanti.rocketapp.android.lib.architecturetest.model.ArchitectureLayer
 import cz.quanti.rocketapp.android.lib.architecturetest.model.allScope
 import cz.quanti.rocketapp.android.lib.architecturetest.model.appScope
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.resideInLayer
-import cz.quanti.rocketapp.android.lib.architecturetest.model.ArchitectureLayer
 import cz.quanti.rocketapp.android.lib.architecturetest.model.dependencies
+import cz.quanti.rocketapp.android.lib.architecturetest.model.isLayerEmpty
+import cz.quanti.rocketapp.android.lib.architecturetest.model.resideInLayer
 import cz.quanti.rocketapp.android.lib.architecturetest.model.toKonsistLayer
 import kotlin.test.Test
 

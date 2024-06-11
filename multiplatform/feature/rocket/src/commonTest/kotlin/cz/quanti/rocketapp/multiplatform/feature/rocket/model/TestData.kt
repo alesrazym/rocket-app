@@ -1,7 +1,6 @@
-package cz.quanti.rocketapp.multiplatform.feature.rocket.infrastructure
+package cz.quanti.rocketapp.multiplatform.feature.rocket.model
 
 import com.goncalossilva.resources.Resource
-import cz.quanti.rocketapp.multiplatform.feature.rocket.model.RocketData
 import kotlinx.serialization.json.Json
 
 private val json =

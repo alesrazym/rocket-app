@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.android.feature.rocket.infrastructure
+package cz.quanti.rocketapp.android.feature.rocket.model
 
 import com.goncalossilva.resources.Resource
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.Rocket

@@ -91,7 +91,9 @@ fun ArchitectureLayer.dependencies(): List<ArchitectureLayer> = when (this) {
         ArchitectureLayer.Infrastructure,
     )
 
-    ArchitectureLayer.Model -> emptyList()
+    ArchitectureLayer.Model -> listOf(
+        ArchitectureLayer.Infrastructure,
+    )
 
     ArchitectureLayer.Data -> listOf(
         ArchitectureLayer.Domain,

@@ -2,7 +2,7 @@ package cz.quanti.rocketapp.multiplatform.feature.rocket.domain
 
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.Rocket
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.RocketData
-import cz.quanti.rocketapp.multiplatform.lib.common.infrastructure.asResult
+import cz.quanti.rocketapp.multiplatform.lib.common.model.asResult
 import cz.quanti.rocketapp.multiplatform.lib.common.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

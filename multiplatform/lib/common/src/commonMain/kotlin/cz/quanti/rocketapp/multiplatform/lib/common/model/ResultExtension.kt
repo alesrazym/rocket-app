@@ -1,7 +1,5 @@
-package cz.quanti.rocketapp.multiplatform.lib.common.infrastructure
+package cz.quanti.rocketapp.multiplatform.lib.common.model
 
-import cz.quanti.rocketapp.multiplatform.lib.common.model.Result
-import cz.quanti.rocketapp.multiplatform.lib.common.model.ResultException
 import io.ktor.client.engine.ClientEngineClosedException
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException

@@ -1,6 +1,6 @@
 package cz.quanti.rocketapp.multiplatform.feature.rocket.data
 
-import cz.quanti.rocketapp.multiplatform.feature.rocket.infrastructure.rocketsData
+import cz.quanti.rocketapp.multiplatform.feature.rocket.model.rocketsData
 import io.kotest.matchers.shouldBe
 import io.mockative.Mock
 import io.mockative.classOf
