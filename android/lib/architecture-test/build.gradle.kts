@@ -21,4 +21,5 @@ android {
 
 dependencies {
     testImplementation(libs.test.konsist)
+    testImplementation(projects.multiplatform.lib.common)
 }
