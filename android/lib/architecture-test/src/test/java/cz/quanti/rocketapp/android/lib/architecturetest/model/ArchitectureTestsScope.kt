@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model
+package cz.quanti.rocketapp.android.lib.architecturetest.model
 
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.container.KoScope
@@ -10,5 +10,5 @@ private val modulesInScope = listOf(
 
 fun Konsist.appScope(): KoScope = scopeFromModules(modulesInScope)
 
-fun Konsist.allScope(): KoScope = scopeFromModule(".*")
+fun Konsist.allScope(): KoScope = scopeFromProject()
     .minus(Konsist.scopeFromModule("build-logic.*"))

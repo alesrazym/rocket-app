@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model
+package cz.quanti.rocketapp.android.lib.architecturetest.model
 
 import com.lemonappdev.konsist.api.architecture.Layer
 

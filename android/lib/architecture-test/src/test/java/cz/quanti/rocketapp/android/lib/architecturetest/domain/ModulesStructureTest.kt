@@ -1,15 +1,14 @@
-@file:Suppress("IllegalIdentifier", "FunctionNaming")
-
-package cz.quanti.rocketapp.android.lib.architecturetest.infrastructure
+package cz.quanti.rocketapp.android.lib.architecturetest.domain
 
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.architecture.KoArchitectureCreator.assertArchitecture
 import com.lemonappdev.konsist.api.verify.assertTrue
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.ModuleType
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.Platform
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.allScope
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.appScope
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.toKonsistLayer
+import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.resideInModule
+import cz.quanti.rocketapp.android.lib.architecturetest.model.ModuleType
+import cz.quanti.rocketapp.android.lib.architecturetest.model.Platform
+import cz.quanti.rocketapp.android.lib.architecturetest.model.allScope
+import cz.quanti.rocketapp.android.lib.architecturetest.model.appScope
+import cz.quanti.rocketapp.android.lib.architecturetest.model.toKonsistLayer
 import kotlin.test.Ignore
 import kotlin.test.Test
 

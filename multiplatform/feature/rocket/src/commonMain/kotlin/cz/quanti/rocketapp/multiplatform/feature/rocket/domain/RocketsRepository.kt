@@ -1,6 +1,6 @@
 package cz.quanti.rocketapp.multiplatform.feature.rocket.domain
 
-import cz.quanti.rocketapp.multiplatform.feature.rocket.data.RocketData
+import cz.quanti.rocketapp.multiplatform.feature.rocket.model.RocketData
 import kotlinx.coroutines.flow.Flow
 
 internal interface RocketsRepository {

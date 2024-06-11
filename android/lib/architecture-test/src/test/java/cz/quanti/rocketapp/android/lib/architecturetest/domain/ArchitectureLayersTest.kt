@@ -1,15 +1,15 @@
-@file:Suppress("IllegalIdentifier", "FunctionNaming")
-
-package cz.quanti.rocketapp.android.lib.architecturetest.infrastructure
+package cz.quanti.rocketapp.android.lib.architecturetest.domain
 
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.architecture.KoArchitectureCreator.assertArchitecture
-import com.lemonappdev.konsist.api.container.KoScope
 import com.lemonappdev.konsist.api.verify.assertTrue
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.ArchitectureLayer
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.appScope
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.dependencies
-import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model.toKonsistLayer
+import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.isLayerEmpty
+import cz.quanti.rocketapp.android.lib.architecturetest.model.allScope
+import cz.quanti.rocketapp.android.lib.architecturetest.model.appScope
+import cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.resideInLayer
+import cz.quanti.rocketapp.android.lib.architecturetest.model.ArchitectureLayer
+import cz.quanti.rocketapp.android.lib.architecturetest.model.dependencies
+import cz.quanti.rocketapp.android.lib.architecturetest.model.toKonsistLayer
 import kotlin.test.Test
 
 class ArchitectureLayersTest {
@@ -36,18 +36,12 @@ class ArchitectureLayersTest {
 
     @Test
     fun `all files are in some architecture layer`() {
-        Konsist.appScope()
+        Konsist.allScope()
             .files
             .assertTrue { fileDeclaration ->
                 ArchitectureLayer.entries.any { layer ->
                     fileDeclaration.resideInLayer(layer)
                 }
             }
-    }
-}
-
-private fun KoScope.isLayerEmpty(domain: ArchitectureLayer): Boolean {
-    return files.none { fileDeclaration ->
-        fileDeclaration.resideInLayer(domain)
     }
 }

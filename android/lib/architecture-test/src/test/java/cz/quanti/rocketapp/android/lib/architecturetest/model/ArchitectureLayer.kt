@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model
+package cz.quanti.rocketapp.android.lib.architecturetest.model
 
 import com.lemonappdev.konsist.api.architecture.Layer
 
@@ -67,8 +67,6 @@ enum class ArchitectureLayer(val layerName: String) {
      * koin module and definitions
      */
     Di("di"),
-
-    Ui("ui"),
 }
 
 fun ArchitectureLayer.toKonsistLayer(): Layer {
@@ -109,13 +107,7 @@ fun ArchitectureLayer.dependencies(): List<ArchitectureLayer> {
             ArchitectureLayer.Domain,
             ArchitectureLayer.Data,
             ArchitectureLayer.Presentation,
-            ArchitectureLayer.Ui,
             ArchitectureLayer.System,
-            ArchitectureLayer.Infrastructure,
-        )
-
-        ArchitectureLayer.Ui -> listOf(
-            ArchitectureLayer.Presentation,
             ArchitectureLayer.Infrastructure,
         )
     }

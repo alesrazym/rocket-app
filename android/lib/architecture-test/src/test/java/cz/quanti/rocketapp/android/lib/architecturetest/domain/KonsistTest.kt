@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.android.lib.architecturetest.infrastructure
+package cz.quanti.rocketapp.android.lib.architecturetest.domain
 
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.declaration.KoClassDeclaration

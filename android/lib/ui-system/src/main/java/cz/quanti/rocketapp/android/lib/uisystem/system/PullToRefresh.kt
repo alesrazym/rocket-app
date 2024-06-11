@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import cz.quanti.rocketapp.android.lib.uisystem.presentation.ShowMessageInSnackBar
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiScreenState
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiText
 import cz.quanti.rocketapp.android.lib.uisystem.system.theme.RocketAppTheme

@@ -1,5 +1,6 @@
 package cz.quanti.rocketapp.android.feature.rocket.presentation
 
+import androidx.annotation.StringRes
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiText
 import cz.quanti.rocketapp.android.rocket.R
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.RocketDetail
@@ -48,6 +49,20 @@ fun Stage.asStageUiState(title: UiText): StageUiState {
         this.reusable.asReusableUiText(),
     )
 }
+
+fun previewStageUiState(
+    @StringRes title: Int,
+    burnTimeSec: Int?,
+    engines: Int,
+    fuelAmountTons: Double,
+    reusable: Boolean,
+) = StageUiState(
+    title = UiText.StringResource(title),
+    burnTimeSec = burnTimeSec.asBurnUiText(),
+    engines = engines.asEnginesUiText(),
+    fuelAmount = fuelAmountTons.asFuelUiText(),
+    reusable = reusable.asReusableUiText(),
+)
 
 fun Int?.asBurnUiText(): UiText {
     return if (this == null) {

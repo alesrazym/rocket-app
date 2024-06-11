@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.android.lib.architecturetest.infrastructure.model
+package cz.quanti.rocketapp.android.lib.architecturetest.model
 
 import cz.quanti.rocketapp.android.architecturetest.BuildConfig
 

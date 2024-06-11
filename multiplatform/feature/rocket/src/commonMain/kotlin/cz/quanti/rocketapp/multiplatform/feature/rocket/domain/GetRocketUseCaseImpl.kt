@@ -1,9 +1,9 @@
 package cz.quanti.rocketapp.multiplatform.feature.rocket.domain
 
-import cz.quanti.rocketapp.multiplatform.feature.rocket.data.RocketData
-import cz.quanti.rocketapp.multiplatform.feature.rocket.data.StageData
+import cz.quanti.rocketapp.multiplatform.feature.rocket.model.RocketData
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.RocketDetail
 import cz.quanti.rocketapp.multiplatform.feature.rocket.model.Stage
+import cz.quanti.rocketapp.multiplatform.feature.rocket.model.StageData
 import cz.quanti.rocketapp.multiplatform.lib.common.infrastructure.asResult
 import cz.quanti.rocketapp.multiplatform.lib.common.model.Result
 import kotlinx.coroutines.flow.Flow

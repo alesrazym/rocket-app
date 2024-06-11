@@ -1,6 +1,7 @@
 package cz.quanti.rocketapp.multiplatform.feature.rocket.data
 
 import com.goncalossilva.resources.Resource
+import cz.quanti.rocketapp.multiplatform.feature.rocket.model.RocketData
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk

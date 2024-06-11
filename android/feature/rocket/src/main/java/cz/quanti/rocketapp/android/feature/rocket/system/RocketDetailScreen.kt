@@ -47,15 +47,13 @@ import coil.request.ImageRequest
 import cz.quanti.rocketapp.android.feature.rocket.presentation.RocketDetailUiState
 import cz.quanti.rocketapp.android.feature.rocket.presentation.RocketDetailViewModel
 import cz.quanti.rocketapp.android.feature.rocket.presentation.StageUiState
-import cz.quanti.rocketapp.android.feature.rocket.presentation.asStageUiState
+import cz.quanti.rocketapp.android.feature.rocket.presentation.previewStageUiState
 import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiScreenState
-import cz.quanti.rocketapp.android.lib.uisystem.presentation.UiText
 import cz.quanti.rocketapp.android.lib.uisystem.system.PreviewRocketApp
 import cz.quanti.rocketapp.android.lib.uisystem.system.StateFullPullToRefresh
 import cz.quanti.rocketapp.android.lib.uisystem.system.TopBarWithBackIcon
 import cz.quanti.rocketapp.android.lib.uisystem.system.theme.RocketAppTheme
 import cz.quanti.rocketapp.android.rocket.R
-import cz.quanti.rocketapp.multiplatform.feature.rocket.model.Stage
 import org.koin.androidx.compose.koinViewModel
 
 private const val ROCKET_DETAIL = "rocketDetail"
@@ -426,18 +424,20 @@ private fun previewRocketDetail(): RocketDetailUiState {
         heightMeters = 22.25,
         diameterMeters = 1.68,
         massTons = 30.0,
-        firstStage = Stage(
+        firstStage = previewStageUiState(
+            title = R.string.rocket_detail_first_stage,
             reusable = false,
             engines = 1,
             fuelAmountTons = 44.3,
             burnTimeSec = 169,
-        ).asStageUiState(UiText.StringResource(R.string.rocket_detail_first_stage)),
-        secondStage = Stage(
+        ),
+        secondStage = previewStageUiState(
+            title = R.string.rocket_detail_second_stage,
             reusable = false,
             engines = 1,
             fuelAmountTons = 3.38,
             burnTimeSec = 378,
-        ).asStageUiState(UiText.StringResource(R.string.rocket_detail_second_stage)),
+        ),
         flickrImages = listOf(
             "https://farm1.staticflickr.com/929/28787338307_3453a11a77_b.jpg",
             "https://farm4.staticflickr.com/3955/32915197674_eee74d81bb_b.jpg",

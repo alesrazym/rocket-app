@@ -1,4 +1,4 @@
-package cz.quanti.rocketapp.multiplatform.feature.rocket.data
+package cz.quanti.rocketapp.multiplatform.feature.rocket.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
