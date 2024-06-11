@@ -15,6 +15,7 @@ import kotlin.test.Test
 class ArchitectureLayersTest {
     @Test
     fun `clean architecture layers have correct dependencies`() {
+        // TODO handle MainApplication.kt
         Konsist.appScope()
             .apply {
                 assertArchitecture {

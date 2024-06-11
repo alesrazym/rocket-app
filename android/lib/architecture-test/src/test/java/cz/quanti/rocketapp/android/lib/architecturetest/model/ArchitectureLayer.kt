@@ -73,42 +73,40 @@ fun ArchitectureLayer.toKonsistLayer(): Layer {
     return Layer(name, "${PackagePatterns.ROOT_PACKAGE}..$layerName..")
 }
 
-fun ArchitectureLayer.dependencies(): List<ArchitectureLayer> {
-    return when (this) {
-        ArchitectureLayer.System -> listOf(
-            ArchitectureLayer.Presentation,
-            ArchitectureLayer.Data,
-            ArchitectureLayer.Infrastructure,
-        )
+fun ArchitectureLayer.dependencies(): List<ArchitectureLayer> = when (this) {
+    ArchitectureLayer.System -> listOf(
+        ArchitectureLayer.Presentation,
+        ArchitectureLayer.Data,
+        ArchitectureLayer.Infrastructure,
+    )
 
-        ArchitectureLayer.Presentation -> listOf(
-            ArchitectureLayer.Domain,
-            ArchitectureLayer.Model,
-            ArchitectureLayer.Infrastructure,
-        )
+    ArchitectureLayer.Presentation -> listOf(
+        ArchitectureLayer.Domain,
+        ArchitectureLayer.Model,
+        ArchitectureLayer.Infrastructure,
+    )
 
-        ArchitectureLayer.Domain -> listOf(
-            ArchitectureLayer.Model,
-            ArchitectureLayer.Infrastructure,
-        )
+    ArchitectureLayer.Domain -> listOf(
+        ArchitectureLayer.Model,
+        ArchitectureLayer.Infrastructure,
+    )
 
-        ArchitectureLayer.Model -> emptyList()
+    ArchitectureLayer.Model -> emptyList()
 
-        ArchitectureLayer.Data -> listOf(
-            ArchitectureLayer.Domain,
-            ArchitectureLayer.Model,
-//            ArchitectureLayer.System,
-            ArchitectureLayer.Infrastructure,
-        )
+    ArchitectureLayer.Data -> listOf(
+        ArchitectureLayer.Domain,
+        ArchitectureLayer.Model,
+        ArchitectureLayer.System,
+        ArchitectureLayer.Infrastructure,
+    )
 
-        ArchitectureLayer.Infrastructure -> emptyList()
+    ArchitectureLayer.Infrastructure -> emptyList()
 
-        ArchitectureLayer.Di -> listOf(
-            ArchitectureLayer.Domain,
-            ArchitectureLayer.Data,
-            ArchitectureLayer.Presentation,
-            ArchitectureLayer.System,
-            ArchitectureLayer.Infrastructure,
-        )
-    }
+    ArchitectureLayer.Di -> listOf(
+        ArchitectureLayer.Domain,
+        ArchitectureLayer.Data,
+        ArchitectureLayer.Presentation,
+        ArchitectureLayer.System,
+        ArchitectureLayer.Infrastructure,
+    )
 }
