@@ -38,6 +38,8 @@ detekt = "1.23.6" # ktlint 0.50
 composeRules = "0.3.8" # ktlint 1.0.1
 # Ktlint IDEA plugin 0.20 -> ktlint 1.1.0
 
+slf4j = "2.0.13"
+
 [libraries]
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -81,6 +83,8 @@ test-konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 detekt-rules = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "composeRules" }
+
+slf4j-nop = { group = "org.slf4j", name = "slf4j-nop", version.ref = "slf4j" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }

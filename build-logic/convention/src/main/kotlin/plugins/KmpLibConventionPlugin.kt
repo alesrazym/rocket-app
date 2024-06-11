@@ -133,6 +133,9 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.commonTestSourceSet(libs
             implementation(libs.library("test-kotest"))
             implementation(libs.library("test-mockative"))
             implementation(libs.library("test-coroutines"))
+
+            // Add SLF4J NOP to get rid of error message in ktor test.
+            implementation(libs.library("slf4j-nop"))
         }
     }
 }
@@ -144,6 +147,9 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.androidTestSourceSet(lib
             implementation(libs.library("test-resources"))
             implementation(libs.library("test-coroutines"))
             implementation(libs.library("test-koin-junit4"))
+
+            // Add SLF4J NOP to get rid of error message in ktor test.
+            implementation(libs.library("slf4j-nop"))
         }
     }
 }
