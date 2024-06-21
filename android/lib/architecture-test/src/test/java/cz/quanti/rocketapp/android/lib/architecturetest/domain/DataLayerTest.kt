@@ -1,17 +1,16 @@
 package cz.quanti.rocketapp.android.lib.architecturetest.domain
 
 import com.lemonappdev.konsist.api.Konsist
-import com.lemonappdev.konsist.api.ext.list.print
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
 import com.lemonappdev.konsist.api.ext.list.withParentInterface
 import com.lemonappdev.konsist.api.ext.list.withoutParentInterface
 import com.lemonappdev.konsist.api.verify.assertEmpty
-import com.lemonappdev.konsist.api.verify.assertTrue
 import cz.quanti.rocketapp.android.lib.architecturetest.model.ArchitectureLayer
 import cz.quanti.rocketapp.android.lib.architecturetest.model.Naming
 import cz.quanti.rocketapp.android.lib.architecturetest.model.appScope
 import cz.quanti.rocketapp.android.lib.architecturetest.model.resideInLayer
 import io.kotest.assertions.withClue
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class DataLayerTest {
@@ -19,27 +18,22 @@ class DataLayerTest {
     fun `Repository implementation check`() {
         Konsist
             .repositoryImplementationClasses()
-            .print()
-            .apply {
-                withClue("Repository implementation should reside in data layer") {
-                    assertTrue {
-                        it.resideInLayer(ArchitectureLayer.Data)
-                    }
+            .forEach {
+                println("Repository implementation check: ${it.name}")
+
+                withClue("${it.name}: Repository implementation should reside in data layer") {
+                    it.resideInLayer(ArchitectureLayer.Data) shouldBe true
                 }
 
-                withClue("Repository implementation should be internal") {
-                    assertTrue {
-                        it.hasInternalModifier
-                    }
+                withClue("${it.name}: Repository implementation should be internal") {
+                    it.hasInternalModifier shouldBe true
                 }
 
-                withClue("Repository implementation should be named from repository interface") {
-                    assertTrue {
-                        it.hasParentInterface { interfaceDeclaration ->
-                            interfaceDeclaration.hasNameEndingWith(Naming.REPOSITORY_SUFFIX) &&
-                                it.name.endsWith(interfaceDeclaration.name)
-                        }
-                    }
+                withClue("${it.name}: Repository implementation should be named from repository interface") {
+                    it.hasParentInterface { interfaceDeclaration ->
+                        interfaceDeclaration.hasNameEndingWith(Naming.REPOSITORY_SUFFIX) &&
+                            it.name.endsWith(interfaceDeclaration.name)
+                    } shouldBe true
                 }
             }
     }
