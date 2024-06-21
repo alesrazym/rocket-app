@@ -1,0 +1,42 @@
+package cz.quanti.rocketapp.multiplatform.feature.rocket.data
+
+import com.goncalossilva.resources.Resource
+import cz.quanti.rocketapp.multiplatform.feature.rocket.model.RocketData
+import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.Json
+
+class DefaultRocketsRepositoryAndroidUnitTest {
+    private val json =
+        Json {
+            ignoreUnknownKeys = true
+        }
+
+    private val rocketsData: List<RocketData> =
+        json.decodeFromString(
+            Resource(path = "src/commonTest/resources/rockets.json").readText(),
+        )
+
+    private lateinit var api: SpaceXApi
+
+    @BeforeTest
+    fun setup() {
+        api = mockk()
+    }
+
+    @Test
+    fun `should convert api result to flow`() =
+        runTest {
+            coEvery { api.listRockets() }.returns(rocketsData)
+
+            val sut = DefaultRocketsRepository(api)
+
+            val result = sut.getRockets()
+            result.first().size shouldBe 4
+        }
+}

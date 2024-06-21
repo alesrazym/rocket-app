@@ -2,6 +2,8 @@ package plugins
 
 import com.android.build.api.dsl.ApplicationExtension
 import config.Config
+import config.ANDROID_MODULE_ID
+import config.NAMESPACE_ID
 import extensions.configureAndroidKotlin
 import extensions.configureBuildTypes
 import extensions.pluginId
@@ -18,6 +20,8 @@ class AndroidAppConventionPlugin : Plugin<Project> {
                 apply(pluginId("kotlin-serialization"))
             }
             extensions.configure<ApplicationExtension> {
+                namespace = "$NAMESPACE_ID.$ANDROID_MODULE_ID"
+
                 defaultConfig.apply {
                     targetSdk = Config.android.targetSdkVersion
                 }

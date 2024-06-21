@@ -21,21 +21,24 @@ coroutines = "1.7.3"
 mockative = "2.0.1"
 resources = "0.4.0"
 
-androidGradlePlugin = "8.2.1"
+androidGradlePlugin = "8.2.2"
 kotlin = "1.9.21"
 ksp = "1.9.21-1.0.16"
 nativecoroutines = "1.0.0-ALPHA-23"
 
 dependencyAnalysis = "1.26.0"
 kover = "0.7.5"
+konsist = "0.15.1"
 
 # Try keep all ktlint match the same version,
 # as well as with https://github.com/nbadal/ktlint-intellij-plugin
 # As of detekt 1.23.4 uses ktlint 0.50, we're waiting for next release to see
 # 1.1.0 from https://github.com/detekt/detekt/pull/6739 or higher.
-detekt = "1.23.4" # ktlint 0.50
+detekt = "1.23.6" # ktlint 0.50
 composeRules = "0.3.8" # ktlint 1.0.1
 # Ktlint IDEA plugin 0.20 -> ktlint 1.1.0
+
+slf4j = "2.0.13"
 
 [libraries]
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -75,10 +78,13 @@ test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 test-kotlin = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+test-konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 
 detekt-rules = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "composeRules" }
+
+slf4j-nop = { group = "org.slf4j", name = "slf4j-nop", version.ref = "slf4j" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }

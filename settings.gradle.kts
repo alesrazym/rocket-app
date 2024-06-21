@@ -34,9 +34,10 @@ rootProject.name = "rocket-app"
 //  `implementation(projects.ui)`
 // See https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:type-safe-project-accessors.
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include("android:app")
-include("android:rocket")
-include("android:ui")
-include("shared:shared")
-include("shared:common")
-include("shared:rocket")
+include(":android:app")
+include(":android:lib:architecture-test")
+include(":android:lib:ui-system")
+include(":android:feature:rocket")
+include(":multiplatform:shared")
+include(":multiplatform:lib:common")
+include(":multiplatform:feature:rocket")

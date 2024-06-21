@@ -9,8 +9,6 @@ plugins {
 }
 
 android {
-    namespace = "cz.quanti.rocketapp"
-
     defaultConfig {
         applicationId = "cz.quanti.razym.rocketapp"
         versionCode = 1
@@ -31,9 +29,9 @@ dependencies {
     // With TYPESAFE_PROJECT_ACCESSORS
     // instead of `implementation(project(":ui"))`
     // we can access projects in dependencies as follows:
-    implementation(projects.android.ui)
-    implementation(projects.android.rocket)
-    implementation(projects.shared.shared)
+    implementation(projects.android.lib.uiSystem)
+    implementation(projects.android.feature.rocket)
+    implementation(projects.multiplatform.shared)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
@@ -44,9 +42,9 @@ dependencies {
  * Kover configs
  */
 dependencies {
-    kover(projects.android.ui)
-    kover(projects.android.rocket)
-    kover(projects.shared.shared)
+    kover(projects.android.lib.uiSystem)
+    kover(projects.android.feature.rocket)
+    kover(projects.multiplatform.shared)
 }
 
 koverReport {

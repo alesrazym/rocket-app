@@ -2,11 +2,14 @@ package plugins
 
 import com.android.build.api.dsl.LibraryExtension
 import config.Config
+import config.MULTIPLATFORM_MODULE_ID
+import config.NAMESPACE_ID
 import extensions.bundle
 import extensions.configureAndroidKotlin
 import extensions.configureBuildTypes
 import extensions.library
 import extensions.libs
+import extensions.nameNormalized
 import extensions.pluginId
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
@@ -29,6 +32,8 @@ class KmpLibConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<LibraryExtension> {
+                namespace = "$NAMESPACE_ID.$MULTIPLATFORM_MODULE_ID.$nameNormalized"
+
                 configureAndroidKotlin(this)
                 configureBuildTypes(this)
             }
@@ -86,6 +91,9 @@ class KmpLibConventionPlugin : Plugin<Project> {
                     }
                 }
             }
+
+            // Dummy testClasses, currently needed for multiplatform builds
+            tasks.register("testClasses")
         }
     }
 }
@@ -125,6 +133,9 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.commonTestSourceSet(libs
             implementation(libs.library("test-kotest"))
             implementation(libs.library("test-mockative"))
             implementation(libs.library("test-coroutines"))
+
+            // Add SLF4J NOP to get rid of error message in ktor test.
+            implementation(libs.library("slf4j-nop"))
         }
     }
 }
@@ -136,6 +147,9 @@ private fun NamedDomainObjectContainer<KotlinSourceSet>.androidTestSourceSet(lib
             implementation(libs.library("test-resources"))
             implementation(libs.library("test-coroutines"))
             implementation(libs.library("test-koin-junit4"))
+
+            // Add SLF4J NOP to get rid of error message in ktor test.
+            implementation(libs.library("slf4j-nop"))
         }
     }
 }

@@ -17,7 +17,7 @@
         tools:targetApi="34">
 
         <activity
-            android:name=".system.RocketActivity"
+            android:name=".app.system.RocketActivity"
             android:exported="true"
             android:theme="@style/Theme.Rocketapp"
             >
