@@ -85,10 +85,34 @@ class DomainLayerTest {
             .assertEmpty()
     }
 
+    @Test
+    fun `Repository interfaces check`() {
+        Konsist
+            .repositoryInterfaces()
+            .apply {
+                withClue("Repository interface should reside in domain layer") {
+                    assertTrue {
+                        it.resideInLayer(ArchitectureLayer.Domain)
+                    }
+                }
+
+                withClue("Repository interface should be internal") {
+                    assertTrue {
+                        it.hasInternalModifier
+                    }
+                }
+            }
+    }
+
     private fun Konsist.useCaseInterfaces() =
         appScope()
             .interfaces()
             .withParentInterfaceOf(useCaseBaseInterface, indirectParents = true)
+
+    private fun Konsist.repositoryInterfaces() =
+        appScope()
+            .interfaces()
+            .withNameEndingWith(Naming.REPOSITORY_SUFFIX)
 
     private fun Konsist.otherInterfaces() =
         appScope()
@@ -116,6 +140,4 @@ class DomainLayerTest {
                 }
         }
     }
-
-    // TODO add tests for Repositories and domain models (Azure task number: 89759)
 }
