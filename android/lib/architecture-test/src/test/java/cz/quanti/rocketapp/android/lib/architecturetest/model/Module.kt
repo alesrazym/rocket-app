@@ -18,7 +18,7 @@ enum class Module(val moduleType: ModuleType, val platform: Platform) {
     /**
      * can depend on any number of android or multiplatform library modules
      *
-     * can depend on any number of mutliplatform feature modules
+     * can depend on any number of multiplatform feature modules
      *
      * cannot depend on other android feature modules
      */
@@ -46,8 +46,10 @@ enum class Module(val moduleType: ModuleType, val platform: Platform) {
 
 fun Module.toKonsistLayer(): Layer = Layer(
     name = "${platform.platformName}_${moduleType.typeName}",
-    definedBy = "${PackagePatterns.ROOT_PACKAGE}.${platform.platformName}.${moduleType.typeName}..",
+    definedBy = "${toPackage()}..",
 )
+
+fun Module.toPackage(): String = "${PackagePatterns.ROOT_PACKAGE}.${platform.platformName}.${moduleType.typeName}"
 
 fun Module.dependencies(): List<Module> = when (this) {
     Module.App -> listOf(

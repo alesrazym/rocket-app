@@ -8,14 +8,16 @@ import cz.quanti.rocketapp.android.lib.architecturetest.model.allScope
 import cz.quanti.rocketapp.android.lib.architecturetest.model.appScope
 import cz.quanti.rocketapp.android.lib.architecturetest.model.checkDependencies
 import cz.quanti.rocketapp.android.lib.architecturetest.model.isLayerEmpty
+import cz.quanti.rocketapp.android.lib.architecturetest.model.mainAppFileScope
 import cz.quanti.rocketapp.android.lib.architecturetest.model.resideInLayer
 import kotlin.test.Test
 
 class ArchitectureLayersTest {
     @Test
     fun `clean architecture layers have correct dependencies`() {
-        // TODO handle MainApplication.kt
-        Konsist.appScope()
+        Konsist
+            .appScope()
+            .minus(mainAppFileScope())
             .apply {
                 assertArchitecture {
                     ArchitectureLayer.entries.forEach { layer ->
@@ -31,7 +33,8 @@ class ArchitectureLayersTest {
 
     @Test
     fun `all files are in some architecture layer`() {
-        Konsist.allScope()
+        Konsist
+            .allScope()
             .files
             .assertTrue { fileDeclaration ->
                 ArchitectureLayer.entries.any { layer ->
