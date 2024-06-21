@@ -25,7 +25,7 @@ class RocketsRepositoryImplTest {
         runTest {
             coEvery { api.listRockets() }.returns(rocketsData)
 
-            val sut = RocketsRepositoryImpl(api)
+            val sut = DefaultRocketsRepository(api)
 
             val result = sut.getRockets()
             result.first().size shouldBe 4

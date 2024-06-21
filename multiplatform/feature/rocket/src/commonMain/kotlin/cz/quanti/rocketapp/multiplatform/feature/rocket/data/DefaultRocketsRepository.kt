@@ -5,7 +5,7 @@ import cz.quanti.rocketapp.multiplatform.feature.rocket.model.RocketData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-internal class RocketsRepositoryImpl(
+internal class DefaultRocketsRepository(
     private val api: SpaceXApi,
 ) : RocketsRepository {
     override fun getRockets(): Flow<List<RocketData>> =

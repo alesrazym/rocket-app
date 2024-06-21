@@ -1,6 +1,6 @@
 package cz.quanti.rocketapp.multiplatform.feature.rocket.di
 
-import cz.quanti.rocketapp.multiplatform.feature.rocket.data.RocketsRepositoryImpl
+import cz.quanti.rocketapp.multiplatform.feature.rocket.data.DefaultRocketsRepository
 import cz.quanti.rocketapp.multiplatform.feature.rocket.data.SpaceXApi
 import cz.quanti.rocketapp.multiplatform.feature.rocket.data.SpaceXApiImpl
 import cz.quanti.rocketapp.multiplatform.feature.rocket.domain.GetRocketUseCase
@@ -16,7 +16,7 @@ import org.koin.dsl.module
 val rocketRepositoryModule =
     module {
         singleOf(::SpaceXApiImpl) { bind<SpaceXApi>() }
-        singleOf(::RocketsRepositoryImpl) { bind<RocketsRepository>() }
+        singleOf(::DefaultRocketsRepository) { bind<RocketsRepository>() }
 
         factoryOf(::GetRocketsUseCaseImpl) { bind<GetRocketsUseCase>() }
         factoryOf(::GetRocketUseCaseImpl) { bind<GetRocketUseCase>() }
