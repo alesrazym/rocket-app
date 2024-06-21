@@ -8,10 +8,10 @@ import com.lemonappdev.konsist.api.ext.list.withoutName
 import com.lemonappdev.konsist.api.ext.list.withoutParentInterfaceOf
 import com.lemonappdev.konsist.api.verify.assertEmpty
 import com.lemonappdev.konsist.api.verify.assertTrue
-import cz.quanti.rocketapp.android.lib.architecturetest.model.resideInLayer
 import cz.quanti.rocketapp.android.lib.architecturetest.model.ArchitectureLayer
 import cz.quanti.rocketapp.android.lib.architecturetest.model.Naming
 import cz.quanti.rocketapp.android.lib.architecturetest.model.appScope
+import cz.quanti.rocketapp.android.lib.architecturetest.model.resideInLayer
 import cz.quanti.rocketapp.multiplatform.lib.common.domain.UseCase
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
@@ -118,5 +118,4 @@ class DomainLayerTest {
     }
 
     // TODO add tests for Repositories and domain models (Azure task number: 89759)
-
 }

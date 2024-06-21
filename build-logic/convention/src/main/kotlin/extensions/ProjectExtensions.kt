@@ -15,11 +15,12 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 const val MULTIPLATFORM_SHARED = ":multiplatform:shared"
 
 internal inline fun <reified T : Any> Project.extension(block: T.() -> Unit) {
-    extensions.findByType<T>()?.apply(block)
+    extensions
+        .findByType<T>()
+        ?.apply(block)
 }
 
-fun Project.envOrProp(key: String) =
-    System.getenv()[key] ?: project.properties[key].toString()
+fun Project.envOrProp(key: String) = System.getenv()[key] ?: project.properties[key].toString()
 
 fun Project.kotlin(block: KotlinMultiplatformExtension.() -> Unit) {
     extension(block)
@@ -71,14 +72,14 @@ fun Project.isMultiplatform(block: () -> Unit) {
 }
 
 val Project.nameNormalized: String
-get() = name.replace("-", "")
+    get() = name.replace("-", "")
 
 @Suppress("UNCHECKED_CAST")
 val KotlinMultiplatformExtension.multiplatformSourceSet: NamedDomainObjectContainer<KotlinSourceSet>
-get() {
-    val sourceSet = DslObject(this).extensions.getByName("sourceSets")
-    return sourceSet as NamedDomainObjectContainer<KotlinSourceSet>
-}
+    get() {
+        val sourceSet = DslObject(this).extensions.getByName("sourceSets")
+        return sourceSet as NamedDomainObjectContainer<KotlinSourceSet>
+    }
 
 object plugin
 
@@ -90,5 +91,4 @@ object plugin
  * syntax must be specific this way:
  * class KtPlugin: Plugin<Project> by local plugin({ })
  */
-
 infix fun plugin.implementation(block: Project.() -> Unit) = Plugin<Project> { it.block() }
